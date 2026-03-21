@@ -55,7 +55,7 @@ const g3y = computed(() => 30 + elevationNorm.value * 20) // 30% → 50%
 	padding: 12px;
 	position: relative;
 	overflow: hidden;
-	background-color: v-bind(priColor);
+	background-color: var(--neutral-200);
 	background-image:
   radial-gradient(
     ellipse 80% 100% at v-bind(g1x + '%') v-bind(g1y + '%'),

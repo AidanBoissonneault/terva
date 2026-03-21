@@ -12,6 +12,7 @@ const router = createRouter({
 		{ path: '/gear', name: 'gear', component: () => import('@/views/UserGear.vue') },
 		{ path: '/profile', name: 'profile', component: () => import('@/views/UserProfile.vue') },
 		{ path: '/about', name: 'about', component: () => import('@/views/UserAbout.vue') },
+		{ path: '/more', name: 'more', component: () => import('@/views/UserMore.vue') },
 
 		{ path: '/:pathMatch(.*)*', redirect: '/' },
 	],

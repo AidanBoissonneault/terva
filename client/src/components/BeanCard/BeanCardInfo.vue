@@ -26,6 +26,11 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+div {
+	--pico-color: #fff;
+	--pico-h2-color: #fff;
+}
+
 .apart {
 	display: flex;
 	flex-direction: row;

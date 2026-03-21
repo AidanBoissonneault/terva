@@ -2,12 +2,12 @@
 //  Bean Type
 // ─────────────────────────────────────────
 export interface Bean extends AddBeanForm {
-	pri_note_hue?: number
-	pri_note_chroma?: number
-	sec_note_hue?: number
-	sec_note_chroma?: number
-	acc_note_hue?: number
-	acc_note_chroma?: number
+	pri_hue?: number
+	pri_chroma?: number
+	sec_hue?: number
+	sec_chroma?: number
+	acc_hue?: number
+	acc_chroma?: number
 }
 
 // ─────────────────────────────────────────

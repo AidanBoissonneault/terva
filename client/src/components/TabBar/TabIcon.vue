@@ -39,10 +39,10 @@ button {
 }
 
 button:hover {
-	background-color: var(--brand-600);
+	background-color: oklch(var(--brand-300-raw) / 0.7);
 }
 
 .active_tab {
-	background-color: var(--brand-400);
+	background-color: oklch(var(--brand-200-raw) / 0.3);
 }
 </style>

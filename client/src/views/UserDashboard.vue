@@ -50,6 +50,7 @@ onMounted(async () => {
         <div class="filter-buttons">
           <button>Fresh</button>
           <button>Frozen</button>
+					<button>Finished</button>
           <button>All</button>
         </div>
       </div>
@@ -89,6 +90,7 @@ onMounted(async () => {
     padding-left: 4px;
     padding-right: 4px;
     margin-left: 4px;
+		border-radius: 4px;
 
     background-color: var(--brand-300);
 }
