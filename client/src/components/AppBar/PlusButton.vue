@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -16,7 +17,7 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 <template>
 	<div class="wrapper">
 		<button @click="emit('navigate', route)" class="main-button" :disabled="isOnPage">
-			<span>+</span>
+			<FontAwesomeIcon :icon="['fas', 'plus']"/>
 		</button>
 	</div>
 </template>
@@ -42,7 +43,7 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 
 	font-size: 48px;
 	font-weight: 1000;
-	padding: 0;
+	padding: 10px;
 	line-height: 0;
 
 	display: flex;
@@ -54,10 +55,6 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 
 .main-button:hover {
 	transform: scale(1.05);
-}
-
-button > span {
-	margin-top: -8px;
 }
 
 .invisible {

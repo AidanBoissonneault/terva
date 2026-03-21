@@ -8,6 +8,8 @@ const route = useRoute()
 const PAGE_NAME = 'profile'
 const isActivePage = computed(() => route.name === PAGE_NAME)
 
+const iconType = computed(() => isActivePage.value ? 'fas' : 'far')
+
 function navigate() {
 	router.push({ name: PAGE_NAME })
 }
@@ -15,7 +17,7 @@ function navigate() {
 
 <template>
 	<button @click="navigate" :class="{ isActive: isActivePage }">
-		<FontAwesomeIcon :icon="['fas', 'circle-user']" />
+		<FontAwesomeIcon :icon="[iconType, 'circle-user']" />
 	</button>
 </template>
 
@@ -25,8 +27,8 @@ button {
 	width: 40px;
 	height: 40px;
 
-	background-color: var(--brand-600);
-	box-shadow: 0 2px var(--brand-700);
+	background-color: var(--brand-500);
+	box-shadow: 0 2px var(--brand-600);
 
 	padding: 2px;
 

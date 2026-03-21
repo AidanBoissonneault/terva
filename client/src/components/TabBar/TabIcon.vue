@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
 	icon: string
@@ -12,13 +12,18 @@ const emit = defineEmits<{
 	navigate: [route: string]
 }>()
 
-const isActive = computed(() => props.route === props.activePage)
-console.log(isActive)
+const isActivePage = computed(() => props.route === props.activePage)
+
+/*
+const hasOutline = <string[]>['house']
+const iconType = computed(() => (!isActivePage.value && hasOutline.includes(props.icon)) ? 'far' : 'fas')
+*/
+const iconType = ref('fas')
 </script>
 
 <template>
-	<button @click="emit('navigate', route)" :class="{ active_tab: isActive }">
-		<FontAwesomeIcon :icon="['fas', icon]" />
+	<button @click="emit('navigate', route)" :class="{ active_tab: isActivePage }">
+		<FontAwesomeIcon :icon="[iconType, icon]" />
 		<span>{{ text }}</span>
 	</button>
 </template>
