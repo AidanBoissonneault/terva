@@ -30,7 +30,7 @@ const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
 <style scoped>
 header {
 	position: fixed;
-	width: calc(100% - (2 * 24px));
+	width: calc(100% - (2 * var(--bar-margin)));
 	height: auto;
 
 	background-color: var(--neutral-800);
@@ -44,8 +44,8 @@ header {
 	-webkit-backdrop-filter: blur(10px);
 
 	margin-top: 20px;
-	margin-left: 24px;
-	margin-right: 24px;
+	margin-left: var(--bar-margin);
+	margin-right: var(--bar-margin);
 	margin-bottom: 12px;
 	padding-left: 24px;
 	padding-right: 24px;

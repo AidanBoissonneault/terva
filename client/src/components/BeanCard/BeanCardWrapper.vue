@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const lightness = ref('0.7') // fallback default
 
+// reset lightness if possible
 onMounted(() => {
 	lightness.value = getComputedStyle(document.documentElement)
 		.getPropertyValue('--lightness')
@@ -16,9 +17,6 @@ onMounted(() => {
 
 const priColor = computed(() =>
 	`oklch(${lightness.value} ${props.bean.pri_chroma} ${props.bean.pri_hue})`
-)
-const priColorShadow = computed(() =>
-	`oklch(${Number(lightness.value) - 0.15} ${props.bean.pri_chroma} ${props.bean.pri_hue})`
 )
 const secColor = computed(() =>
 	`oklch(${lightness.value} ${props.bean.sec_chroma} ${props.bean.sec_hue})`
@@ -51,40 +49,38 @@ const g3y = computed(() => 30 + elevationNorm.value * 20) // 30% → 50%
 .bean-card {
 	grid-column: 1 / 5;
 	border-radius: 12px;
-	box-shadow: 0px 2px v-bind(priColorShadow);
+	box-shadow:
+		0 4px 6px oklch(var(--neutral-900-raw) / 0.6),
+		0 2px 4px oklch(from v-bind(priColor) l c h / 0.35),
+		0 6px 12px oklch(from v-bind(secColor) l c h / 0.28),
+		0 12px 24px oklch(from v-bind(accColor) l c h / 0.22);
 	padding: 12px;
 	position: relative;
 	overflow: hidden;
 	background-color: var(--neutral-200);
 	background-image:
-  radial-gradient(
-    ellipse 80% 100% at v-bind(g1x + '%') v-bind(g1y + '%'),
-    v-bind(priColor) 0%,
-    v-bind(priColor) 45%,
-    transparent 100%
-  ),
-  radial-gradient(
-    ellipse 75% 110% at v-bind(g2x + '%') v-bind(g2y + '%'),
-    v-bind(secColor) 0%,
-    v-bind(secColor) 45%,
-    transparent 100%
-  ),
-  radial-gradient(
-    ellipse 85% 100% at v-bind(g3x + '%') v-bind(g3y + '%'),
-    v-bind(accColor) 0%,
-    v-bind(accColor) 45%,
-    transparent 100%
-  );
+		radial-gradient(ellipse 80% 100% at v-bind(g1x + '%') v-bind(g1y + '%'),
+			v-bind(priColor) 0%,
+			v-bind(priColor) 45%,
+			transparent 100%),
+		radial-gradient(ellipse 75% 110% at v-bind(g2x + '%') v-bind(g2y + '%'),
+			v-bind(secColor) 0%,
+			v-bind(secColor) 45%,
+			transparent 100%),
+		radial-gradient(ellipse 85% 100% at v-bind(g3x + '%') v-bind(g3y + '%'),
+			v-bind(accColor) 0%,
+			v-bind(accColor) 45%,
+			transparent 100%);
 	z-index: 0;
 }
 
 .bean-card::before {
-  content: "";
-  position: absolute;
-  inset: -10%;
-  background: inherit;
-  filter: blur(30px);
-  opacity: 0.6;
-  z-index: -1;
+	content: "";
+	position: absolute;
+	inset: -10%;
+	background: inherit;
+	filter: blur(30px);
+	opacity: 0.6;
+	z-index: -1;
 }
 </style>

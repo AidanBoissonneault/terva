@@ -74,7 +74,11 @@ function clone(obj: AddBeanForm) {
 				<option value="finished">Finished</option>
 			</select>
 		</label>
-		<label class="centered">
+		<label>
+			Elevation (in meters)
+			<input type="text" v-model="form.elevation_m" placeholder="2200">
+		</label>
+		<label class="centered large">
 			<div class="seperated">
 				<span>Light</span>
 				<span>Roast Level</span>

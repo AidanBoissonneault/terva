@@ -34,7 +34,7 @@ footer {
 	position: fixed;
 	bottom: 0;
 
-	width: calc(100% - (2 * 24px));
+	width: calc(100% - (2 * var(--bar-margin)));
 	height: auto;
 
 	background: linear-gradient(to bottom,
@@ -45,7 +45,9 @@ footer {
 
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
-	margin: 24px;
+
+	margin: var(--bar-margin);
+	margin-bottom: 24px;
 
 	display: grid;
 	grid-template-columns: repeat(v-bind(tabLength), 1fr);

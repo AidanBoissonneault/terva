@@ -14,7 +14,7 @@ const props = defineProps<{
 			<h2>{{ bean.name }}</h2>
 			<span class="stack">
 				<p v-if="!!bean.roaster">{{ bean.roaster }}</p>
-				<p v-if="!!bean.roast_level">{{ getRoastLevelString(bean.roast_level) }}</p>
+				<p v-if="!!bean.roast_level">{{ getRoastLevelString(bean.roast_level) }} Roast</p>
 			</span>
 		</span>
 		<p>
