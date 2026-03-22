@@ -33,12 +33,12 @@ header {
 	width: calc(100% - (2 * var(--bar-margin)));
 	height: auto;
 
-	background-color: var(--neutral-800);
+	background-color: var(--husk-app-bar-accent);
 	background: linear-gradient(to bottom,
-			oklch(from var(--neutral-800) l c h / 0.25),
-			oklch(from var(--neutral-800) l c h / 0.20));
-	background-color: oklch(from var(--neutral-900) l c h / 0.6);
-	border: 1px solid oklch(from var(--neutral-100) l c h / 0.25);
+			oklch(from var(--husk-app-bar-accent) l c h / 0.25),
+			oklch(from var(--husk-app-bar-accent) l c h / 0.20));
+	background-color: oklch(from var(--husk-app-bar) l c h / 0.6);
+	border: 1px solid oklch(from var(--husk-app-bar-border) l c h / 0.25);
 
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
@@ -57,8 +57,8 @@ header {
 	justify-content: space-between;
 
 	box-shadow:
-		0 8px 24px oklch(from var(--neutral-900) l c h / 0.4),
-		inset 0 1px 0 oklch(from var(--neutral-100) l c h / 0.4);
+		0 8px 24px oklch(from var(--husk-shadow) l c h / 0.4),
+		inset 0 1px 0 oklch(from var(--husk-highlight) l c h / 0.4);
 
 	border-radius: 12px;
 	z-index: 99999;
