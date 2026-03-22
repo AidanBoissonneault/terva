@@ -14,7 +14,7 @@ export interface Bean extends AddBeanForm {
 //  Bean State
 // ─────────────────────────────────────────
 
-type BeanState = "fresh" | "frozen" | "finished"
+export type BeanState = "fresh" | "frozen" | "finished"
 
 // ─────────────────────────────────────────
 //  Bean Submit Form

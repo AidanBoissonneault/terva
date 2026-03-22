@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { type BeanState } from '@/types'
 
 
 const props = defineProps<{
-	type: string
-	activeFilter: string | null
+	type: BeanState
+	activeFilter: BeanState | null
 }>()
 
 const emit = defineEmits<{
-	filter: [type: string]
+	filter: [type: BeanState]
 }>()
 
 const isActiveFilter = computed(() => props.type === props.activeFilter)

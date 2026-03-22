@@ -21,18 +21,10 @@ CREATE TABLE beans (
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE category (
-  id       INT AUTO_INCREMENT PRIMARY KEY,
-  name     VARCHAR(50) NOT NULL UNIQUE,
-  chroma   FLOAT NOT NULL
-);
-
 CREATE TABLE flavour_note (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   note        VARCHAR(50) NOT NULL,
-  category_id INT NOT NULL,
   hue         FLOAT NOT NULL,
-  FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
 );
 
 CREATE TABLE bean_palette (

@@ -38,10 +38,10 @@ footer {
 	height: auto;
 
 	background: linear-gradient(to bottom,
-			oklch(var(--brand-300-raw) / 0.25),
-			oklch(var(--brand-300-raw) / 0.20));
-	background-color: oklch(var(--brand-200-raw) / 0.6);
-	border: 1px solid oklch(var(--brand-100-raw) / 0.25);
+			oklch(from var(--brand-300) l c h / 0.25),
+			oklch(from var(--brand-300) l c h / 0.20));
+	background-color: oklch(from var(--brand-200) l c h / 0.6);
+	border: 1px solid oklch(from var(--brand-100) l c h / 0.25);
 
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
@@ -54,8 +54,8 @@ footer {
 
 	border-radius: 12px;
 	box-shadow:
-		0 8px 24px oklch(var(--neutral-900-raw) / 0.4),
-		inset 0 1px 0 oklch(var(--neutral-100-raw) / 0.4);
+		0 8px 24px oklch(from var(--neutral-900) l c h / 0.4),
+		inset 0 1px 0 oklch(from var(--neutral-100) l c h / 0.4);
 
 	z-index: 999;
 }

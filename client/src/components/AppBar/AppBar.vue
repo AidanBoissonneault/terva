@@ -35,10 +35,10 @@ header {
 
 	background-color: var(--neutral-800);
 	background: linear-gradient(to bottom,
-			oklch(var(--neutral-800-raw) / 0.25),
-			oklch(var(--neutral-800-raw) / 0.20));
-	background-color: oklch(var(--neutral-900-raw) / 0.6);
-	border: 1px solid oklch(var(--neutral-100-raw) / 0.25);
+			oklch(from var(--neutral-800) l c h / 0.25),
+			oklch(from var(--neutral-800) l c h / 0.20));
+	background-color: oklch(from var(--neutral-900) l c h / 0.6);
+	border: 1px solid oklch(from var(--neutral-100) l c h / 0.25);
 
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
@@ -57,8 +57,8 @@ header {
 	justify-content: space-between;
 
 	box-shadow:
-		0 8px 24px oklch(var(--neutral-900-raw) / 0.4),
-		inset 0 1px 0 oklch(var(--neutral-100-raw) / 0.4);
+		0 8px 24px oklch(from var(--neutral-900) l c h / 0.4),
+		inset 0 1px 0 oklch(from var(--neutral-100) l c h / 0.4);
 
 	border-radius: 12px;
 	z-index: 99999;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import type { Bean } from '@/types';
+import { useChromaStore } from '@/stores/chromaCalculator';
 
 const props = defineProps<{
 	bean: Bean
@@ -15,28 +16,35 @@ onMounted(() => {
 		.trim()
 })
 
+// get chroma store and calculate
+const chromaCalculator = useChromaStore()
+const chroma = ref(chromaCalculator.getChroma(props.bean.status))
+
+// calculate colors
 const priColor = computed(() =>
-	`oklch(${lightness.value} ${props.bean.pri_chroma} ${props.bean.pri_hue})`
+	`oklch(${lightness.value} ${chroma.value} ${props.bean.pri_hue})`
 )
 const secColor = computed(() =>
-	`oklch(${lightness.value} ${props.bean.sec_chroma} ${props.bean.sec_hue})`
+	`oklch(${lightness.value} ${chroma.value} ${props.bean.sec_hue})`
 )
 const accColor = computed(() =>
-	`oklch(${lightness.value} ${props.bean.acc_chroma} ${props.bean.acc_hue})`
+	`oklch(${lightness.value} ${chroma.value} ${props.bean.acc_hue})`
 )
 
+// calculate elevation from 0-1 to use as a scale for calculating positions in colours
 const elevationNorm = computed(() =>
-	Math.min(props.bean.elevation_m ?? 0 / 3000, 1)
+	Math.min((props.bean.elevation_m ?? 0) / 3000, 1)
 )
 
-const g1x = computed(() => 10 + elevationNorm.value * 20) // 10% → 30%
-const g1y = computed(() => 40 + elevationNorm.value * 20) // 40% → 60%
+// calculate colours positions
+const g1x = computed(() => 10 + elevationNorm.value * 20)
+const g1y = computed(() => 40 + elevationNorm.value * 20)
 
-const g2x = computed(() => 40 + elevationNorm.value * 20) // 40% → 60%
-const g2y = computed(() => 50 + elevationNorm.value * 20) // 50% → 70%
+const g2x = computed(() => 40 + elevationNorm.value * 20)
+const g2y = computed(() => 50 + elevationNorm.value * 20)
 
-const g3x = computed(() => 70 + elevationNorm.value * 20) // 70% → 90%
-const g3y = computed(() => 30 + elevationNorm.value * 20) // 30% → 50%
+const g3x = computed(() => 70 + elevationNorm.value * 20)
+const g3y = computed(() => 30 + elevationNorm.value * 20)
 </script>
 
 <template>
@@ -50,7 +58,7 @@ const g3y = computed(() => 30 + elevationNorm.value * 20) // 30% → 50%
 	grid-column: 1 / 5;
 	border-radius: 12px;
 	box-shadow:
-		0 4px 6px oklch(var(--neutral-900-raw) / 0.6),
+		0 4px 6px oklch(from var(--neutral-900) l c h / 0.6),
 		0 2px 4px oklch(from v-bind(priColor) l c h / 0.35),
 		0 6px 12px oklch(from v-bind(secColor) l c h / 0.28),
 		0 12px 24px oklch(from v-bind(accColor) l c h / 0.22);

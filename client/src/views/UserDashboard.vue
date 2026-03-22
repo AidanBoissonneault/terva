@@ -6,13 +6,13 @@ import FilterButton from '@/components/FilterButton/FilterButton.vue'
 import SectionSeperator from '@/components/SectionSeperator.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { computed, onMounted, reactive, ref } from 'vue'
-import { type Bean } from '@/types'
+import { type Bean, type BeanState } from '@/types'
 
 const beans = ref()
 const heroBean = ref()
 const error = ref<string | null>(null)
 
-const filterButtons = reactive<{ name: string, type: string }[]>([
+const filterButtons = reactive<{ name: string, type: BeanState }[]>([
 	{ name: "Fresh", type: "fresh" },
 	{ name: "Frozen", type: "frozen" },
 	{ name: "Finished", type: "finished" }
@@ -25,9 +25,9 @@ const filteredBeans = computed(() => {
 
   return beans.value.filter((bean: Bean) => bean.status === activeFilter.value)
 })
-const activeFilter = ref<string | null>(null)
+const activeFilter = ref<BeanState | null>(null)
 
-function newFilter(type: string) {
+function newFilter(type: BeanState) {
 	if (activeFilter.value === type) {
 		activeFilter.value = null
 		return

@@ -1,7 +1,7 @@
 [data-theme=light],
 :root:not([data-theme=dark]),
 :host(:not([data-theme=dark])) {
-	--lightness: 0.4;
+	--lightness: 0.8;
 }
 
 [data-theme=dark] {
