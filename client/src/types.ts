@@ -27,7 +27,7 @@ export interface AddBeanForm {
 	process?: string
 	elevation_m?: number
 	roast_level?: number
-	state: BeanState
+	status: BeanState
 	flavour_summary?: string
 }
 
