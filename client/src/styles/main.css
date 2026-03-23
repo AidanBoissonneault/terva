@@ -384,11 +384,11 @@ details summary[role=button]:not(.outline)::after {
   --pico-secondary-focus: var(--neutral-500);
   --pico-secondary-inverse: #fff;
   --pico-contrast: var(--neutral-900);
-  --pico-contrast-background: var(--brand-400);
+  --pico-contrast-background: var(--brand-200);
   --pico-contrast-border: none;
   --pico-contrast-underline: rgba(223, 227, 235, 0.5);
   --pico-contrast-hover: var(--neutral-900);
-  --pico-contrast-hover-background: var(--brand-500);
+  --pico-contrast-hover-background: var(--brand-400);
   --pico-contrast-hover-border: none;
   --pico-contrast-hover-underline: var(--pico-contrast-hover);
   --pico-contrast-focus: var(--blue-500);

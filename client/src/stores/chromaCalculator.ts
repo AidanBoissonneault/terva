@@ -5,7 +5,7 @@ export const useChromaStore = defineStore('chromaCalculator', {
 	state: () => ({
 		FRESH_CHROMA: 0.23,
 		FROZEN_CHROMA: 0.15,
-		FINISHED_CHROMA: 0.02,
+		FINISHED_CHROMA: 0.05,
 	}),
 
 	actions: {

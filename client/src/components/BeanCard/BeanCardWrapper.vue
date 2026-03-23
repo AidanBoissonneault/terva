@@ -58,6 +58,11 @@ const g3y = computed(() => 30 + elevationNorm.value * 20)
 .bean-card {
 	grid-column: 1 / 5;
 	border-radius: 12px;
+
+	box-sizing: border-box;
+
+	border: 1px inset oklch(from v-bind(priColor) l c h / 0.8);
+
 	box-shadow:
 		0 4px 6px oklch(from var(--husk-shadow) l c h / 0.6),
 		0 2px 4px oklch(from v-bind(priColor) l c h / 0.35),

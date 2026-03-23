@@ -12,10 +12,11 @@ const beans = ref()
 const heroBean = ref()
 const error = ref<string | null>(null)
 
-const filterButtons = reactive<{ name: string, type: BeanState }[]>([
+const filterButtons = reactive<{ name: string, type: BeanState | null }[]>([
 	{ name: "Fresh", type: "fresh" },
 	{ name: "Frozen", type: "frozen" },
-	{ name: "Finished", type: "finished" }
+	{ name: "Finished", type: "finished" },
+	{ name: "All", type: null },
 ])
 
 const filteredBeans = computed(() => {
@@ -27,7 +28,7 @@ const filteredBeans = computed(() => {
 })
 const activeFilter = ref<BeanState | null>(null)
 
-function newFilter(type: BeanState) {
+function newFilter(type: BeanState | null) {
 	if (activeFilter.value === type) {
 		activeFilter.value = null
 		return
@@ -98,7 +99,7 @@ onMounted(async () => {
 .filter-wrapper {
 	display: flex;
 	justify-content: space-between;
-	align-content: center;
+	align-content: flex-end;
 
 	grid-column: 1 / 5;
 }

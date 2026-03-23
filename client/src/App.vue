@@ -49,7 +49,7 @@ const route = useRoute()
 	top: 100px;
 	overflow-y: visible;
 
-	padding-bottom: 100px;
+	padding-bottom: 110px;
 
 	z-index: 1;
 }

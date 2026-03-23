@@ -23,8 +23,8 @@ const iconType = ref('fas')
 
 <template>
 	<button @click="emit('navigate', route)" :class="{ active_tab: isActivePage }">
-		<FontAwesomeIcon :icon="[iconType, icon]" />
-		<span>{{ text }}</span>
+		<FontAwesomeIcon :icon="[iconType, icon]" class="big" />
+		<small>{{ text }}</small>
 	</button>
 </template>
 
@@ -49,5 +49,10 @@ button:hover {
 
 .active_tab {
 	background-color: oklch(from var(--brand-200) l c h / 0.3);
+}
+
+.big {
+	width: 32px;
+	height: 32px;
 }
 </style>

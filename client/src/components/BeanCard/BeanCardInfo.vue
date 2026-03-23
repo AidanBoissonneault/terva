@@ -13,16 +13,18 @@ const props = defineProps<{
 	<div>
 		<span class="apart">
 			<h2>{{ bean.name }}</h2>
-			<span class="stack">
-				<p v-if="!!bean.roaster">{{ bean.roaster }}</p>
-				<p v-if="!!bean.roast_level">{{ getRoastLevelString(bean.roast_level) }} Roast</p>
-			</span>
+			<StatusBadge :status="bean.status" />
 		</span>
-		<p>
-			{{ bean.variety }}<span v-if="!!bean.process">, {{ bean.process }}</span> <br />
-			{{ bean.origin }}<span v-if="!!bean.elevation_m">, {{ bean.elevation_m }} MASL</span> <br />
-			<span class="apart">{{ bean.flavour_summary }} <StatusBadge :status="bean.status" /></span>
-		</p>
+		<span>
+			<small v-if="!!bean.roaster">{{ bean.roaster }}</small>,
+			<small v-if="!!bean.roast_level">{{ getRoastLevelString(bean.roast_level) }} Roast</small>
+		</span>
+		<div class="seperator"></div>
+		<small>
+			{{ bean.variety }}<span v-if="!!bean.process"><span v-if="!!bean.variety">, </span>{{ bean.process }}</span> <br />
+			{{ bean.origin }}<span v-if="!!bean.elevation_m"><span v-if="bean.origin">, </span>{{ bean.elevation_m }} MASL</span> <br />
+			{{ bean.flavour_summary }}
+		</small>
 	</div>
 </template>
 
@@ -32,21 +34,25 @@ div {
 	--pico-h2-color: #fff;
 }
 
+div.seperator {
+	width: 100%;
+	height: 2px;
+	margin: 0;
+	margin-bottom: 4px;
+
+	border-radius: 12px;
+	background: linear-gradient(to bottom,
+			oklch(from var(--husk-highlight) l c h / 0.1),
+			oklch(from var(--husk-highlight) l c h / 0.05));
+	background-color: oklch(from var(--husk-highlight) l c h / 0.2);
+
+	box-shadow: 0 1px 3px oklch(from var(--husk-shadow) l c h / 0.1);
+}
+
 .apart {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	align-items: center;
-}
-
-.stack {
-	display: flex;
-	flex-direction: column;
-	text-align: right;
-}
-
-h2 {
-	margin: 0;
-	margin-bottom: 4px;
+	align-items: flex-start;
 }
 </style>
