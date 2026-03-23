@@ -44,10 +44,10 @@ button {
 }
 
 button:hover {
-	background-color: oklch(var(--brand-300-raw) / 0.7);
+	background-color: oklch(from var(--brand-300) l c h / 0.7);
 }
 
 .active_tab {
-	background-color: oklch(var(--brand-200-raw) / 0.3);
+	background-color: oklch(from var(--brand-200) l c h / 0.3);
 }
 </style>

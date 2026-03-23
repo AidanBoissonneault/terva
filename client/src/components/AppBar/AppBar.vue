@@ -33,7 +33,6 @@ header {
 	width: calc(100% - (2 * var(--bar-margin)));
 	height: auto;
 
-	background-color: var(--husk-app-bar-accent);
 	background: linear-gradient(to bottom,
 			oklch(from var(--husk-app-bar-accent) l c h / 0.25),
 			oklch(from var(--husk-app-bar-accent) l c h / 0.20));

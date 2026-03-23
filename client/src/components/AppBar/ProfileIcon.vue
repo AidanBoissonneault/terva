@@ -16,7 +16,7 @@ function navigate() {
 </script>
 
 <template>
-	<button @click="navigate" :class="{ isActive: isActivePage }">
+	<button @click="navigate" class="glass contrast" :class="{ isActive: isActivePage }">
 		<FontAwesomeIcon :icon="[iconType, 'circle-user']" />
 	</button>
 </template>
@@ -26,9 +26,6 @@ button {
 	border-radius: 50%;
 	width: 40px;
 	height: 40px;
-
-	background-color: var(--brand-500);
-	box-shadow: 0 2px var(--brand-600);
 
 	padding: 2px;
 

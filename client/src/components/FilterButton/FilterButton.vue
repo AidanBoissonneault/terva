@@ -16,7 +16,7 @@ const isActiveFilter = computed(() => props.type === props.activeFilter)
 </script>
 
 <template>
-	<button @click="emit('filter', type)" :class="{ contrast: isActiveFilter }">
+	<button @click="emit('filter', type)" class="glass" :class="{ contrast: isActiveFilter }">
 		<slot />
 	</button>
 </template>

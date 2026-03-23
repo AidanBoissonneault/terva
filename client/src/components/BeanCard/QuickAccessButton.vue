@@ -7,16 +7,7 @@ const props = defineProps<{
 </script>
 
 <template>
-	<button @click="fetchTest">{{ text }}</button>
+	<button @click="fetchTest" class="glass big-text">{{ text }}</button>
 </template>
 
-<style scoped>
-button {
-	border-radius: 12px;
-	box-shadow: 0 2px var(--brand-500);
-
-	font-size: 24px;
-	font-weight: 700;
-	padding: 4px;
-}
-</style>
+<style scoped></style>

@@ -59,7 +59,7 @@ const g3y = computed(() => 30 + elevationNorm.value * 20)
 	grid-column: 1 / 5;
 	border-radius: 12px;
 	box-shadow:
-		0 4px 6px oklch(from var(--neutral-900) l c h / 0.6),
+		0 4px 6px oklch(from var(--husk-shadow) l c h / 0.6),
 		0 2px 4px oklch(from v-bind(priColor) l c h / 0.35),
 		0 6px 12px oklch(from v-bind(secColor) l c h / 0.28),
 		0 12px 24px oklch(from v-bind(accColor) l c h / 0.22);

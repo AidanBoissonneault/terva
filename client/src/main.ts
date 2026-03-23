@@ -8,6 +8,7 @@ import '@picocss/pico/css/pico.min.css'
 import '@/tokens/colors.css'
 import '@/tokens/lightness.css'
 import '@/styles/main.css'
+import '@/styles/components.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

@@ -1,0 +1,63 @@
+/* ─────────────────────────────────────────
+--  Body
+-- ───────────────────────────────────────── */
+
+body {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+/* ─────────────────────────────────────────
+--  Glass Button
+-- ───────────────────────────────────────── */
+
+button.glass {
+	box-shadow: 0 2px 2px var(--pico-primary-underline),
+							0 4px 3px oklch(from var(--husk-shadow) l c h / 0.4);
+
+	background: linear-gradient(to bottom,
+			oklch(from var(--husk-tab-bar) l c h / 0.25),
+			oklch(from var(--husk-tab-bar) l c h / 0.20));
+	background-color: oklch(from var(--pico-primary-background) l c h / 0.9);
+
+	border: 1px solid oklch(from var(--pico-primary) l c h / 0.8);
+
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+
+	transition: all 0.15s ease;
+}
+
+button.glass:hover {
+	background-color: oklch(from var(--pico-primary-hover-background) l c h / 0.9);
+	border: 1px solid oklch(from var(--husk-highlight) calc(l - 0.1) c h / 0.8);
+}
+
+button.glass:active {
+	box-shadow: 0 1px 2px var(--brand-500),
+							0 3px 3px oklch(from var(--husk-shadow) l c h / 0.4);
+
+	transform: translateY(1px);
+
+	overflow: hidden;
+}
+
+button.glass.secondary {
+	background: linear-gradient(to bottom,
+			oklch(from var(--husk-tab-bar-accent) l c h / 0.25),
+			oklch(from var(--husk-tab-bar-accent) l c h / 0.20));
+	background-color: oklch(from var(--pico-secondary-background) l c h / 0.9);
+}
+
+button.glass.contrast {
+	background: linear-gradient(to bottom,
+			oklch(from var(--husk-tab-bar-accent) l c h / 0.25),
+			oklch(from var(--husk-tab-bar-accent) l c h / 0.20));
+	background-color: oklch(from var(--pico-contrast-background) l c h / 0.9);
+}
+
+button.big-text {
+	font-size: 24px;
+	font-weight: 700;
+	padding: 4px;
+}

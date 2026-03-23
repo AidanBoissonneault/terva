@@ -16,7 +16,7 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 
 <template>
 	<div class="wrapper">
-		<button @click="emit('navigate', route)" class="main-button" :disabled="isOnPage">
+		<button @click="emit('navigate', route)" class="main-button glass big-text" :disabled="isOnPage">
 			<FontAwesomeIcon :icon="['fas', 'plus']"/>
 		</button>
 	</div>
@@ -38,11 +38,10 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 	width: 100%;
 	height: 100%;
 
-	background-color: var(--brand-400);
-	box-shadow: 0 2px var(--brand-600);
+	/*background-color: var(--brand-400);
+	box-shadow: 0 2px var(--brand-600); */
 
 	font-size: 48px;
-	font-weight: 1000;
 	padding: 10px;
 	line-height: 0;
 

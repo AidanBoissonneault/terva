@@ -497,11 +497,6 @@ progress,
   accent-color: var(--pico-primary);
 }
 
-body {
-	box-sizing: border-box;
-	margin: 0;
-}
-
 :root {
 	--bar-margin: 32px;
 }
