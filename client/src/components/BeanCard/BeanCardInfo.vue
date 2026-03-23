@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Bean } from '@/types';
 import { getRoastLevelString } from '@/utils/BeanHelpers';
+import StatusBadge from './StatusBadge.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -20,7 +21,7 @@ const props = defineProps<{
 		<p>
 			{{ bean.variety }}<span v-if="!!bean.process">, {{ bean.process }}</span> <br />
 			{{ bean.origin }}<span v-if="!!bean.elevation_m">, {{ bean.elevation_m }} MASL</span> <br />
-			{{ bean.flavour_summary }}
+			<span class="apart">{{ bean.flavour_summary }} <StatusBadge :status="bean.status" /></span>
 		</p>
 	</div>
 </template>
@@ -35,6 +36,7 @@ div {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .stack {

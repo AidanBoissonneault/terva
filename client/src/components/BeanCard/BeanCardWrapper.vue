@@ -54,6 +54,7 @@ const g3y = computed(() => 30 + elevationNorm.value * 20)
 </template>
 
 <style scoped>
+
 .bean-card {
 	grid-column: 1 / 5;
 	border-radius: 12px;

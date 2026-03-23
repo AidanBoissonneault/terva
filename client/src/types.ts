@@ -3,11 +3,8 @@
 // ─────────────────────────────────────────
 export interface Bean extends AddBeanForm {
 	pri_hue?: number
-	pri_chroma?: number
 	sec_hue?: number
-	sec_chroma?: number
 	acc_hue?: number
-	acc_chroma?: number
 }
 
 // ─────────────────────────────────────────
