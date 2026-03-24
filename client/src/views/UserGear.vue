@@ -50,11 +50,21 @@ onMounted(async () => {
 		loading.stop()
 	}
 })
+
+const openGear = ref<string | null>(null)
+
+function changeOpenGear(name: string | null) {
+	if (openGear.value === name) {
+		openGear.value = null
+		return
+	}
+	openGear.value = name
+}
 </script>
 
 <template>
 	<div class="dashboard">
-		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"/>
+		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)" :open-gear="openGear" @change-open-gear="changeOpenGear"/>
 	</div>
 </template>
 

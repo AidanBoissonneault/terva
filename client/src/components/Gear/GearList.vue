@@ -2,10 +2,14 @@
 import type { Gear, GearCategory } from '@/types';
 import { computed } from 'vue';
 
-
 const props = defineProps<{
 	type: GearCategory
 	gears: Gear[] | null
+	openGear: string | null
+}>()
+
+const emits = defineEmits<{
+	changeOpenGear: [string | null]
 }>()
 
 const prettyCategory = computed(() =>
@@ -23,20 +27,20 @@ const prettyCategory = computed(() =>
       <button class="glass">+ Add</button>
     </div>
 
-    <div class="gear-list">
-      <div v-for="gear in gears" :key="gear.name" class="gear-card">
+    <div
+  v-for="gear in gears"
+  :key="gear.name"
+  class="gear-card"
+>
+  <div class="gear-main" @click="emits('changeOpenGear', gear.name)">
+    <span>{{ gear.name }}</span>
+    <span>{{ openGear === gear.name ? '−' : 'details +' }}</span>
+  </div>
 
-        <div class="gear-main">
-          <span class="gear-name">{{ gear.name }}</span>
-
-          <details>
-            <summary>Details</summary>
-            <p>{{ gear.notes || 'No notes' }}</p>
-          </details>
-        </div>
-
-      </div>
-    </div>
+  <div v-if="openGear === gear.name" class="gear-details">
+    {{ gear.notes || 'No notes' }}
+  </div>
+</div>
 
   </div>
 </template>
@@ -45,8 +49,12 @@ const prettyCategory = computed(() =>
 	div {
 		grid-column: span 4;
 	}
-	table {
-		grid-column: span 4;
+
+	button {
+		padding: 0;
+		padding-left: 4px;
+		padding-right: 4px;
+		border-radius: 4px;
 	}
 	.header {
 		align-items: flex-end;
@@ -57,6 +65,10 @@ const prettyCategory = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+	background-color: oklch(from var(--pico-contrast) l c h / 0.4);
+	border-radius: 12px;
+	padding: 12px;
 }
 
 .header h2 {
