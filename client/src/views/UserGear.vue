@@ -60,11 +60,18 @@ function changeOpenGear(name: string | null) {
 	}
 	openGear.value = name
 }
+
+const searchBar = ref<string>("")
 </script>
 
 <template>
 	<div class="dashboard">
-		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)" :open-gear="openGear" @change-open-gear="changeOpenGear"/>
+		<div>
+			<small>Search</small>
+			<input type="search" v-model="searchBar">
+		</div>
+		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"
+			:open-gear="openGear" :search-bar="searchBar" @change-open-gear="changeOpenGear" />
 	</div>
 </template>
 
@@ -77,5 +84,9 @@ function changeOpenGear(name: string | null) {
 	margin-right: 24px;
 
 	overflow: visible;
+}
+
+div {
+	grid-column: span 4;
 }
 </style>

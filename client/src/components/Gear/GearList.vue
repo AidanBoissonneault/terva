@@ -6,6 +6,7 @@ const props = defineProps<{
 	type: GearCategory
 	gears: Gear[] | null
 	openGear: string | null
+	searchBar: string
 }>()
 
 const emits = defineEmits<{
@@ -16,11 +17,35 @@ const prettyCategory = computed(() =>
 	props.type
 		.replace(/_/g, ' ')
 		.replace(/\b\w/g, c => c.toUpperCase())
-	)
+)
+
+const search = computed(() => props.searchBar.trim().toLowerCase())
+
+const categoryMatches = computed(() => {
+  if (!search.value) return false
+  return prettyCategory.value.toLowerCase().includes(search.value)
+})
+
+function isMatchingInput(input: string) {
+	if (categoryMatches.value) return true
+
+	return (input.toLowerCase().includes(search.value)
+  ) ?? false
+}
+
+const showCategory = computed(() => {
+	if(!search.value) return true
+
+  if (!props.searchBar) return true
+
+  return props.gears?.some(gear =>
+    isMatchingInput(gear.name)
+  ) ?? false
+})
 </script>
 
 <template>
-  <div class="gear-section">
+  <div class="gear-section" v-if="showCategory">
 
     <div class="apart header">
       <h2>{{ prettyCategory }}</h2>
@@ -30,16 +55,17 @@ const prettyCategory = computed(() =>
     <div
   v-for="gear in gears"
   :key="gear.name"
-  class="gear-card"
 >
-  <div class="gear-main" @click="emits('changeOpenGear', gear.name)">
-    <span>{{ gear.name }}</span>
-    <span>{{ openGear === gear.name ? '−' : 'details +' }}</span>
-  </div>
+	<div class="gear-card" v-if="isMatchingInput(gear.name)">
+		<div class="gear-main" @click="emits('changeOpenGear', gear.name)">
+			<span>{{ gear.name }}</span>
+			<span>{{ openGear === gear.name ? '−' : 'details +' }}</span>
+		</div>
 
-  <div v-if="openGear === gear.name" class="gear-details">
-    {{ gear.notes || 'No notes' }}
-  </div>
+		<div v-if="openGear === gear.name">
+			<small>{{ gear.notes || 'No notes' }}</small>
+		</div>
+	</div>
 </div>
 
   </div>
@@ -100,14 +126,5 @@ const prettyCategory = computed(() =>
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-}
-
-.gear-name {
-  font-weight: 500;
-}
-
-details {
-  font-size: 0.9rem;
-  opacity: 0.8;
 }
 </style>
