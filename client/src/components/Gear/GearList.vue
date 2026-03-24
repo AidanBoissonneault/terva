@@ -36,8 +36,6 @@ function isMatchingInput(input: string) {
 const showCategory = computed(() => {
 	if(!search.value) return true
 
-  if (!props.searchBar) return true
-
   return props.gears?.some(gear =>
     isMatchingInput(gear.name)
   ) ?? false

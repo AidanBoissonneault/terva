@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { type BeanState } from '@/types'
-
+import { type BeanState } from '@/types';
 
 const props = defineProps<{
 	type: BeanState | null
@@ -16,7 +15,7 @@ const isActiveFilter = computed(() => props.type === props.activeFilter)
 </script>
 
 <template>
-	<button @click="emit('filter', type)" class="glass" :class="{ contrast: isActiveFilter }">
+	<button @click="emit('filter', type)" class="glass" :class="{ contrast: isActiveFilter, underline: isActiveFilter }">
 		<slot />
 	</button>
 </template>
@@ -29,5 +28,9 @@ button {
 	padding-right: 4px;
 	margin-left: 4px;
 	border-radius: 4px;
+}
+
+.underline {
+	text-decoration: underline;
 }
 </style>
