@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
   LEFT JOIN flavour_note fn_acc   ON fn_acc.id        = bp.acc_note
 
   WHERE b.user = ?
-  ORDER BY b.created_at DESC;
+  ORDER BY b.last_used DESC;
   `
     const [rows] = await connection.query(query, 1)
     res.json(rows)

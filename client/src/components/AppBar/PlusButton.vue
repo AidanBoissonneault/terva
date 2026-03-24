@@ -53,9 +53,4 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 
 	color: var(--pico-primary);
 }
-
-.invisible {
-	opacity: 0;
-	pointer-events: none;
-}
 </style>

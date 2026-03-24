@@ -18,13 +18,14 @@ CREATE TABLE beans (
   roast_level     INT, -- 0 - 100
   elevation_m     INT,
   status          ENUM('fresh', 'frozen', 'finished') NOT NULL DEFAULT 'fresh',
-  created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_used       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE flavour_note (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   note        VARCHAR(50) NOT NULL,
-  hue         FLOAT NOT NULL,
+  hue         FLOAT NOT NULL
 );
 
 CREATE TABLE bean_palette (
@@ -48,6 +49,7 @@ CREATE TABLE gear (
   name       VARCHAR(100) NOT NULL,
   type       ENUM('grinder', 'kettle', 'scale', 'brewer', 'espresso_machine', 'other') NOT NULL,
   notes      TEXT,
+  user       INT NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

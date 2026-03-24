@@ -92,7 +92,7 @@ function clone(obj: AddBeanForm) {
 			<input type="text" v-model="form.flavourNotes">
 		</label>
 
-		<button :disabled="! !!form.name?.trim()">Submit</button>
+		<button :disabled="! !!form.name?.trim()" class="big-text glass">Add Bean</button>
 	</form>
 </template>
 

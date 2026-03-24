@@ -99,7 +99,7 @@ onMounted(async () => {
 .filter-wrapper {
 	display: flex;
 	justify-content: space-between;
-	align-content: flex-end;
+	align-items: center;
 
 	grid-column: 1 / 5;
 }

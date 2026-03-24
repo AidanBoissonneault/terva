@@ -8,6 +8,25 @@ body {
 }
 
 /* ─────────────────────────────────────────
+--  No Show
+-- ───────────────────────────────────────── */
+
+.invisible {
+	visibility: hidden;
+}
+
+/* —————————————————————————————————————————
+--  General Style Classes
+-- ————————————————————————————————————————— */
+
+.apart {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+/* ─────────────────────────────────────────
 --  Glass Button
 -- ───────────────────────────────────────── */
 

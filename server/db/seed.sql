@@ -1,47 +1,35 @@
 USE husk;
 
 -- ─────────────────────────────────────────
---  CATEGORIES (replaces chroma_category)
--- ─────────────────────────────────────────
-
-INSERT INTO category (id, name, chroma) VALUES
-  (1, 'fruity',  0.22),
-  (2, 'nutty',   0.10),
-  (3, 'floral',  0.20),
-  (4, 'spicy',   0.14),
-  (5, 'sweet',   0.16),
-  (6, 'earthy',  0.08),
-  (7, 'roasted', 0.06),
-  (8, 'berry',   0.21);
-
--- ─────────────────────────────────────────
 --  FLAVOUR NOTES
 -- ─────────────────────────────────────────
 
-INSERT INTO flavour_note (id, note, category_id, hue) VALUES
+INSERT INTO flavour_note (note, hue) VALUES
+  -- default
+  ('default',      0.0),
   -- fruity (1)
-  (1,  'strawberry',   1,  12.0),
-  (2,  'peach',        1,  38.0),
-  (3,  'lemon curd',   1,  72.0),
-  (4,  'stone fruit',  1,  28.0),
+  ('strawberry',   12.0),
+  ('peach',        38.0),
+  ('lemon curd',   72.0),
+  ('stone fruit',  28.0),
   -- floral (3)
-  (5,  'hibiscus',     3, 340.0),
-  (6,  'jasmine',      3,  68.0),
-  (7,  'rose',         3, 358.0),
-  (8,  'bergamot',     3, 290.0),
+  ('hibiscus',     340.0),
+  ('jasmine',      68.0),
+  ('rose',         358.0),
+  ('bergamot',     290.0),
   -- nutty (2)
-  (9,  'hazelnut',     2,  48.0),
-  (10, 'almond',       2,  52.0),
+  ('hazelnut',     48.0),
+  ('almond',       52.0),
   -- sweet (5)
-  (11, 'brown sugar',  5,  55.0),
-  (12, 'caramel',      5,  50.0),
+  ('brown sugar',  55.0),
+  ('caramel',      50.0),
   -- earthy (6)
-  (13, 'cedar',        6,  80.0),
+  ('cedar',        80.0),
   -- roasted (7)
-  (14, 'cocoa',        7,  32.0),
+  ('cocoa',        32.0),
   -- berry (8)
-  (15, 'blackcurrant', 8, 298.0),
-  (16, 'blueberry',    8, 268.0);
+  ('blackcurrant', 298.0),
+  ('blueberry',    268.0);
 
 -- ─────────────────────────────────────────
 --  BEANS
@@ -59,11 +47,11 @@ INSERT INTO beans (id, user, name, roaster, origin, variety, process, roast_leve
 -- ─────────────────────────────────────────
 
 INSERT INTO bean_palette (bean_id, pri_note, sec_note, acc_note) VALUES
-  (1, 1,  5,  3),   -- Kayon Mountain:  strawberry / hibiscus / lemon curd
-  (2, 9,  14, 11),  -- Las Margaritas:  hazelnut / cocoa / brown sugar
-  (3, 15, 6,  8),   -- Kiambu AB:       blackcurrant / jasmine / bergamot
-  (4, 12, 10, 4),   -- La Palma:        caramel / almond / stone fruit
-  (5, 16, 6,  3);   -- Yirgacheffe G1:  blueberry / jasmine / lemon curd
+  (1, 2,  6,  4),   -- Kayon Mountain:  strawberry / hibiscus / lemon curd
+  (2, 10,  15, 12),  -- Las Margaritas:  hazelnut / cocoa / brown sugar
+  (3, 16, 7,  9),   -- Kiambu AB:       blackcurrant / jasmine / bergamot
+  (4, 13, 11, 5),   -- La Palma:        caramel / almond / stone fruit
+  (5, 17, 7,  4);   -- Yirgacheffe G1:  blueberry / jasmine / lemon curd
 
 -- ─────────────────────────────────────────
 --  GEAR

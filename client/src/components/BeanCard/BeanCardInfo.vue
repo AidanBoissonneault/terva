@@ -15,9 +15,9 @@ const props = defineProps<{
 			<h2>{{ bean.name }}</h2>
 			<StatusBadge :status="bean.status" />
 		</span>
-		<span>
-			<small v-if="!!bean.roaster">{{ bean.roaster }}</small>,
+		<span class="apart">
 			<small v-if="!!bean.roast_level">{{ getRoastLevelString(bean.roast_level) }} Roast</small>
+			<small v-if="!!bean.roaster">{{ bean.roaster }}</small>
 		</span>
 		<div class="seperator"></div>
 		<small>
@@ -41,18 +41,11 @@ div.seperator {
 	margin-bottom: 4px;
 
 	border-radius: 12px;
-	background: linear-gradient(to bottom,
-			oklch(from var(--husk-highlight) l c h / 0.1),
+	background: linear-gradient(to right,
+			oklch(from var(--husk-highlight) l c h / 0.2),
 			oklch(from var(--husk-highlight) l c h / 0.05));
 	background-color: oklch(from var(--husk-highlight) l c h / 0.2);
 
 	box-shadow: 0 1px 3px oklch(from var(--husk-shadow) l c h / 0.1);
-}
-
-.apart {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: flex-start;
 }
 </style>

@@ -49,3 +49,20 @@ export interface TabButton {
 	text: string
 	route: string
 }
+
+// ─────────────────────────────────────────
+//  Gear
+// ─────────────────────────────────────────
+
+export interface Gear {
+	name: string
+	type: GearCategory
+	notes?: string
+}
+
+export type GearCategory =
+	| 'grinder'
+	| 'kettle'
+	| 'scale'
+	| 'brewer'
+	| 'espresso_machine'

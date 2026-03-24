@@ -18,7 +18,7 @@ const props = defineProps<{
 	bean: Bean
 }>()
 
-const buttons = reactive([{ text: 'Pourover' }, { text: 'Sprover' }])
+const buttons = reactive([{ text: 'Pour-over' }, { text: 'Sprover' }])
 </script>
 
 <template>

@@ -16,7 +16,7 @@ function navigate() {
 </script>
 
 <template>
-	<button @click="navigate" class="glass contrast" :class="{ isActive: isActivePage }">
+	<button @click="navigate" class="glass contrast invisible" :class="{ isActive: isActivePage }">
 		<FontAwesomeIcon :icon="[iconType, 'circle-user']" />
 	</button>
 </template>

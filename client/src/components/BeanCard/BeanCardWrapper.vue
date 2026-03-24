@@ -48,13 +48,16 @@ const g3y = computed(() => 30 + elevationNorm.value * 20)
 </script>
 
 <template>
-	<div class="bean-card">
+	<button class="bean-card">
 		<slot />
-	</div>
+	</button>
 </template>
 
 <style scoped>
-
+button {
+	color: #fff;
+	text-align: left;
+}
 .bean-card {
 	grid-column: 1 / 5;
 	border-radius: 12px;

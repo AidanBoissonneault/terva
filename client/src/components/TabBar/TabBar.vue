@@ -5,9 +5,9 @@ import type { TabButton } from '@/types'
 import TabIcon from './TabIcon.vue'
 
 const tabs = <TabButton[]>[
-	{ icon: 'house', text: 'Dashboard', route: 'dashboard' },
-	{ icon: 'gear', text: 'Gear', route: 'gear' },
-	{ icon: 'ellipsis-vertical', text: 'More', route: 'more' },
+	{ icon: 'house', text: 'Home', route: 'dashboard' },
+	{ icon: 'screwdriver-wrench', text: 'Gear', route: 'gear' },
+	{ icon: 'bars', text: 'More', route: 'more' },
 ]
 
 const tabLength = tabs.length
