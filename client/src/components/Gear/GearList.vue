@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
 	changeOpenGear: [string | null]
+	createNewGear: [string]
 }>()
 
 const prettyCategory = computed(() =>
@@ -44,7 +45,7 @@ const showCategory = computed(() => {
 
 		<div class="apart header">
 			<h2>{{ prettyCategory }}</h2>
-			<button class="glass">+ Add</button>
+			<button class="glass" @click="emits('createNewGear', type)">+ Add</button>
 		</div>
 
 		<div v-for="gear in gears" :key="gear.name">

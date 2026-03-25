@@ -9,16 +9,13 @@ import { computed, onMounted, ref } from 'vue';
 const gears = ref<Gear[]>([])
 
 const uniqueGearTypes = <GearCategory[]>['grinder', 'kettle', 'scale', 'brewer', 'espresso_machine']
-/*
-const uniqueGearTypes = computed(() => {
-	if (!gears.value) return []
-
-	return [...new Set(gears.value.map((g: Gear) => g.type))]
-}) */
 
 const searchBar = ref<string>("")
 const search = computed(() => searchBar.value.trim().toLowerCase())
 const error = ref<string | null>(null)
+const openGear = ref<string | null>(null)
+const showOverlay = ref<boolean>(false)
+const gearCategory = ref<string>("")
 
 function getRelevantGear(gearType: GearCategory) {
 	if (!gears.value) return []
@@ -54,14 +51,17 @@ onMounted(async () => {
 	}
 })
 
-const openGear = ref<string | null>(null)
-
 function changeOpenGear(name: string | null) {
 	if (openGear.value === name) {
 		openGear.value = null
 		return
 	}
 	openGear.value = name
+}
+
+function toggleOverlay(gearType: string) {
+	gearCategory.value = gearType
+	showOverlay.value = !showOverlay.value
 }
 </script>
 
@@ -72,10 +72,10 @@ function changeOpenGear(name: string | null) {
 			<input type="search" v-model="searchBar">
 		</div>
 		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"
-			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" />
+			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" @create-new-gear="toggleOverlay"/>
 	</div>
 
-	<FullscreenOverlay v-if="false" @outside-clicked="console.log('outer')">
+	<FullscreenOverlay @outside-clicked="toggleOverlay('')" :is-visible="showOverlay">
 		Test
 		<button @click="console.log('inner')">Button</button>
 	</FullscreenOverlay>
