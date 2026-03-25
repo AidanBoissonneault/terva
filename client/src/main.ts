@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router'
 
 import '@picocss/pico/css/pico.min.css'
-import '@/tokens/colors.css'
+import '@/tokens/colorshex.css'
 import '@/tokens/lightness.css'
 import '@/styles/main.css'
 import '@/styles/components.css'

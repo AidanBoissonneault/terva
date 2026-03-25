@@ -5,7 +5,7 @@ import { type TabLinkType } from '@/types';
 
 
 	const tabs = <TabLinkType[]>[
-		{ icon: "test", name: "Profile", route: "profile" }
+		{ icon: "circle-user", name: "Profile", route: "profile" }
 	]
 
 	function goToLink(route: string) {
