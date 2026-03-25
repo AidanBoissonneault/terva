@@ -3,7 +3,7 @@ import { getGear } from '@/api/getGear';
 import GearList from '@/components/Gear/GearList.vue';
 import { useLoadingStore } from '@/stores/loading';
 import type { Gear, GearCategory } from '@/types';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const gears = ref<Gear[]>([])
 
@@ -15,6 +15,8 @@ const uniqueGearTypes = computed(() => {
 	return [...new Set(gears.value.map((g: Gear) => g.type))]
 }) */
 
+const searchBar = ref<string>("")
+const search = computed(() => searchBar.value.trim().toLowerCase())
 const error = ref<string | null>(null)
 
 function getRelevantGear(gearType: GearCategory) {
@@ -60,8 +62,6 @@ function changeOpenGear(name: string | null) {
 	}
 	openGear.value = name
 }
-
-const searchBar = ref<string>("")
 </script>
 
 <template>
@@ -71,7 +71,7 @@ const searchBar = ref<string>("")
 			<input type="search" v-model="searchBar">
 		</div>
 		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"
-			:open-gear="openGear" :search-bar="searchBar" @change-open-gear="changeOpenGear" />
+			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" />
 	</div>
 </template>
 

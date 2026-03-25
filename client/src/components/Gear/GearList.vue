@@ -6,7 +6,7 @@ const props = defineProps<{
 	type: GearCategory
 	gears: Gear[] | null
 	openGear: string | null
-	searchBar: string
+	search: string
 }>()
 
 const emits = defineEmits<{
@@ -18,23 +18,20 @@ const prettyCategory = computed(() =>
 		.replace(/_/g, ' ')
 		.replace(/\b\w/g, c => c.toUpperCase())
 )
-
-const search = computed(() => props.searchBar.trim().toLowerCase())
-
 const categoryMatches = computed(() => {
-  if (!search.value) return false
-  return prettyCategory.value.toLowerCase().includes(search.value)
+  if (!props.search) return false
+  return prettyCategory.value.toLowerCase().includes(props.search)
 })
 
 function isMatchingInput(input: string) {
 	if (categoryMatches.value) return true
 
-	return (input.toLowerCase().includes(search.value)
+	return (input.toLowerCase().includes(props.search)
   ) ?? false
 }
 
 const showCategory = computed(() => {
-	if(!search.value) return true
+	if(!props.search) return true
 
   return props.gears?.some(gear =>
     isMatchingInput(gear.name)

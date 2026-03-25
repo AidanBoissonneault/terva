@@ -66,3 +66,13 @@ export type GearCategory =
 	| 'scale'
 	| 'brewer'
 	| 'espresso_machine'
+
+// ─────────────────────────────────────────
+//  Tab Link
+// ─────────────────────────────────────────
+
+export interface TabLinkType {
+	icon: string
+	name: string
+	route: string
+}
