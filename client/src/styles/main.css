@@ -470,6 +470,7 @@ details summary[role=button]:not(.outline)::after {
 	--husk-app-bar-accent: var(--neutral-800);
 	--husk-shadow: var(--neutral-900);
 	--husk-highlight: var(--neutral-100);
+	--husk-overlay-container: var(--brand-300);
 }
 [data-theme=dark] input:is([type=submit],
 [type=button],

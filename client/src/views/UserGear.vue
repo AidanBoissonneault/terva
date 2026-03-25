@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getGear } from '@/api/getGear';
 import GearList from '@/components/Gear/GearList.vue';
+import FullscreenOverlay from '@/components/Overlay/FullscreenOverlay.vue';
 import { useLoadingStore } from '@/stores/loading';
 import type { Gear, GearCategory } from '@/types';
 import { computed, onMounted, ref } from 'vue';
@@ -73,6 +74,11 @@ function changeOpenGear(name: string | null) {
 		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"
 			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" />
 	</div>
+
+	<FullscreenOverlay v-if="false" @outside-clicked="console.log('outer')">
+		Test
+		<button @click="console.log('inner')">Button</button>
+	</FullscreenOverlay>
 </template>
 
 <style scoped>
