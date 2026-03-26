@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { addGear } from '@/api/addGear';
 import { getGear } from '@/api/getGear';
 import GearForm from '@/components/Gear/GearForm.vue';
 import GearList from '@/components/Gear/GearList.vue';
@@ -67,9 +68,15 @@ function toggleOverlay(gearType: GearCategory) {
 	showOverlay.value = !showOverlay.value
 }
 
-function formSubmitted() {
+async function formSubmitted() {
 	console.log(newGear.value)
-	toggleOverlay("grinder")
+	if (newGear.value) {
+		const result = await addGear(newGear.value)
+		if (result.success) {
+			gears.value.push(newGear.value)
+			toggleOverlay("grinder")
+		}
+	}
 }
 </script>
 

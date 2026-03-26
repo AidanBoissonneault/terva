@@ -59,11 +59,11 @@ function clone(obj: Gear) {
 		</label>
 		<label>
 			Name
-			<input type="text" placeholder="Hario V60 02" v-model="form.name">
+			<input type="text" placeholder="Hario V60 02" v-model="form.name" maxlength="99">
 		</label>
 		<label>
 			Notes
-			<textarea placeholder="Additional Notes" v-model="form.notes"></textarea>
+			<textarea placeholder="Additional Notes" v-model="form.notes" maxlength="100"></textarea>
 		</label>
 		<button type="submit" :disabled="! !!form.name?.trim()" class="big-text glass">Add Gear</button>
 	</form>

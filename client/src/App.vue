@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppBar from './components/AppBar/AppBar.vue'
-import PourOverLoader from './components/PourOverLoader.vue'
+import PourOverLoader from './components/Utils/PourOverLoader.vue'
 import TabBar from './components/TabBar/TabBar.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { useRoute } from 'vue-router'
