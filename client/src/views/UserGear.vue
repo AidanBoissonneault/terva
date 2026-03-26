@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { addGear } from '@/api/addGear';
 import { getGear } from '@/api/getGear';
+import { removeGear } from '@/api/removeGear';
 import GearForm from '@/components/Gear/GearForm.vue';
 import GearList from '@/components/Gear/GearList.vue';
+import GearRemovalForm from '@/components/Gear/GearRemovalForm.vue';
 import FullscreenOverlay from '@/components/Overlay/FullscreenOverlay.vue';
 import { useLoadingStore } from '@/stores/loading';
 import type { Gear, GearCategory } from '@/types';
@@ -17,7 +19,10 @@ const search = computed(() => searchBar.value.trim().toLowerCase())
 const error = ref<string | null>(null)
 const openGear = ref<string | null>(null)
 const showOverlay = ref<boolean>(false)
+const showRemovalOverlay = ref<boolean>(false)
+const removalId = ref<number>(0)
 const gearCategory = ref<GearCategory>("grinder")
+const removalName = ref<string>("")
 const newGear = ref<Gear>()
 
 function getRelevantGear(gearType: GearCategory) {
@@ -68,13 +73,39 @@ function toggleOverlay(gearType: GearCategory) {
 	showOverlay.value = !showOverlay.value
 }
 
+function toggleRemovalOverlay(id: number) {
+	removalId.value = id
+	showRemovalOverlay.value = !showRemovalOverlay.value
+}
+
 async function formSubmitted() {
 	console.log(newGear.value)
 	if (newGear.value) {
 		const result = await addGear(newGear.value)
 		if (result.success) {
+			newGear.value.id = result.payload.id
 			gears.value.push(newGear.value)
 			toggleOverlay("grinder")
+		}
+	}
+}
+function getRemovalMenu(id: number, name: string) {
+	removalName.value = name
+	toggleRemovalOverlay(id)
+}
+
+async function submitRemovalMenu(isRemoving: boolean, id: number) {
+	if (isRemoving) {
+		await removeSelectedGear(id)
+	}
+	toggleRemovalOverlay(0)
+}
+async function removeSelectedGear(id: number) {
+	if (id > -1) {
+		const result = await removeGear(id, 1)
+		if (result.success) {
+			gears.value = gears.value.filter(gear => gear.id !== id)
+			console.log("Removed gear")
 		}
 	}
 }
@@ -87,11 +118,14 @@ async function formSubmitted() {
 			<input type="search" v-model="searchBar">
 		</div>
 		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"
-			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" @create-new-gear="toggleOverlay"/>
+			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" @create-new-gear="toggleOverlay" @remove-gear="getRemovalMenu"/>
 	</div>
 
 	<FullscreenOverlay @outside-clicked="toggleOverlay('grinder')" :is-visible="showOverlay">
 		<GearForm :gear-list="uniqueGearTypes" :selected-type="gearCategory" v-model="newGear" @form-submitted="formSubmitted"/>
+	</FullscreenOverlay>
+	<FullscreenOverlay @outside-clicked="toggleRemovalOverlay(0)" :is-visible="showRemovalOverlay">
+		<GearRemovalForm :name="removalName" :id="removalId" @button-pressed="submitRemovalMenu"/>
 	</FullscreenOverlay>
 </template>
 

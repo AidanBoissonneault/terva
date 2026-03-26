@@ -7,6 +7,7 @@ router.get('/', async (req, res) => {
   try {
     const query = `
     SELECT
+    id,
     name,
     type,
     notes

@@ -12,6 +12,7 @@ const props = defineProps<{
 const emits = defineEmits<{
 	changeOpenGear: [string | null]
 	createNewGear: [GearCategory]
+	removeGear: [number, string]
 }>()
 
 const prettyCategory = computed(() =>
@@ -53,6 +54,7 @@ const showCategory = computed(() => {
 				<div class="gear-main" @click="emits('changeOpenGear', gear.name)">
 					<span>{{ gear.name }}</span>
 					<span>{{ openGear === gear.name ? '−' : 'details +' }}</span>
+					<button class="outline" @click="emits('removeGear', gear.id, gear.name)">X</button>
 				</div>
 
 				<div v-if="openGear === gear.name">

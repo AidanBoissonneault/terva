@@ -55,6 +55,7 @@ export interface TabButton {
 // ─────────────────────────────────────────
 
 export interface Gear {
+	id: number
 	name: string
 	type: GearCategory
 	notes?: string
