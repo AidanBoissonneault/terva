@@ -4,6 +4,7 @@ import testRoute from './test/test.js'
 import getBeans from './getBeans/getBeans.js'
 import getGear from './getGear/getGear.js'
 import addGear from './addGear/addGear.js'
+import removeGear from './removeGear/removeGear.js'
 
 const { CLIENT_PORT } = process.env
 
@@ -18,5 +19,6 @@ app.use('/api/test', testRoute)
 app.use('/api/getbeans', getBeans)
 app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
+app.use('/api/removegear', removeGear)
 
 export default app
