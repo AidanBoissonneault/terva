@@ -1,12 +1,18 @@
-import type { Bean, CheckedJSON } from "@/types"
+import axios from 'axios'
+import type { Bean, CheckedJSON } from '@/types'
 
-export const getBeans = async () => {
-  try {
-    const res = await fetch('/api/getbeans')
-    if (!res.ok) throw new Error('Failed to fetch beans')
-    const data = await res.json()
-		return(<CheckedJSON<Bean[]>>{ success: true, payload: data })
-  } catch (err) {
-		return(<CheckedJSON<string>>{ success: false, error: err })
-  }
+export const getBeans = async (): Promise<CheckedJSON<Bean[]>> => {
+	try {
+		const { data } = await axios.get('/api/getbeans')
+
+		return {
+			success: true,
+			payload: data as Bean[],
+		}
+	} catch (err) {
+		return {
+			success: false,
+			error: err instanceof Error ? err.message : 'Unknown error',
+		}
+	}
 }
