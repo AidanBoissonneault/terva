@@ -50,7 +50,7 @@ const showCategory = computed(() => {
 
 		<div v-for="gear in gears" :key="gear.name">
 			<div class="gear-card" v-if="isMatchingInput(gear.name)">
-				<div class="gear-main" @click="emits('changeOpenGear', gear.type)">
+				<div class="gear-main" @click="emits('changeOpenGear', gear.name)">
 					<span>{{ gear.name }}</span>
 					<span>{{ openGear === gear.name ? '−' : 'details +' }}</span>
 				</div>
