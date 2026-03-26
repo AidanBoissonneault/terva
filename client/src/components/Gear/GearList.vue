@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
 	changeOpenGear: [string | null]
-	createNewGear: [string]
+	createNewGear: [GearCategory]
 }>()
 
 const prettyCategory = computed(() =>
@@ -50,7 +50,7 @@ const showCategory = computed(() => {
 
 		<div v-for="gear in gears" :key="gear.name">
 			<div class="gear-card" v-if="isMatchingInput(gear.name)">
-				<div class="gear-main" @click="emits('changeOpenGear', gear.name)">
+				<div class="gear-main" @click="emits('changeOpenGear', gear.type)">
 					<span>{{ gear.name }}</span>
 					<span>{{ openGear === gear.name ? '−' : 'details +' }}</span>
 				</div>

@@ -5,13 +5,13 @@ const emits = defineEmits<{
 </script>
 
 <template>
-	<button @click="emits('clicked')">
+	<div @click="emits('clicked')">
 			<slot />
-	</button>
+	</div>
 </template>
 
 <style scoped>
-	button {
+	div {
 		position: fixed;
 		width: 100%;
 		height: 100%;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getGear } from '@/api/getGear';
+import GearForm from '@/components/Gear/GearForm.vue';
 import GearList from '@/components/Gear/GearList.vue';
 import FullscreenOverlay from '@/components/Overlay/FullscreenOverlay.vue';
 import { useLoadingStore } from '@/stores/loading';
@@ -15,7 +16,8 @@ const search = computed(() => searchBar.value.trim().toLowerCase())
 const error = ref<string | null>(null)
 const openGear = ref<string | null>(null)
 const showOverlay = ref<boolean>(false)
-const gearCategory = ref<string>("")
+const gearCategory = ref<GearCategory>("grinder")
+const newGear = ref<Gear>()
 
 function getRelevantGear(gearType: GearCategory) {
 	if (!gears.value) return []
@@ -59,9 +61,15 @@ function changeOpenGear(name: string | null) {
 	openGear.value = name
 }
 
-function toggleOverlay(gearType: string) {
+function toggleOverlay(gearType: GearCategory) {
 	gearCategory.value = gearType
+	console.log(gearCategory.value)
 	showOverlay.value = !showOverlay.value
+}
+
+function formSubmitted() {
+	console.log(newGear.value)
+	toggleOverlay("grinder")
 }
 </script>
 
@@ -75,9 +83,8 @@ function toggleOverlay(gearType: string) {
 			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" @create-new-gear="toggleOverlay"/>
 	</div>
 
-	<FullscreenOverlay @outside-clicked="toggleOverlay('')" :is-visible="showOverlay">
-		Test
-		<button @click="console.log('inner')">Button</button>
+	<FullscreenOverlay @outside-clicked="toggleOverlay('grinder')" :is-visible="showOverlay">
+		<GearForm :gear-list="uniqueGearTypes" :selected-type="gearCategory" v-model="newGear" @form-submitted="formSubmitted"/>
 	</FullscreenOverlay>
 </template>
 
@@ -94,5 +101,12 @@ function toggleOverlay(gearType: string) {
 
 div {
 	grid-column: span 4;
+}
+
+.stack {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 </style>

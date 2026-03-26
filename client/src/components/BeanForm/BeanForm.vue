@@ -68,7 +68,7 @@ function clone(obj: AddBeanForm) {
 
 		<label>
 			State
-			<select>
+			<select v-model="form.state">
 				<option value="fresh">Fresh</option>
 				<option value="frozen">Frozen</option>
 				<option value="finished">Finished</option>
