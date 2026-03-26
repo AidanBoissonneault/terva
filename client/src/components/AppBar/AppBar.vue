@@ -8,13 +8,19 @@ import { computed } from 'vue'
 const route = useRoute()
 const router = useRouter()
 
+// holds a list of screens where the plus botton to enter the "addbeans" menu is loaded.
 const ignorePlusButton = <string[]>['addbeans']
+
+// stores if the plus button should be displayed or not.
 const isDisplayPage = computed(() => !ignorePlusButton.includes(route.name as string))
 
+// navigates to a new screen
 function navigate(route: string) {
 	router.push({ name: route });
 }
 
+// stores the name of the currently active page, formatted
+// fallback: ''
 const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
 </script>
 

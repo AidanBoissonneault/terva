@@ -9,8 +9,12 @@ const bean = ref<AddBeanForm>()
 
 const router = useRouter()
 
+// ran when the form to add a bean is submitted
 function getFormSubmit() {
 	console.log(bean.value)
+
+	// TODO: add bean to database
+
 	router.push({ name: "dashboard" })
 }
 </script>

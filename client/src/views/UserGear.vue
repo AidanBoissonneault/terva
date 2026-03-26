@@ -73,11 +73,6 @@ function toggleOverlay(gearType: GearCategory) {
 	showOverlay.value = !showOverlay.value
 }
 
-function toggleRemovalOverlay(id: number) {
-	removalId.value = id
-	showRemovalOverlay.value = !showRemovalOverlay.value
-}
-
 async function formSubmitted() {
 	console.log(newGear.value)
 	if (newGear.value) {
@@ -89,17 +84,29 @@ async function formSubmitted() {
 		}
 	}
 }
+
+// toggles the screen for when the removal overlay is seen
+function toggleRemovalOverlay(id: number) {
+	removalId.value = id
+	showRemovalOverlay.value = !showRemovalOverlay.value
+}
+
+// sets up removal overlay screen
 function getRemovalMenu(id: number, name: string) {
 	removalName.value = name
 	toggleRemovalOverlay(id)
 }
 
+// receives when the overlay screen is submitted
 async function submitRemovalMenu(isRemoving: boolean, id: number) {
 	if (isRemoving) {
 		await removeSelectedGear(id)
 	}
 	toggleRemovalOverlay(0)
 }
+
+// ran when the overlay screen is submitted
+// removes matching id
 async function removeSelectedGear(id: number) {
 	if (id > -1) {
 		const result = await removeGear(id, 1)
@@ -121,9 +128,12 @@ async function removeSelectedGear(id: number) {
 			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" @create-new-gear="toggleOverlay" @remove-gear="getRemovalMenu"/>
 	</div>
 
+	<!--Submit overlay screen-->
 	<FullscreenOverlay @outside-clicked="toggleOverlay('grinder')" :is-visible="showOverlay">
 		<GearForm :gear-list="uniqueGearTypes" :selected-type="gearCategory" v-model="newGear" @form-submitted="formSubmitted"/>
 	</FullscreenOverlay>
+
+	<!--Removal overlay screen-->
 	<FullscreenOverlay @outside-clicked="toggleRemovalOverlay(0)" :is-visible="showRemovalOverlay">
 		<GearRemovalForm :name="removalName" :id="removalId" @button-pressed="submitRemovalMenu"/>
 	</FullscreenOverlay>

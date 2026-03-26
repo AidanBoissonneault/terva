@@ -8,10 +8,16 @@ import { useLoadingStore } from '@/stores/loading'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { type Bean, type BeanState } from '@/types'
 
+// for all beans (except hero bean), hero bean, and if there was an error
 const beans = ref()
 const heroBean = ref()
 const error = ref<string | null>(null)
 
+// stores the currently active filter for the filter buttons
+const activeFilter = ref<BeanState | null>(null)
+
+// stores all filter buttons.
+// name is displaced, type is for backend.
 const filterButtons = reactive<{ name: string, type: BeanState | null }[]>([
 	{ name: "Fresh", type: "fresh" },
 	{ name: "Frozen", type: "frozen" },
@@ -19,6 +25,8 @@ const filterButtons = reactive<{ name: string, type: BeanState | null }[]>([
 	{ name: "All", type: null },
 ])
 
+// calculates and maintains the filtered beans for when
+// the filter buttons are pressed.
 const filteredBeans = computed(() => {
 	if (!beans.value) return []
 
@@ -26,8 +34,9 @@ const filteredBeans = computed(() => {
 
   return beans.value.filter((bean: Bean) => bean.status === activeFilter.value)
 })
-const activeFilter = ref<BeanState | null>(null)
 
+// sets the current filter to a new filter.
+// if a button that is currently active is pressed again, remove filter
 function newFilter(type: BeanState | null) {
 	if (activeFilter.value === type) {
 		activeFilter.value = null
@@ -36,6 +45,7 @@ function newFilter(type: BeanState | null) {
 	activeFilter.value = type
 }
 
+// ran when the component is mounted to DOM
 onMounted(async () => {
 
 	// start loading screen
