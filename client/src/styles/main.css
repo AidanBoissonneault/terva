@@ -6,7 +6,7 @@
   --pico-font-family: var(--pico-font-family-sans-serif);
   --pico-line-height: 1.5;
 	--pico-font-base: 'Rubik', sans-serif;
-	--pico-font-headings: 'Rubik', sans-serif;
+	--pico-font-headings: var(--pico-font-base);
   --pico-font-weight: 400;
   --pico-font-size: 100%;
   --pico-text-underline-offset: 0.1rem;

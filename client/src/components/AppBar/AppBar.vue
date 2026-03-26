@@ -22,7 +22,7 @@ const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
 	<TransitionGroup name="slide" tag="header">
 		<PlusButton v-if="isDisplayPage" :key="1" @navigate="navigate" route="addbeans" :active-route="activePage"/>
 		<img v-else src="@/assets/images/title-image.PNG" alt="" />
-		<h1 :key="2">Husk</h1>
+		<h1 :key="2">Terva</h1>
 		<ProfileIcon :key="3" />
 	</TransitionGroup>
 </template>
@@ -69,10 +69,11 @@ img {
 }
 
 h1 {
-	text-shadow: 0px 2px var(--brand-500);
+	text-shadow: 0px 1px var(--brand-500);
 	padding: 0;
 	margin: 0;
-	font-weight: bold;
+	font-family: 'Camela';
+  font-weight: 500;
 
 	--pico-font-size: 2.5rem;
 	--pico-line-height: 1.125;
