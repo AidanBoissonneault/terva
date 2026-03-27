@@ -18,9 +18,14 @@ export const useCurrentBeanStore = defineStore('currentBean', {
 	actions: {
 		set(bean: Bean) {
 			this.currentBean = bean
+			localStorage.setItem('currentBean', JSON.stringify(bean))
 		},
 
 		get() {
+			const storedBeanString = localStorage.getItem('currentBean')
+			if (storedBeanString) {
+				this.currentBean = JSON.parse(storedBeanString)
+			}
 			return this.currentBean
 		}
 	}
