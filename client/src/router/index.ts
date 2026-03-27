@@ -13,6 +13,8 @@ const router = createRouter({
 		{ path: '/profile', name: 'profile', component: () => import('@/views/UserProfile.vue') },
 		{ path: '/about', name: 'about', component: () => import('@/views/UserAbout.vue') },
 		{ path: '/more', name: 'more', component: () => import('@/views/UserMore.vue') },
+		{ path: '/recipes', name: 'recipes', component: () => import('@/views/UserRecipes.vue') },
+		{ path: '/brew/start', name: 'startbrew', component: () => import('@/views/StartBrew.vue')},
 
 		{ path: '/:pathMatch(.*)*', redirect: '/' },
 	],

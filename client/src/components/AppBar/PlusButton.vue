@@ -34,7 +34,7 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 .transparent {
 	position: absolute;
 
-	font-size: 36px;
+	font-size: 24px;
 	padding: 0;
 	line-height: 1;
 
@@ -48,7 +48,7 @@ const isOnPage = computed(() => props.route === props.activeRoute)
 	align-items: flex-end;
 	justify-content: center;
 
-	width: 100%;
+	width: auto;
 	height: 100%;
 
 	color: var(--pico-primary);

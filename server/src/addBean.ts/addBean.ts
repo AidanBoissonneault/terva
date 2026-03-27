@@ -6,18 +6,15 @@ const router = Router()
 
 router.post('/', async (req, res) => {
   try {
-    const { name, type, notes, user } = req.body
+    const { } = req.body
 
     const query = `
-      INSERT INTO gear (name, type, notes, user)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO beans (., ., ., ...)
+      VALUES (?, ...)
     `
 
     const [result] = await connection.query<ResultSetHeader>(query, [
-      name,
-      type,
-      notes,
-      user
+
     ])
 
     res.json({ id: result.insertId })
