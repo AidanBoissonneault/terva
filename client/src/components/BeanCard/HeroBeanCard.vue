@@ -4,29 +4,25 @@ import BeanCardInfo from './BeanCardInfo.vue'
 import BeanCardWrapper from './BeanCardWrapper.vue'
 import QuickAccessButton from './QuickAccessButton.vue'
 import { type Bean } from '@/types'
-/*
-const fakeBeanCard = {
-	name: 'Bean Um Coffee',
-	variety: 'Red Catuai Natural Musto CM',
-	origin: 'Kenya',
-	maslRange: '1800 - 1900',
-	flavorProfile: 'Peach, Pizza, Melt, Fire',
-}*/
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
 	bean: Bean
 }>()
 
+const emits = defineEmits<{
+	clicked: [Bean]
+}>()
+
 const buttons = reactive([{ text: 'Pour-over' }, { text: 'Sprover' }])
 </script>
 
 <template>
-	<BeanCardWrapper :bean="bean">
+	<BeanCardWrapper :bean="bean" @clicked="emits('clicked', bean)">
 		<BeanCardInfo
 			:bean="bean"
 		/>
-		<div class="button-wrapper">
+		<div class="button-wrapper" @click.stop>
 			<QuickAccessButton v-for="(btn, i) in buttons" :text="btn.text" :key="i" />
 		</div>
 	</BeanCardWrapper>

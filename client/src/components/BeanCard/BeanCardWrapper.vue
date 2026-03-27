@@ -2,10 +2,13 @@
 import { computed, onMounted, ref } from 'vue';
 import type { Bean } from '@/types';
 import { useChromaStore } from '@/stores/chromaCalculator';
-import { useRouter } from 'vue-router';
 
 const props = defineProps<{
 	bean: Bean
+}>()
+
+const emits = defineEmits<{
+	clicked: [Bean]
 }>()
 
 const lightness = ref('0.7') // fallback default
@@ -46,16 +49,10 @@ const g2y = computed(() => 50 + elevationNorm.value * 20)
 
 const g3x = computed(() => 70 + elevationNorm.value * 20)
 const g3y = computed(() => 30 + elevationNorm.value * 20)
-
-const router = useRouter()
-function goToStartBrew() {
-
-	router.push({ name: "startbrew" })
-}
 </script>
 
 <template>
-	<button class="bean-card" @click="goToStartBrew">
+	<button class="bean-card" @click="emits('clicked', bean)">
 		<slot />
 	</button>
 </template>
@@ -65,6 +62,7 @@ button {
 	color: #fff;
 	text-align: left;
 }
+
 .bean-card {
 	grid-column: 1 / 5;
 	border-radius: 12px;

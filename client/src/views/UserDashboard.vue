@@ -7,6 +7,11 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { type Bean, type BeanState } from '@/types'
+import { useRouter } from 'vue-router'
+import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
+
+// for routing when a bean card is pressed
+const router = useRouter()
 
 // for all beans (except hero bean), hero bean, and if there was an error
 const beans = ref()
@@ -60,8 +65,8 @@ onMounted(async () => {
 			throw new Error(data.error);
 		}
 		// split payload
-		heroBean.value = data.payload[0]         // most recent is first (ORDER BY created_at DESC)
-		beans.value = data.payload.slice(1)      // rest go to the grid
+		heroBean.value = data.payload[0]         // most recent is hero bean
+		beans.value = data.payload.slice(1)      // rest go to the regular beans
 
 		// log data (for testing)
 		console.log(data)
@@ -72,6 +77,13 @@ onMounted(async () => {
 		loading.stop()
 	}
 })
+
+// routes when bean card is pressed to the Bean Brew screen.
+function routeToStartBrew(bean: Bean) {
+	const currentBean = useCurrentBeanStore()
+	currentBean.set(bean)
+	router.push({ name: 'startbrew' })
+}
 </script>
 
 <template>
@@ -79,7 +91,7 @@ onMounted(async () => {
 		<div v-if="error">{{ error }}</div>
 
 		<template v-else-if="heroBean">
-			<HeroBeanCard :bean="heroBean" />
+			<HeroBeanCard :bean="heroBean" @clicked="routeToStartBrew"/>
 			<SectionSeperator />
 			<div class="filter-wrapper">
 				<h5>Beans</h5>
@@ -90,7 +102,7 @@ onMounted(async () => {
 					</FilterButton>
 				</div>
 			</div>
-			<BeanCard v-for="bean in filteredBeans" :key="bean.id" :bean="bean" />
+			<BeanCard v-for="bean in filteredBeans" :key="bean.id" :bean="bean" @clicked="routeToStartBrew"/>
 		</template>
 	</div>
 </template>

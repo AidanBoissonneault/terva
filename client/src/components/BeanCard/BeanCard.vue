@@ -16,10 +16,15 @@ const fakeBeanCard = {
 const props = defineProps<{
 	bean: Bean
 }>()
+
+const emits = defineEmits<{
+	clicked: [Bean]
+}>()
+
 </script>
 
 <template>
-	<BeanCardWrapper :bean="bean">
+	<BeanCardWrapper :bean="bean"  @clicked="emits('clicked', bean)">
 		<BeanCardInfo
 			:bean="bean"
 		/>
