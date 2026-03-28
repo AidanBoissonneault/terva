@@ -1,3 +1,9 @@
+// get recipes API
+// returns recipes from DB that match the username
+// with steps linked.
+// CREATED: 27MAR2026
+// LAST EDITED: 27MAR2026
+// By: Aidan Boissonneault
 
 import { Router } from 'express'
 import connection from "../db/connection.js"

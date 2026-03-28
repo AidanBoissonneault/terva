@@ -10,7 +10,7 @@ export const getGear = async (): Promise<CheckedJSON<Gear[]>> => {
 
 		const userId = 1
 
-		const { data } = await axios.get('/api/getgear', { data: { userId } })
+		const { data } = await axios.get('/api/getgear', { params: { userId } })
 
 		return {
 			success: true,

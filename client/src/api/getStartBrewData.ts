@@ -1,3 +1,10 @@
+// get start brew data API
+// gets the gear and recipes in one call
+// used for the Start Brew screen.
+// CREATED: 27MAR2026
+// LAST EDITED: 27MAR2026
+// By: Aidan Boissnneault
+
 import axios from 'axios'
 import type { CheckedJSON, Gear, Recipe } from '@/types'
 

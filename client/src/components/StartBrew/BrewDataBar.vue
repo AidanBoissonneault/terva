@@ -1,3 +1,13 @@
+<!--
+Brew Data Bar
+used to display a reactive component for getting
+dose, ratio, and yield
+on the Brew Data Form component.
+CREATED: 27MAR2026
+LAST EDITED: 27MAR2026
+By: Aidan Boissonneault
+-->
+
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { Brew } from '@/types'
