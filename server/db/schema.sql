@@ -60,7 +60,7 @@ CREATE TABLE gear (
 CREATE TABLE recipes (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   name         VARCHAR(100) NOT NULL,
-  brew_method  ENUM('pourover', 'espresso', 'aeropress', 'french_press', 'cold_brew', 'moka_pot', 'siphon', 'other') NOT NULL,
+  brew_method  VARCHAR(100) NOT NULL,
   user         INT NOT NULL DEFAULT 1,
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -83,9 +83,11 @@ CREATE TABLE brews (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   bean_id       INT NOT NULL,
   recipe_id     INT,
+  brewer_id     INT,
   closeness     ENUM('success', 'close', 'miss') NOT NULL,
   profile       ENUM('bitter', 'sweet', 'sour', 'balanced'),
   body          ENUM('light', 'medium', 'heavy'),
+  grinder_id    INT,
   grind_size    FLOAT,
   dose_g        FLOAT,
   yield_g       FLOAT,
@@ -93,5 +95,7 @@ CREATE TABLE brews (
   notes         TEXT,
   brewed_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (bean_id)   REFERENCES beans(id),
-  FOREIGN KEY (recipe_id) REFERENCES recipes(id)
+  FOREIGN KEY (recipe_id) REFERENCES recipes(id),
+  FOREIGN KEY (brewer_id) REFERENCES gear(id),
+  FOREIGN KEY (grinder_id) REFERENCES gear(id)
 );

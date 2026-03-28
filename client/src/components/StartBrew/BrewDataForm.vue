@@ -21,6 +21,7 @@ const modelValue = defineModel<Brew>({
 		doseG: 0,
 		yieldG: 0,
 		recipeId: 0,
+		brewerId: 0,
 	}
 })
 
@@ -30,6 +31,7 @@ const emits = defineEmits<{
 
 const props = defineProps<{
 	grinders: Gear[]
+	brewers: Gear[]
 	recipes: Recipe[]
 }>()
 
@@ -65,10 +67,24 @@ watch(() => props.grinders, (newVal) => {
     form.value.grinderId = newVal[0]?.id
   }
 }, { immediate: true })
+
+watch(() => props.recipes, (newVal) => {
+	if (newVal?.length && form.value.recipeId === 0) {
+		form.value.recipeId = newVal[0]?.id
+	}
+}, { immediate: true })
+
+watch(() => props.brewers, (newVal) => {
+	if (newVal?.length && form.value.brewerId === 0) {
+		form.value.brewerId = newVal[0]?.id
+	}
+}, { immediate: true })
 </script>
 
 <template>
 	<form @submit.prevent="handleSubmit">
+
+		<!--Grinder-->
 		<div class="row grinder">
 			<label class="large">
 				<small>Grinder</small>
@@ -82,6 +98,24 @@ watch(() => props.grinders, (newVal) => {
 				<input type="number" v-model="form.grindSize" min="0" max="999" :disabled="form.grinderId === -1">
 			</label>
 		</div>
+
+			<!--Brewer-->
+			<label>
+				Brewer
+				<select v-model="form.brewerId" required>
+					<option v-for="brewer in brewers" :key="brewer.name" :value="brewer.id">{{ brewer.name }}</option>
+				</select>
+			</label>
+
+			<!--Recipe-->
+			<label>
+				Recipe
+				<select v-model="form.recipeId" required>
+					<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">{{ recipe.name }}</option>
+				</select>
+			</label>
+
+		<!--Dose / Ratio / Yield-->
 		<BrewDataBar v-model="form"/>
 		<button type="submit" class="big-text glass">Brew</button>
 	</form>

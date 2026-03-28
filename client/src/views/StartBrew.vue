@@ -19,6 +19,12 @@ const grinders = computed(() => {
 	}
 	return data.value.gears.filter((g: Gear) => g.type === 'grinder')
 })
+const brewers = computed(() => {
+	if (!data.value?.gears) {
+		return []
+	}
+	return data.value.gears.filter((g: Gear) => g.type === 'brewer')
+})
 const recipes = computed(() => {
 	if (!data.value?.recipes) {
 		return []
@@ -64,7 +70,7 @@ onMounted(async () => {
 			<BeanCard :bean="currentBean" />
 		</div>
 		<SectionSeperator />
-		<BrewDataForm :recipes="recipes" :grinders="grinders"/>
+		<BrewDataForm :recipes="recipes" :grinders="grinders" :brewers="brewers"/>
 	</div>
 </template>
 
