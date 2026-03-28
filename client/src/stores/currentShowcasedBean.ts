@@ -1,3 +1,10 @@
+// current bean store
+// used to store the bean currently used for brewing.
+// this is selected by clicking on a bean on the main menu,
+// and uses local cache storage to persist across refreshes.
+// LAST EDITED: 27MAR2026
+// BY: Aidan Boissonneault
+
 import { defineStore } from 'pinia'
 import { type Bean } from '@/types'
 

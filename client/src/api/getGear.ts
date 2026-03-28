@@ -1,3 +1,7 @@
+// Get gear api
+// This returns all relevant gear from the database.
+// LAST EDITED: 26MAR2026
+
 import axios from 'axios'
 import type { CheckedJSON, Gear } from '@/types'
 

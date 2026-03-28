@@ -1,11 +1,18 @@
+// Add beans API
+// This is used to add a bean into the database.
+// Its intended use is when a bean is submitted from the
+// "Add Bean Form".
+// LAST EDITED: 25MAR2026
+// By: Aidan Boissonneault
+
 import axios from 'axios'
 import type { AddBeanForm, CheckedJSON } from '@/types'
 
-export const addGear = async (bean: AddBeanForm): Promise<CheckedJSON<{ id: number }>> => {
+export const addBean = async (bean: AddBeanForm, user: number): Promise<CheckedJSON<{ id: number }>> => {
 	try {
 		const { data } = await axios.post('/api/addbean', {
 			...bean,
-			user: 1,
+			user: user,
 		})
 
 		return {

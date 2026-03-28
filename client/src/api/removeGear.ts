@@ -1,3 +1,9 @@
+// Remove gear api
+// This takes in an id (primary key) and a user.
+// Deletes the gear from the database.
+// LAST EDITED: 26MAR2026
+// By: Aidan Boissonneault
+
 import axios from 'axios'
 import type { CheckedJSON } from '@/types'
 

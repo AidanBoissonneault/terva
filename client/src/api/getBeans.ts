@@ -1,3 +1,9 @@
+// Get beans api
+// This retrieves all relevant beans to the user
+// from the database.
+// LAST EDITED: 26MAR2026
+// By: Aidan Boissonneault
+
 import axios from 'axios'
 import type { Bean, CheckedJSON } from '@/types'
 

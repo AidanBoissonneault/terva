@@ -1,3 +1,10 @@
+// chroma calculator store
+// this is used for getting the chroma for construction colours.
+// I know that a pania store is overkill for the use case,
+// but used pinia for practice in using it.
+// LAST EDITED: 25MAR2026
+// By: Aidan Boissonneault
+
 import { defineStore } from "pinia";
 import { type BeanState } from "@/types";
 

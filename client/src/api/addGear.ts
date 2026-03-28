@@ -1,3 +1,9 @@
+// Add gear api
+// This is used when gear is added in the gear menu,
+// and submits the written gear into the database.
+// LAST EDITED: 26MAR2026
+// By: Aidan Boissonneault
+
 import axios from 'axios'
 import type { CheckedJSON, Gear } from '@/types'
 
