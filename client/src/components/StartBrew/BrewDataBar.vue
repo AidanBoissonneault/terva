@@ -89,15 +89,20 @@ function onRatioChange(val: number) {
 <style scoped>
 .brew-bar {
 	display: flex;
-	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
 	padding: 0.75rem 1rem;
-	border-radius: 1rem;
+	border-radius: 12px;
 
 	background: var(--pico-form-element-background-color);
 
 	box-shadow: 0 2px 4px oklch(from var(--husk-shadow) calc(l - 1) c h / 0.6);
 
 	align-items: flex-end;
+
+	width: 100%;
+	grid-column: span 4;
 }
 
 .field {
@@ -123,7 +128,7 @@ function onRatioChange(val: number) {
 	color: var(--husk-shadow);
 
 	font-size: 0.85rem;
-	width: 4.5rem;
+	max-width: 4.5rem;
 }
 
 .ratio-group {
@@ -133,7 +138,7 @@ function onRatioChange(val: number) {
 }
 
 .ratio-group input {
-	width: 3.2rem;
+	max-width: 3.2rem;
 	text-align: center;
 }
 

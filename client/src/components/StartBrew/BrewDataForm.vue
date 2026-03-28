@@ -5,12 +5,12 @@ It outputs a form via v-model, and is submitted when a form-submmited event
 is received.
 
 CREATED: 27MAR2026
-LAST EDITED: 27MAR2026
+LAST EDITED: 28MAR2026
 By: Aidan Boissonneault
 -->
 
 <script setup lang="ts">
-import type { Brew } from '@/types';
+import type { Brew, Gear, Recipe } from '@/types';
 import { watch, ref } from 'vue'
 import BrewDataBar from './BrewDataBar.vue';
 
@@ -28,6 +28,10 @@ const emits = defineEmits<{
 	formSubmitted: [ void ]
 }>()
 
+const props = defineProps<{
+	grinders: Gear[]
+	recipes: Recipe[]
+}>()
 
 // clone the modelValue to local data
 // and provide a fallback user if none provided
@@ -49,10 +53,35 @@ watch(modelValue, (newVal) => {
 function clone(obj: Brew) {
 	return JSON.parse(JSON.stringify(obj))
 }
+
+watch(() => form.value.grinderId, (newVal) => {
+  if (newVal === -1) {
+    form.value.grindSize = 0
+  }
+})
+
+watch(() => props.grinders, (newVal) => {
+  if (newVal?.length && form.value.grinderId === 0) {
+    form.value.grinderId = newVal[0]?.id
+  }
+}, { immediate: true })
 </script>
 
 <template>
 	<form @submit.prevent="handleSubmit">
+		<div class="row grinder">
+			<label class="large">
+				<small>Grinder</small>
+				<select v-model="form.grinderId" required>
+					<option v-for="grinder in grinders" :key="grinder.name" :value="grinder.id">{{ grinder.name }}</option>
+					<option :value="-1">Pre-ground</option>
+				</select>
+			</label>
+			<label class="small">
+				<small>Grind Size</small>
+				<input type="number" v-model="form.grindSize" min="0" max="999" :disabled="form.grinderId === -1">
+			</label>
+		</div>
 		<BrewDataBar v-model="form"/>
 		<button type="submit" class="big-text glass">Brew</button>
 	</form>
@@ -64,6 +93,7 @@ button {
 }
 form {
 	display: contents;
+  grid-column: span 4;
 }
 
 label {
@@ -81,9 +111,21 @@ label.large {
 	grid-column: span 4;
 }
 
-.seperated {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
+.row {
+	grid-column: span 4;
+}
+
+.row.grinder {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 8px;
+}
+
+label.large {
+	grid-column: span 3;
+}
+
+label.small {
+	grid-column: span 1;
 }
 </style>

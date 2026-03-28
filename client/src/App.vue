@@ -4,16 +4,20 @@ import PourOverLoader from './components/Utils/PourOverLoader.vue'
 import TabBar from './components/TabBar/TabBar.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 const loading = useLoadingStore()
 const route = useRoute()
+
+const ignoredAppBarPages = ["startbrew"]
+const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 </script>
 
 <template>
 	<div class="app-layout">
-		<AppBar />
+		<AppBar v-if="isActiveAppBarPage"/>
 
 		<Transition name="steam" mode="out-in">
-			<main class="content" :key="route.fullPath">
+			<main class="content" :class="{ shift_down: isActiveAppBarPage }" :key="route.fullPath">
 				<router-view />
 			</main>
 		</Transition>
@@ -46,14 +50,19 @@ const route = useRoute()
 
 .content {
 	position: relative;
-	top: 100px;
 	overflow-y: visible;
-
+	top: 24px;
 	padding-bottom: 110px;
 
 	z-index: 1;
+
+	box-sizing: border-box;
+  width: 100%;
 }
 
+.content.shift_down {
+top: 100px;
+}
 .steam-enter-active,
 .steam-leave-active {
 	transition: all 0.3s ease-out;
