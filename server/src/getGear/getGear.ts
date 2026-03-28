@@ -5,6 +5,14 @@ const router = Router()
 
 router.get('/', async (req, res) => {
   try {
+
+    const { userId } = req.query
+
+    if (!userId) {
+      res.status(400).json({ error: 'userId is required' })
+      return
+    }
+
     const query = `
     SELECT
     id,
@@ -14,7 +22,7 @@ router.get('/', async (req, res) => {
   FROM gear
   WHERE user = ?;
   `
-    const [rows] = await connection.query(query, 1)
+    const [rows] = await connection.query(query, userId)
     res.json(rows)
   } catch (err) {
     const error = err as Error

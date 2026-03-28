@@ -3,6 +3,7 @@ import express from 'express'
 import testRoute from './test/test.js'
 import getBeans from './getBeans/getBeans.js'
 import getGear from './getGear/getGear.js'
+import getRecipes from './getRecipes/getRecipes.js'
 import addGear from './addGear/addGear.js'
 import removeGear from './removeGear/removeGear.js'
 
@@ -20,5 +21,6 @@ app.use('/api/getbeans', getBeans)
 app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)
+app.use('/api/getRecipes', getRecipes)
 
 export default app

@@ -7,7 +7,10 @@ import type { CheckedJSON, Gear } from '@/types'
 
 export const getGear = async (): Promise<CheckedJSON<Gear[]>> => {
 	try {
-		const { data } = await axios.get('/api/getgear')
+
+		const userId = 1
+
+		const { data } = await axios.get('/api/getgear', { data: { userId } })
 
 		return {
 			success: true,

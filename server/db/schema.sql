@@ -61,6 +61,7 @@ CREATE TABLE recipes (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   name         VARCHAR(100) NOT NULL,
   brew_method  ENUM('pourover', 'espresso', 'aeropress', 'french_press', 'cold_brew', 'moka_pot', 'siphon', 'other') NOT NULL,
+  user         INT NOT NULL DEFAULT 1,
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
