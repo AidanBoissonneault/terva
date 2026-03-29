@@ -44,17 +44,17 @@ router.get('/', async (req, res) => {
         recipeMap.set(row.id, {
           id: row.id,
           name: row.name,
-          brew_method: row.brew_method,
-          created_at: row.created_at,
+          brewMethod: row.brew_method,
+          createdAt: row.created_at,
           steps: [],
         })
       }
       if (row.step_id) {
         recipeMap.get(row.id).steps.push({
           id: row.step_id,
-          step_order: row.step_order,
+          stepOrder: row.step_order,
           action: row.action,
-          duration_seconds: row.duration_seconds,
+          duration: row.duration_seconds,
         })
       }
     }

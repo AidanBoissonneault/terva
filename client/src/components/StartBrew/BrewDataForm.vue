@@ -13,6 +13,7 @@ By: Aidan Boissonneault
 import type { Brew, Gear, Recipe } from '@/types';
 import { watch, ref } from 'vue'
 import BrewDataBar from './BrewDataBar.vue';
+import RecipeStepsChart from './RecipeStepsChart.vue';
 
 const modelValue = defineModel<Brew>({
 	default: {
@@ -34,6 +35,8 @@ const props = defineProps<{
 	brewers: Gear[]
 	recipes: Recipe[]
 }>()
+
+const showRecipeSteps = ref(false)
 
 // clone the modelValue to local data
 // and provide a fallback user if none provided
@@ -109,11 +112,20 @@ watch(() => props.brewers, (newVal) => {
 
 			<!--Recipe-->
 			<label>
-				Recipe
+				<div @click.stop class="space-between">
+					<span>Recipe</span>
+					<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }} Steps</a>
+				</div>
 				<select v-model="form.recipeId" required>
 					<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">{{ recipe.name }}</option>
 				</select>
 			</label>
+
+			<Transition name="grow"  mode="out-in" >
+				<div v-if="showRecipeSteps && recipes.length" class="row card">
+					<RecipeStepsChart :recipe="recipes.find(r => r.id === form.recipeId) || recipes[0]!"/>
+				</div>
+			</Transition>
 
 		<!--Dose / Ratio / Yield-->
 		<BrewDataBar v-model="form"/>
@@ -161,5 +173,44 @@ label.large {
 
 label.small {
 	grid-column: span 1;
+}
+
+.space-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.card {
+	border-radius: 12px;
+	background: var(--pico-form-element-background-color);
+	box-shadow: 0 2px 4px oklch(from var(--husk-shadow) calc(l - 1) c h / 0.6);
+	padding: 16px;
+}
+
+.grow-enter-active,
+.grow-leave-active {
+	transition: all 0.3s ease-out;
+	overflow: hidden;
+}
+
+.grow-enter-from {
+	opacity: 0;
+	max-height: 0;
+}
+
+.grow-enter-to {
+	opacity: 1;
+	max-height: 500px;
+}
+
+.grow-leave-from {
+	opacity: 1;
+	max-height: 500px;
+}
+
+.grow-leave-to {
+	opacity: 0;
+	max-height: 0;
 }
 </style>
