@@ -17,6 +17,8 @@ const defaultBrew = <Brew>{
     recipeId: -1
 }
 
+const localStorageName = 'currentBrew'
+
 export const useBrewTransferStore = defineStore('currentBrew', {
 	state: () => ({
 		currentBrew: defaultBrew
@@ -25,15 +27,19 @@ export const useBrewTransferStore = defineStore('currentBrew', {
 	actions: {
 		set(brew: Brew) {
 			this.currentBrew = brew
-			localStorage.setItem('currentBean', JSON.stringify(brew))
+			localStorage.setItem(localStorageName, JSON.stringify(brew))
 		},
 
 		get() {
-			const storedBeanString = localStorage.getItem('currentBean')
-			if (storedBeanString) {
-				this.currentBrew = JSON.parse(storedBeanString)
+			const storedBrewString = localStorage.getItem(localStorageName)
+			if (storedBrewString) {
+				this.currentBrew = JSON.parse(storedBrewString)
 			}
 			return this.currentBrew
+		},
+
+		clear() {
+			localStorage.removeItem(localStorageName)
 		}
 	}
 })
