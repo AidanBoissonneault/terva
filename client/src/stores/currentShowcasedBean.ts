@@ -34,6 +34,10 @@ export const useCurrentBeanStore = defineStore('currentBean', {
 				this.currentBean = JSON.parse(storedBeanString)
 			}
 			return this.currentBean
+		},
+
+		clear() {
+			localStorage.removeItem('currentBean')
 		}
 	}
 })
