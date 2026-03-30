@@ -14,7 +14,8 @@ const defaultBrew = <Brew>{
     brewerId: -1,
     doseG: 0,
     yieldG: 0,
-    recipeId: -1
+    recipeId: -1,
+		closeness: "success"
 }
 
 const localStorageName = 'currentBrew'

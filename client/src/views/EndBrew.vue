@@ -1,9 +1,59 @@
-<script lang="ts" setup></script>
+<!--
+End Brew View
+Used after a start brew is submitted to wrap up a brew
+and submit it.
+
+CREATED: 30MAR2026
+LAST EDITED: 30MAR2026
+By: Aidan Boissonneault
+-->
+
+<script lang="ts" setup>
+import EndBrewDataForm from '@/components/EndBrew/EndBrewDataForm.vue';
+import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
+import { onMounted, ref } from 'vue';
+import { type Brew } from '@/types'
+
+const currentBrew = ref<Brew>()
+const endingBrew = ref<Brew>()
+
+onMounted(() => {
+	const currentBrewTransfer = useBrewTransferStore()
+	currentBrew.value = currentBrewTransfer.get()
+})
+
+function formSubmitted() {
+	console.log(endingBrew.value)
+}
+</script>
 
 <template>
 	<div class="dashboard">
-		testing end brew
+		<div v-if="currentBrew">
+			<EndBrewDataForm :import-form="currentBrew" v-model="endingBrew" @form-submitted="formSubmitted"/>
+		</div>
+
+		<!--Error-->
+		<div v-else>
+			Brew transfer failed
+		</div>
 	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+div {
+	grid-column: span 4;
+}
+
+.dashboard {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(4, 1fr);
+	margin-left: 24px;
+	margin-right: 24px;
+
+	overflow-y: visible;
+	height: 100%;
+}
+</style>

@@ -90,7 +90,7 @@ export interface Brew {
 	yieldG: number
 	recipeId: number
 	time_seconds?: number
-	closeness?: number
+	closeness?: | "success" | "close" | "miss"
 	profile?: number
 	body?: number
 	notes?: number
