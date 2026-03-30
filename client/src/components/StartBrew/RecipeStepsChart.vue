@@ -1,3 +1,14 @@
+<!--
+Recipe Step Chart
+This outputs a chart of the steps of a recipe inputted through props.
+Truthfully, this component was made with lots of googling,
+and AI to trouble shoot some nasty type specificities while porting,
+so please do not quiz me on chart.js integration.
+CREATED: 28MAR2026
+LAST EDITED: 28MAR2026
+By: Aidan Boissonneault
+-->
+
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import {
@@ -9,22 +20,9 @@ import {
 	Tooltip,
 } from 'chart.js'
 import type { ChartDataset } from 'chart.js'
+import { type RecipeStep, type Recipe } from '@/types'
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip)
-
-export interface RecipeStep {
-	id: number
-	stepOrder: number
-	action: string
-	duration: number
-}
-
-export interface Recipe {
-	id: number
-	name: string
-	brewMethod: string
-	steps: RecipeStep[]
-}
 
 const props = defineProps<{ recipe: Recipe }>()
 

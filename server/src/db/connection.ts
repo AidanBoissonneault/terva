@@ -1,3 +1,7 @@
+// MySQL database pool
+// CREATED: 20MAR2026
+// By: Aidan Boissonneault
+
 import 'dotenv/config'
 import mysql from 'mysql2/promise'
 

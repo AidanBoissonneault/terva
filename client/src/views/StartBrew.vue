@@ -3,14 +3,20 @@ import BeanCard from '@/components/BeanCard/BeanCard.vue';
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue';
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean';
 import { useLoadingStore } from '@/stores/loading';
-import { type Bean, type Gear } from '@/types';
+import { type Bean, type Brew, type Gear } from '@/types';
 import { computed, onMounted, ref } from 'vue';
 import { getBrewStartData } from '@/api/getStartBrewData';
 import BrewDataForm from '@/components/StartBrew/BrewDataForm.vue';
+import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const currentBean = ref<Bean>()
 const error = ref<string | null>(null)
 const data = ref()
+
+const newBrew = ref<Brew>()
 
 // prep grinders and recipes for prop transfer
 const grinders = computed(() => {
@@ -23,7 +29,7 @@ const brewers = computed(() => {
 	if (!data.value?.gears) {
 		return []
 	}
-	return data.value.gears.filter((g: Gear) => g.type === 'brewer')
+	return data.value.gears.filter((g: Gear) => ['brewer', 'espresso_machine'].includes(g.type))
 })
 const recipes = computed(() => {
 	if (!data.value?.recipes) {
@@ -62,6 +68,16 @@ onMounted(async () => {
 		loading.stop()
 	}
 })
+
+function formSubmitted() {
+	if (!newBrew.value)
+		return
+	const transferBrew = useBrewTransferStore()
+
+	transferBrew.set(newBrew.value)
+
+	router.push({ name: 'endbrew' })
+}
 </script>
 
 <template>
@@ -70,18 +86,18 @@ onMounted(async () => {
 			<BeanCard :bean="currentBean" />
 		</div>
 		<SectionSeperator />
-		<BrewDataForm :recipes="recipes" :grinders="grinders" :brewers="brewers"/>
+		<BrewDataForm :recipes="recipes" :grinders="grinders" :brewers="brewers" v-model="newBrew"
+			@form-submitted="formSubmitted" />
 	</div>
 </template>
 
 <style scoped>
-
 .bean_card {
 	width: 100%;
 	grid-column: span 4;
 }
 
-.bean_card > * {
+.bean_card>* {
 	width: 100%;
 }
 

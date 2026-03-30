@@ -108,36 +108,36 @@ INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUE
 
 INSERT INTO brews (bean_id, recipe_id, brewer_id, grinder_id, closeness, profile, body, grind_size, dose_g, yield_g, time_seconds, notes) VALUES
   -- Kayon Mountain on V60
-  (1, 1, 4, 1, 'success', 'sweet',    'light',  28.0, 15.0, 250.0, 195, 'Clean and bright. Strawberry really came through.'),
-  (1, 1, 4, 1, 'close',   'sweet',    'light',  26.0, 15.0, 250.0, 180, 'Slightly fast drawdown. Tighten grind next time.'),
-  (1, 1, 4, 7, 'success', 'sweet',    'light',  29.0, 15.0, 250.0, 205, 'Tried Niche Zero. Hibiscus note more prominent. Lovely.'),
+  (1, 1, 4, 1, 'success', 0.5, 0.1,  28.0, 15.0, 250.0, 195, 'Clean and bright. Strawberry really came through.'),
+  (1, 1, 4, 1, 'close',   0.5, 0.2,  26.0, 15.0, 250.0, 180, 'Slightly fast drawdown. Tighten grind next time.'),
+  (1, 1, 4, 7, 'success', 0.5, 0.2,  29.0, 15.0, 250.0, 205, 'Tried Niche Zero. Hibiscus note more prominent. Lovely.'),
 
   -- Las Margaritas on espresso
-  (2, 2, 5, 1, 'success', 'balanced', 'heavy',  NULL, 18.0,  36.0,  27, 'Dialled in well. Rich and chocolatey.'),
-  (2, 2, 5, 1, 'close',   'bitter',   'heavy',  NULL, 18.0,  32.0,  31, 'Over-extracted. Try coarser or shorter time.'),
-  (2, 2, 5, 7, 'success', 'balanced', 'heavy',  NULL, 18.0,  36.0,  26, 'Niche Zero on espresso — very consistent puck. Best shot yet.'),
+  (2, 2, 5, 1, 'success', 0.7, 0.9,  NULL, 18.0,  36.0,  27, 'Dialled in well. Rich and chocolatey.'),
+  (2, 2, 5, 1, 'close',   0.2, 0.6,  NULL, 18.0,  32.0,  31, 'Over-extracted. Try coarser or shorter time.'),
+  (2, 2, 5, 7, 'success', 0.4, 1.0,  NULL, 18.0,  36.0,  26, 'Niche Zero on espresso — very consistent puck. Best shot yet.'),
 
   -- Kiambu AB on AeroPress and V60
-  (3, 3, 6, 1, 'miss',    'sour',     'light',  30.0, 15.0, 230.0, 120, 'Steep too short. Bergamot but very sharp.'),
-  (3, 1, 4, 1, 'close',   'sweet',    'light',  27.0, 15.0, 250.0, 200, 'Better. Still needs tweaking on first pour ratio.'),
-  (3, 3, 6, 1, 'success', 'sweet',    'light',  30.0, 15.0, 230.0, 150, 'Extended steep by 30s. Bergamot softened nicely.'),
+  (3, 3, 6, 1, 'miss',    0.9, 0.3,  30.0, 15.0, 230.0, 120, 'Steep too short. Bergamot but very sharp.'),
+  (3, 1, 4, 1, 'close',   0.6, 0.3,  27.0, 15.0, 250.0, 200, 'Better. Still needs tweaking on first pour ratio.'),
+  (3, 3, 6, 1, 'success', 0.5, 0.3,  30.0, 15.0, 230.0, 150, 'Extended steep by 30s. Bergamot softened nicely.'),
 
   -- La Palma on V60
-  (4, 1, 4, 1, 'success', 'sweet',    'medium', 27.0, 15.0, 250.0, 190, 'Honey process adds sweetness nicely. Very approachable.'),
-  (4, 1, 4, 7, 'success', 'sweet',    'medium', 28.0, 15.0, 250.0, 193, 'Stone fruit note much clearer with Niche. Will freeze the rest of the bag.'),
+  (4, 1, 4, 1, 'success', 0.5, 0.5, 27.0, 15.0, 250.0, 190, 'Honey process adds sweetness nicely. Very approachable.'),
+  (4, 1, 4, 7, 'success', 0.4, 0.5, 28.0, 15.0, 250.0, 193, 'Stone fruit note much clearer with Niche. Will freeze the rest of the bag.'),
 
   -- Yirgacheffe G1 on AeroPress (finished bag)
-  (5, 3, 6, 1, 'success', 'sweet',    'light',  29.0, 15.0, 220.0, 110, 'Blueberry and jasmine clean and clear. Perfect steep.'),
-  (5, 3, 6, 1, 'close',   'sweet',    'light',  29.0, 15.0, 220.0, 115, 'Last of the bag. Slightly past peak but still great.'),
+  (5, 3, 6, 1, 'success', 0.3, 0.4,  29.0, 15.0, 220.0, 110, 'Blueberry and jasmine clean and clear. Perfect steep.'),
+  (5, 3, 6, 1, 'close',   0.5, 0.2,  29.0, 15.0, 220.0, 115, 'Last of the bag. Slightly past peak but still great.'),
 
   -- Huila Decaf on V60
-  (6, 1, 4, 1, 'close',   'sweet',    'medium', 27.0, 15.0, 250.0, 188, 'Good body for a decaf. Orange zest in the finish.'),
-  (6, 1, 4, 1, 'success', 'balanced', 'medium', 26.0, 15.0, 250.0, 192, 'Dialled in. Vanilla and toffee come through. Solid evening brew.'),
+  (6, 1, 4, 1, 'close',   0.3, 0.5, 27.0, 15.0, 250.0, 188, 'Good body for a decaf. Orange zest in the finish.'),
+  (6, 1, 4, 1, 'success', 0.6, 0.5, 26.0, 15.0, 250.0, 192, 'Dialled in. Vanilla and toffee come through. Solid evening brew.'),
 
   -- Nyanza Lot 12 on Single Origin Flat espresso
-  (7, 4, 5, 7, 'close',   'sweet',    'medium', NULL, 17.0,  51.0,  33, 'Dark cherry on the nose. Pre-infusion helped. Slightly short on yield.'),
-  (7, 4, 5, 7, 'success', 'sweet',    'medium', NULL, 17.0,  51.0,  36, 'Nailed it. Rose and dark cherry as a flat white — exceptional.'),
+  (7, 4, 5, 7, 'close',   0.5, 0.4, NULL, 17.0,  51.0,  33, 'Dark cherry on the nose. Pre-infusion helped. Slightly short on yield.'),
+  (7, 4, 5, 7, 'success', 0.5, 0.3, NULL, 17.0,  51.0,  36, 'Nailed it. Rose and dark cherry as a flat white — exceptional.'),
 
   -- Fazenda Ambiental on espresso and V60
-  (8, 2, 5, 7, 'success', 'balanced', 'heavy',  NULL, 18.0,  36.0,  25, 'Nutty and rich. Classic Brazilian profile. Great daily driver.'),
-  (8, 1, 4, 7, 'close',   'sweet',    'medium', 30.0, 15.0, 250.0, 185, 'Interesting on pourover. Honey note clear but slightly flat. Prefer it as espresso.');
+  (8, 2, 5, 7, 'success', 0.4, 1.0,  NULL, 18.0,  36.0,  25, 'Nutty and rich. Classic Brazilian profile. Great daily driver.'),
+  (8, 1, 4, 7, 'close',   0.3, 0.7, 30.0, 15.0, 250.0, 185, 'Interesting on pourover. Honey note clear but slightly flat. Prefer it as espresso.');

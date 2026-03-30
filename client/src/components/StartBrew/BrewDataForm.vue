@@ -14,6 +14,7 @@ import type { Brew, Gear, Recipe } from '@/types';
 import { watch, ref } from 'vue'
 import BrewDataBar from './BrewDataBar.vue';
 import RecipeStepsChart from './RecipeStepsChart.vue';
+import SectionSeperator from '../Utils/SectionSeperator.vue';
 
 const modelValue = defineModel<Brew>({
 	default: {
@@ -27,7 +28,7 @@ const modelValue = defineModel<Brew>({
 })
 
 const emits = defineEmits<{
-	formSubmitted: [ void ]
+	formSubmitted: [void]
 }>()
 
 const props = defineProps<{
@@ -50,25 +51,19 @@ function handleSubmit() {
 
 // reset form when prop changes
 watch(modelValue, (newVal) => {
-  if (JSON.stringify(newVal) !== JSON.stringify(form.value)) {
-    form.value = clone(newVal)
-  }
+	if (JSON.stringify(newVal) !== JSON.stringify(form.value)) {
+		form.value = clone(newVal)
+	}
 }, { deep: true })
 
 function clone(obj: Brew) {
 	return JSON.parse(JSON.stringify(obj))
 }
 
-watch(() => form.value.grinderId, (newVal) => {
-  if (newVal === -1) {
-    form.value.grindSize = 0
-  }
-})
-
 watch(() => props.grinders, (newVal) => {
-  if (newVal?.length && form.value.grinderId === 0) {
-    form.value.grinderId = newVal[0]?.id
-  }
+	if (newVal?.length && form.value.grinderId === 0) {
+		form.value.grinderId = newVal[0]?.id
+	}
 }, { immediate: true })
 
 watch(() => props.recipes, (newVal) => {
@@ -82,6 +77,12 @@ watch(() => props.brewers, (newVal) => {
 		form.value.brewerId = newVal[0]?.id
 	}
 }, { immediate: true })
+
+watch(() => form.value.grinderId, (newVal) => {
+	if (newVal === -1) {
+		form.value.grindSize = 0
+	}
+})
 </script>
 
 <template>
@@ -102,33 +103,37 @@ watch(() => props.brewers, (newVal) => {
 			</label>
 		</div>
 
-			<!--Brewer-->
-			<label>
-				Brewer
-				<select v-model="form.brewerId" required>
-					<option v-for="brewer in brewers" :key="brewer.name" :value="brewer.id">{{ brewer.name }}</option>
-				</select>
-			</label>
+		<!--Brewer-->
+		<label>
+			Brewer
+			<select v-model="form.brewerId" required>
+				<option v-for="brewer in brewers" :key="brewer.name" :value="brewer.id">{{ brewer.name }}</option>
+			</select>
+		</label>
 
-			<!--Recipe-->
-			<label>
-				<div @click.stop class="space-between">
-					<span>Recipe</span>
-					<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }} Steps</a>
-				</div>
-				<select v-model="form.recipeId" required>
-					<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">{{ recipe.name }}</option>
-				</select>
-			</label>
+		<!--Recipe-->
+		<label>
+			<div @click.stop class="space-between">
+				<span>Recipe</span>
+				<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }}
+					Steps</a>
+			</div>
+			<select v-model="form.recipeId" required>
+				<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">{{ recipe.name }}</option>
+			</select>
+		</label>
 
-			<Transition name="grow"  mode="out-in" >
-				<div v-if="showRecipeSteps && recipes.length" class="row card">
-					<RecipeStepsChart :recipe="recipes.find(r => r.id === form.recipeId) || recipes[0]!"/>
-				</div>
-			</Transition>
+		<Transition name="grow" mode="out-in">
+			<div v-if="showRecipeSteps && recipes.length" class="row card">
+				<RecipeStepsChart :recipe="recipes.find(r => r.id === form.recipeId) || recipes[0]!" />
+			</div>
+		</Transition>
 
+		<SectionSeperator />
 		<!--Dose / Ratio / Yield-->
-		<BrewDataBar v-model="form"/>
+		<BrewDataBar v-model="form" />
+
+		<SectionSeperator />
 		<button type="submit" class="big-text glass">Brew</button>
 	</form>
 </template>
@@ -137,9 +142,10 @@ watch(() => props.brewers, (newVal) => {
 button {
 	grid-column: span 4;
 }
+
 form {
 	display: contents;
-  grid-column: span 4;
+	grid-column: span 4;
 }
 
 label {

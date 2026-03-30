@@ -89,17 +89,22 @@ export interface Brew {
 	doseG: number
 	yieldG: number
 	recipeId: number
+	time_seconds?: number
+	closeness?: number
+	profile?: number
+	body?: number
+	notes?: number
 }
 
 /**
- * CREATE TABLE brews (
+CREATE TABLE brews (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   bean_id       INT NOT NULL,
   recipe_id     INT,
   brewer_id     INT,
   closeness     ENUM('success', 'close', 'miss') NOT NULL,
-  profile       ENUM('bitter', 'sweet', 'sour', 'balanced'),
-  body          ENUM('light', 'medium', 'heavy'),
+  profile       FLOAT, -- 0 - 1, 0: 'bitter', 0.5: 'balanced', 1: 'sour'
+  body          FLOAT, --0 - 1, 0: light, 0.5: medium, 1: heavy
   grinder_id    INT,
   grind_size    FLOAT,
   dose_g        FLOAT,

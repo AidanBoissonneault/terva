@@ -85,8 +85,8 @@ CREATE TABLE brews (
   recipe_id     INT,
   brewer_id     INT,
   closeness     ENUM('success', 'close', 'miss') NOT NULL,
-  profile       ENUM('bitter', 'sweet', 'sour', 'balanced'),
-  body          ENUM('light', 'medium', 'heavy'),
+  profile       FLOAT, -- 0 - 1, 0: 'bitter', 0.5: 'balanced', 1: 'sour'
+  body          FLOAT, --0 - 1, 0: light, 0.5: medium, 1: heavy
   grinder_id    INT,
   grind_size    FLOAT,
   dose_g        FLOAT,
