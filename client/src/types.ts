@@ -2,6 +2,7 @@
 //  Bean Type
 // ─────────────────────────────────────────
 export interface Bean extends AddBeanForm {
+	id: number
 	pri_hue?: number
 	sec_hue?: number
 	acc_hue?: number
@@ -86,6 +87,7 @@ export interface Brew {
 	grindSize: number
 	grinderId: number
 	brewerId: number
+	beanId: number
 	doseG: number
 	yieldG: number
 	recipeId: number

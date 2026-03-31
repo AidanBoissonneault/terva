@@ -44,6 +44,7 @@ onMounted(async () => {
 	const loading = useLoadingStore()
 	loading.start()
 
+	// get the current bean and extract it
 	const currentBeanStore = useCurrentBeanStore()
 	currentBean.value = currentBeanStore.get()
 
@@ -61,6 +62,7 @@ onMounted(async () => {
 
 		// save data
 		data.value = dataPayload.payload
+
 	} catch (err) {
 		if (err instanceof Error) error.value = err.message
 		else error.value = 'An unknown error occurred'
@@ -70,12 +72,20 @@ onMounted(async () => {
 })
 
 function formSubmitted() {
+
+	//ensure brew exists
 	if (!newBrew.value)
 		return
+
+	// get the bean id and upload it in
+	newBrew.value.beanId = currentBean.value?.id ? currentBean.value.id : -1
+
+	// set up the transfer brew
 	const transferBrew = useBrewTransferStore()
 
 	transferBrew.set(newBrew.value)
 
+	// change screens
 	router.push({ name: 'endbrew' })
 }
 </script>

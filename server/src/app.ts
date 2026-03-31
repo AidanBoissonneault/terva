@@ -6,6 +6,7 @@ import getGear from './getGear/getGear.js'
 import getRecipes from './getRecipes/getRecipes.js'
 import addGear from './addGear/addGear.js'
 import removeGear from './removeGear/removeGear.js'
+import addBrew from './addBrew/addBrew.js'
 
 const { CLIENT_PORT } = process.env
 
@@ -22,5 +23,6 @@ app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)
 app.use('/api/getRecipes', getRecipes)
+app.use('/api/addbrew', addBrew)
 
 export default app

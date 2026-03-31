@@ -13,9 +13,13 @@ import EndBrewDataForm from '@/components/EndBrew/EndBrewDataForm.vue';
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
 import { onMounted, ref } from 'vue';
 import { type Brew } from '@/types'
+import { addBrew } from '@/api/addBrew';
+import { useRouter } from 'vue-router';
 
 const currentBrew = ref<Brew>()
 const endingBrew = ref<Brew>()
+
+const router = useRouter()
 
 onMounted(() => {
 	const currentBrewTransfer = useBrewTransferStore()
@@ -23,7 +27,13 @@ onMounted(() => {
 })
 
 function formSubmitted() {
+	if (!endingBrew.value)
+		return
+
 	console.log(endingBrew.value)
+	addBrew(endingBrew.value, 1)
+
+	router.push({ name: 'dashboard' })
 }
 </script>
 

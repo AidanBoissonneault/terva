@@ -1,6 +1,7 @@
 // Remove gear api
 // This takes in an id (primary key) and a user.
 // Deletes the gear from the database.
+// CREATED: 26MAR2026
 // LAST EDITED: 26MAR2026
 // By: Aidan Boissonneault
 

@@ -1,6 +1,7 @@
 // Add gear api
 // This is used when gear is added in the gear menu,
 // and submits the written gear into the database.
+// CREATED: 26MAR2026
 // LAST EDITED: 26MAR2026
 // By: Aidan Boissonneault
 

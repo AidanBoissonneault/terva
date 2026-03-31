@@ -81,12 +81,13 @@ CREATE TABLE recipe_steps (
 
 CREATE TABLE brews (
   id            INT AUTO_INCREMENT PRIMARY KEY,
+  user_id       INT NOT NULL DEFAULT 1,
   bean_id       INT NOT NULL,
   recipe_id     INT,
   brewer_id     INT,
   closeness     ENUM('success', 'close', 'miss') NOT NULL,
-  profile       FLOAT, -- 0 - 100, 0: 'bitter', 50: 'balanced', 100: 'sour'
-  body          FLOAT, --0 - 100, 0: light, 50: medium, 100: heavy
+  profile       FLOAT,  -- 0–100, 0: bitter, 50: balanced, 100: sour
+  body          FLOAT,  -- 0–100, 0: light, 50: medium, 100: heavy
   grinder_id    INT,
   grind_size    FLOAT,
   dose_g        FLOAT,

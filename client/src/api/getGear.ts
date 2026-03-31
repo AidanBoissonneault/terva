@@ -1,5 +1,6 @@
 // Get gear api
 // This returns all relevant gear from the database.
+// CREATED: 26MAR2026
 // LAST EDITED: 26MAR2026
 
 import axios from 'axios'

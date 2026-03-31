@@ -1,6 +1,7 @@
 // Get beans api
 // This retrieves all relevant beans to the user
 // from the database.
+// CREATED: 26MAR2026
 // LAST EDITED: 26MAR2026
 // By: Aidan Boissonneault
 

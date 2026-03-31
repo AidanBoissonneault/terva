@@ -21,6 +21,7 @@ const modelValue = defineModel<Brew>({
 		yieldG: 0,
 		recipeId: 0,
 		brewerId: 0,
+		notes: "",
 	}
 })
 
@@ -66,9 +67,9 @@ onMounted(() => {
 		<label class="large">
 			<small>How was your brew?</small>
 			<div class="closeness-button-container">
-				<button @click="form.closeness = 'success'" :class=" { contrast: form.closeness === 'success' }" class="glass">Success</button>
-				<button @click="form.closeness = 'close'" :class=" { contrast: form.closeness === 'close' }" class="glass">Close</button>
-				<button @click="form.closeness = 'miss'" :class=" { contrast: form.closeness === 'miss' }" class="glass">Miss</button>
+				<button @click="form.closeness = 'success'" :class=" { contrast: form.closeness === 'success' }" class="glass" type="button">Success</button>
+				<button @click="form.closeness = 'close'" :class=" { contrast: form.closeness === 'close' }" class="glass" type="button">Close</button>
+				<button @click="form.closeness = 'miss'" :class=" { contrast: form.closeness === 'miss' }" class="glass" type="button">Miss</button>
 			</div>
 		</label>
 
@@ -93,6 +94,10 @@ onMounted(() => {
 		</label>
 		<SectionSeperator />
 
+		<small>Notes</small>
+		<textarea cols="30" rows="5" placeholder="Tell us about your brew." maxlength="500" v-model="form.notes"></textarea>
+
+		<SectionSeperator />
 		<button type="submit" class="big-text glass">End Brew</button>
 	</form>
 </template>
