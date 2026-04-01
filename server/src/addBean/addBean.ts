@@ -1,3 +1,11 @@
+// Add Beans API
+// Adds beans to the sql database, and creates the colours.
+// CREATED: 01APR2026
+// BY: Aidan Boissonneault
+
+// TODO: 
+// Make all colours outputted not the same.
+
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import type { ResultSetHeader } from 'mysql2'
@@ -127,7 +135,7 @@ variety
 
     const flavourHues = []
     for (let i = 0; i < (flavourNote.length > 3 ? 3 : flavourNote.length); i++) {
-      flavourHues.push(stringToHue(flavourNote[0] ?? ""))
+      flavourHues.push(stringToHue(flavourNote[i] ?? ""))
     }
 
     if (flavourHues.length === 0) {
