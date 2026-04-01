@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { TabButton } from '@terva/shared'
+import type { TabButton } from '@/types'
 import TabIcon from './TabIcon.vue'
 
 const tabs = <TabButton[]>[

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TabLink from '@/components/MoreView/TabLink.vue';
 import router from '@/router';
-import { type TabLinkType } from '@terva/shared';
+import { type TabLinkType } from '@/types';
 
 // tabs clickable in the more menu
 // to add additional tabs, place the relevant info in here.

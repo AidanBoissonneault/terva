@@ -76,7 +76,7 @@ function clone(obj: AddBeanForm) {
 		</label>
 		<label>
 			Elevation (in meters)
-			<input type="text" v-model.number="form.elevation_m" placeholder="2200">
+			<input type="text" v-model.number="form.elevationM" placeholder="2200">
 		</label>
 		<label class="centered large">
 			<div class="seperated">

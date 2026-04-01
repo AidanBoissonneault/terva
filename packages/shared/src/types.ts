@@ -23,10 +23,10 @@ export interface AddBeanForm {
 	origin?: string
 	variety?: string
 	process?: string
-	elevation_m?: number
-	roast_level?: number
-	status: BeanState
-	flavour_summary?: string
+	elevationM?: number
+	roastLevel?: number
+	state: BeanState
+	flavourNotes?: string
 }
 
 // ─────────────────────────────────────────
@@ -41,15 +41,6 @@ export type CheckedJSON<T> =
 		success: false
 		error: string
 	}
-
-// ─────────────────────────────────────────
-//  Tab Bar Button
-// ─────────────────────────────────────────
-export interface TabButton {
-	icon: string
-	text: string
-	route: string
-}
 
 // ─────────────────────────────────────────
 //  Gear
@@ -68,16 +59,6 @@ export type GearCategory =
 	| 'scale'
 	| 'brewer'
 	| 'espresso_machine'
-
-// ─────────────────────────────────────────
-//  Tab Link
-// ─────────────────────────────────────────
-
-export interface TabLinkType {
-	icon: string
-	name: string
-	route: string
-}
 
 // ─────────────────────────────────────────
 //  Brew
