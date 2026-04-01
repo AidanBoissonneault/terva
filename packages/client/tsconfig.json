@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@terva/shared": ["../shared/src/index.ts"],
+      "@terva/shared/*": ["../shared/src/*"]
+    }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}

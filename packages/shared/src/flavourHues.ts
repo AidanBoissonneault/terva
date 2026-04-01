@@ -1,0 +1,1 @@
+export const noError = 1
