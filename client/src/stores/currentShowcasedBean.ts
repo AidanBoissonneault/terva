@@ -10,6 +10,7 @@ import { type Bean } from '@/types'
 
 const defaultBean: Bean = {
 	name: "Error Loading Bean",
+	id: -1,
 	variety: "Go back to dashboard and reload.",
 	status: "finished",
 	pri_hue: 0,

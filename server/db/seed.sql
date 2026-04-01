@@ -1,143 +1,110 @@
+-- ─────────────────────────────────────────
+--  SEED DATA — husk
+-- ─────────────────────────────────────────
+
 USE husk;
-
--- ─────────────────────────────────────────
---  FLAVOUR NOTES
--- ─────────────────────────────────────────
-
-INSERT INTO flavour_note (note, hue) VALUES
-  ('default',      0.0),    -- 1
-  ('strawberry',   12.0),   -- 2
-  ('peach',        38.0),   -- 3
-  ('lemon curd',   72.0),   -- 4
-  ('stone fruit',  28.0),   -- 5
-  ('hibiscus',     340.0),  -- 6
-  ('jasmine',      68.0),   -- 7
-  ('rose',         358.0),  -- 8
-  ('bergamot',     290.0),  -- 9
-  ('hazelnut',     48.0),   -- 10
-  ('almond',       52.0),   -- 11
-  ('brown sugar',  55.0),   -- 12
-  ('caramel',      50.0),   -- 13
-  ('cedar',        80.0),   -- 14
-  ('cocoa',        32.0),   -- 15
-  ('blackcurrant', 298.0),  -- 16
-  ('blueberry',    268.0),  -- 17
-  ('orange zest',  42.0),   -- 18
-  ('dark cherry',  354.0),  -- 19
-  ('vanilla',      65.0),   -- 20
-  ('toffee',       46.0),   -- 21
-  ('grapefruit',   78.0),   -- 22
-  ('plum',         318.0),  -- 23
-  ('honey',        58.0);   -- 24
 
 -- ─────────────────────────────────────────
 --  BEANS
 -- ─────────────────────────────────────────
 
-INSERT INTO beans (id, user, name, roaster, origin, variety, process, roast_level, elevation_m, status, flavour_summary) VALUES
-  (1, 1, 'Kayon Mountain',   'Onyx Coffee',     'Ethiopia',  'Heirloom',       'Natural', 50, 2200, 'fresh',    'Strawberry, Hibiscus, Lemon Curd'),
-  (2, 1, 'Las Margaritas',   'Counter Culture', 'Colombia',  'Castillo',       'Washed',  42, 1750, 'fresh',    'Hazelnut, Cocoa, Brown Sugar'),
-  (3, 1, 'Kiambu AB',        'Blue Bottle',     'Kenya',     'SL28',           'Washed',  73, 1900, 'fresh',    'Blackcurrant, Jasmine, Bergamot'),
-  (4, 1, 'La Palma',         'Onyx Coffee',     'Guatemala', 'Bourbon',        'Honey',   10, 1600, 'frozen',   'Caramel, Almond, Stone Fruit'),
-  (5, 1, 'Yirgacheffe G1',   'Intelligentsia',  'Ethiopia',  'Heirloom',       'Washed',  20, 2100, 'finished', 'Blueberry, Jasmine, Lemon Curd'),
-  (6, 1, 'Huila Decaf',      'Detour Coffee',   'Colombia',  'Castillo',       'Washed',  38, 1850, 'fresh',    'Toffee, Orange Zest, Vanilla'),
-  (7, 1, 'Nyanza Lot 12',    'Pilot Coffee',    'Rwanda',    'Red Bourbon',    'Natural', 30, 1950, 'fresh',    'Dark Cherry, Rose, Plum'),
-  (8, 1, 'Fazenda Ambiental','Monogram Coffee',  'Brazil',    'Yellow Bourbon', 'Pulped Natural', 65, 1100, 'fresh', 'Hazelnut, Toffee, Honey');
+INSERT INTO beans (user, name, roaster, origin, variety, process, flavour_summary, roast_level, elevation_m, status) VALUES
+(1, 'Kayon Mountain Guracho', 'Monogram Coffee', 'Ethiopia', 'Heirloom', 'Natural', 'Blueberry, dark chocolate, jasmine', 18, 2100, 'fresh'),
+(1, 'La Palma y El Tucán Sidra', 'Pilot Coffee', 'Colombia', 'Sidra', 'Washed', 'Peach, rose water, honey, caramel', 22, 1850, 'fresh'),
+(1, 'Finca El Paraíso Gesha', 'Detour Coffee', 'Colombia', 'Gesha', 'Double Anaerobic Washed', 'Lychee, passionfruit, white tea', 14, 1950, 'frozen'),
+(1, 'Huila Caturra', 'Sam James Coffee Bar', 'Colombia', 'Caturra', 'Washed', 'Brown sugar, almond, orange zest', 38, 1700, 'fresh'),
+(1, 'Yirgacheffe Kochere', 'Pilot Coffee', 'Ethiopia', 'Heirloom', 'Washed', 'Lemon curd, green tea, bergamot', 20, 1980, 'finished');
 
 -- ─────────────────────────────────────────
---  BEAN PALETTES
+--  BEAN PALETTES  (OKLCH-derived hues)
 -- ─────────────────────────────────────────
 
-INSERT INTO bean_palette (bean_id, pri_note, sec_note, acc_note) VALUES
-  (1, 2,  6,  4),   -- Kayon Mountain:    strawberry / hibiscus / lemon curd
-  (2, 10, 15, 12),  -- Las Margaritas:    hazelnut / cocoa / brown sugar
-  (3, 16, 7,  9),   -- Kiambu AB:         blackcurrant / jasmine / bergamot
-  (4, 13, 11, 5),   -- La Palma:          caramel / almond / stone fruit
-  (5, 17, 7,  4),   -- Yirgacheffe G1:    blueberry / jasmine / lemon curd
-  (6, 21, 18, 20),  -- Huila Decaf:       toffee / orange zest / vanilla
-  (7, 19, 8,  23),  -- Nyanza Lot 12:     dark cherry / rose / plum
-  (8, 10, 21, 24);  -- Fazenda Ambiental: hazelnut / toffee / honey
+INSERT INTO bean_palette (bean_id, pri_hue, sec_hue, acc_hue) VALUES
+(1, 320, 270, 30),   -- blueberry / chocolate / amber
+(2, 45,  18,  340),  -- peach / caramel / rose
+(3, 160, 80,  50),   -- lychee-green / gold / passionfruit
+(4, 35,  25,  200),  -- brown sugar / almond / citrus blue
+(5, 75,  180, 55);   -- green tea / bergamot teal / lemon
 
 -- ─────────────────────────────────────────
 --  GEAR
 -- ─────────────────────────────────────────
 
-INSERT INTO gear (id, name, type, notes, user) VALUES
-  (1, 'Comandante C40',     'grinder',          '25 clicks for V60. 18 clicks for AeroPress.',  1),
-  (2, 'Fellow Stagg EKG',   'kettle',           '93C for light roasts, 88C for dark.',          1),
-  (3, 'Acaia Pearl',        'scale',            'Flow rate mode enabled.',                       1),
-  (4, 'Hario V60 02',       'brewer',           'Plastic. Faster drain than ceramic.',           1),
-  (5, 'Gaggia Classic Pro', 'espresso_machine', 'OPV set to 9 bar. PID modded.',                1),
-  (6, 'AeroPress',          'brewer',           'Used inverted. Cap loosened slightly on press.',1),
-  (7, 'Niche Zero',         'grinder',          'Single dose. 28 on the dial for V60.',         1);
+INSERT INTO gear (name, type, notes, user) VALUES
+('Comandante C40 MK4',       'grinder',          'Red clix installed. Daily driver for filter.',    1),
+('DF64 Gen 2',               'grinder',          'SSP Unimodal burrs. Used for espresso.',          1),
+('Fellow Stagg EKG Pro',     'kettle',            '1.0L. Hold temp set to 93°C for most brews.',    1),
+('Acaia Pearl Model S',      'scale',             'Auto-tare. Used for all pour-overs.',             1),
+('Hario V60-02 (Glass)',     'brewer',            'With Cafec Abaca+ filters.',                     1),
+('Origami Dripper (Large)',  'brewer',            'Used with Kalita Wave filters.',                 1),
+('Flair 58x',                'espresso_machine',  'Stock piston. Preheating with boiling water.',   1);
 
 -- ─────────────────────────────────────────
 --  RECIPES
 -- ─────────────────────────────────────────
 
-INSERT INTO recipes (id, name, brew_method) VALUES
-  (1, '4:6 Method',         'pourover'),
-  (2, 'Classic Espresso',   'espresso'),
-  (3, 'Aeropress Inverted', 'aeropress'),
-  (4, 'Single Origin Flat', 'espresso');
+INSERT INTO recipes (name, brew_method, user) VALUES
+('4-6 Method Classic',   'V60',          1),
+('Rao Allongé',          'V60',          1),
+('Origami Immersion',    'Origami',      1),
+('Flair Espresso Shot',  'Espresso',     1);
 
+-- ─────────────────────────────────────────
+--  RECIPE STEPS
+-- ─────────────────────────────────────────
+
+-- 4-6 Method Classic (recipe 1)
 INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
-  -- 4:6 Method
-  (1, 1, 'Bloom: pour 50g water',               45),
-  (1, 2, 'First pour: add 100g (total 150g)',   45),
-  (1, 3, 'Second pour: add 100g (total 250g)',  45),
-  (1, 4, 'Third pour: add 100g (total 350g)',   45),
-  (1, 5, 'Drawdown',                            60),
-  -- Classic Espresso
-  (2, 1, 'Dose 18g, distribute and tamp',       20),
-  (2, 2, 'Extract to 36g yield',                28),
-  -- Aeropress Inverted
-  (3, 1, 'Add 15g coffee, pour 50g water',      30),
-  (3, 2, 'Stir 10 times',                       10),
-  (3, 3, 'Add remaining 200g water',            20),
-  (3, 4, 'Steep',                               90),
-  (3, 5, 'Flip and press slowly',               30),
-  -- Single Origin Flat (longer ratio, lighter extraction)
-  (4, 1, 'Dose 17g, WDT and tamp',             25),
-  (4, 2, 'Pre-infuse at low pressure 5s',        5),
-  (4, 3, 'Extract to 51g yield (1:3)',           35);
+(1, 1, 'Bloom — pour 50g water',    45),
+(1, 2, 'Pour to 150g (1st main)',   40),
+(1, 3, 'Pour to 200g (2nd main)',   40),
+(1, 4, 'Pour to 250g (3rd main)',   40),
+(1, 5, 'Pour to 300g (4th main)',   40),
+(1, 6, 'Draw down',                 60);
+
+-- Rao Allongé (recipe 2)
+INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
+(2, 1, 'Bloom — pour 60g water',    30),
+(2, 2, 'Continuous pour to 360g',   90),
+(2, 3, 'Draw down',                 60);
+
+-- Origami Immersion (recipe 3)
+INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
+(3, 1, 'Saturate grounds — 50g',    10),
+(3, 2, 'Pour to 250g',              20),
+(3, 3, 'Steep with lid on',        240),
+(3, 4, 'Open valve and draw down',  90);
+
+-- Flair Espresso Shot (recipe 4)
+INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
+(4, 1, 'Preheat piston and basket', 120),
+(4, 2, 'Dose and distribute 18g',    20),
+(4, 3, 'Tamp at ~15kg pressure',     10),
+(4, 4, 'Pre-infuse at 2–3 bar',      10),
+(4, 5, 'Pull shot to 36g yield',     25),
+(4, 6, 'Rest and taste',             30);
 
 -- ─────────────────────────────────────────
 --  BREWS
 -- ─────────────────────────────────────────
 
-INSERT INTO brews (bean_id, recipe_id, brewer_id, grinder_id, closeness, profile, body, grind_size, dose_g, yield_g, time_seconds, notes) VALUES
-  -- Kayon Mountain on V60
-  (1, 1, 4, 1, 'success', 0.5, 0.1,  28.0, 15.0, 250.0, 195, 'Clean and bright. Strawberry really came through.'),
-  (1, 1, 4, 1, 'close',   0.5, 0.2,  26.0, 15.0, 250.0, 180, 'Slightly fast drawdown. Tighten grind next time.'),
-  (1, 1, 4, 7, 'success', 0.5, 0.2,  29.0, 15.0, 250.0, 205, 'Tried Niche Zero. Hibiscus note more prominent. Lovely.'),
+INSERT INTO brews (user_id, bean_id, recipe_id, brewer_id, grinder_id, grind_size, dose_g, yield_g, time_seconds, closeness, profile, body, notes, brewed_at) VALUES
+-- Kayon Mountain on V60 4-6
+(1, 1, 1, 5, 1, 24.0, 20.0, 300.0, 210, 'success', 52.0, 45.0, 'Blueberry jam on the nose. Sweet and clean. Best cup in a while.', '2025-03-01 08:12:00'),
+(1, 1, 1, 5, 1, 22.0, 20.0, 300.0, 198, 'close',   38.0, 40.0, 'Slightly astringent. Grind too fine maybe.', '2025-03-03 08:30:00'),
 
-  -- Las Margaritas on espresso
-  (2, 2, 5, 1, 'success', 0.7, 0.9,  NULL, 18.0,  36.0,  27, 'Dialled in well. Rich and chocolatey.'),
-  (2, 2, 5, 1, 'close',   0.2, 0.6,  NULL, 18.0,  32.0,  31, 'Over-extracted. Try coarser or shorter time.'),
-  (2, 2, 5, 7, 'success', 0.4, 1.0,  NULL, 18.0,  36.0,  26, 'Niche Zero on espresso — very consistent puck. Best shot yet.'),
+-- La Palma Sidra on Rao Allongé
+(1, 2, 2, 5, 1, 26.0, 15.0, 240.0, 195, 'success', 68.0, 38.0, 'Insanely floral and bright. Like drinking a fruit tea.', '2025-03-06 09:00:00'),
+(1, 2, 2, 5, 1, 25.0, 15.0, 240.0, 205, 'close',   60.0, 35.0, 'Good but slightly hollow in mid-palate.', '2025-03-08 08:45:00'),
 
-  -- Kiambu AB on AeroPress and V60
-  (3, 3, 6, 1, 'miss',    0.9, 0.3,  30.0, 15.0, 230.0, 120, 'Steep too short. Bergamot but very sharp.'),
-  (3, 1, 4, 1, 'close',   0.6, 0.3,  27.0, 15.0, 250.0, 200, 'Better. Still needs tweaking on first pour ratio.'),
-  (3, 3, 6, 1, 'success', 0.5, 0.3,  30.0, 15.0, 230.0, 150, 'Extended steep by 30s. Bergamot softened nicely.'),
+-- Gesha on Origami Immersion
+(1, 3, 3, 6, 1, 25.0, 15.0, 250.0, 360, 'success', 72.0, 42.0, 'Wild. Lychee and white grape. Immersion really works for this coffee.', '2025-03-10 07:55:00'),
 
-  -- La Palma on V60
-  (4, 1, 4, 1, 'success', 0.5, 0.5, 27.0, 15.0, 250.0, 190, 'Honey process adds sweetness nicely. Very approachable.'),
-  (4, 1, 4, 7, 'success', 0.4, 0.5, 28.0, 15.0, 250.0, 193, 'Stone fruit note much clearer with Niche. Will freeze the rest of the bag.'),
+-- Huila Caturra espresso
+(1, 4, 4, 7, 2, 2.2, 18.0, 36.0,  28,  'success', 50.0, 65.0, 'Balanced, nutty, brown sugar finish. Classic.', '2025-03-12 08:00:00'),
+(1, 4, 4, 7, 2, 2.0, 18.0, 36.0,  24,  'miss',    30.0, 70.0, 'Under-extracted. Sour and thin. Grind finer.', '2025-03-13 08:05:00'),
+(1, 4, 4, 7, 2, 2.4, 18.0, 38.0,  32,  'close',   55.0, 68.0, 'Slightly bitter on the tail but body is great.', '2025-03-14 07:58:00'),
 
-  -- Yirgacheffe G1 on AeroPress (finished bag)
-  (5, 3, 6, 1, 'success', 0.3, 0.4,  29.0, 15.0, 220.0, 110, 'Blueberry and jasmine clean and clear. Perfect steep.'),
-  (5, 3, 6, 1, 'close',   0.5, 0.2,  29.0, 15.0, 220.0, 115, 'Last of the bag. Slightly past peak but still great.'),
-
-  -- Huila Decaf on V60
-  (6, 1, 4, 1, 'close',   0.3, 0.5, 27.0, 15.0, 250.0, 188, 'Good body for a decaf. Orange zest in the finish.'),
-  (6, 1, 4, 1, 'success', 0.6, 0.5, 26.0, 15.0, 250.0, 192, 'Dialled in. Vanilla and toffee come through. Solid evening brew.'),
-
-  -- Nyanza Lot 12 on Single Origin Flat espresso
-  (7, 4, 5, 7, 'close',   0.5, 0.4, NULL, 17.0,  51.0,  33, 'Dark cherry on the nose. Pre-infusion helped. Slightly short on yield.'),
-  (7, 4, 5, 7, 'success', 0.5, 0.3, NULL, 17.0,  51.0,  36, 'Nailed it. Rose and dark cherry as a flat white — exceptional.'),
-
-  -- Fazenda Ambiental on espresso and V60
-  (8, 2, 5, 7, 'success', 0.4, 1.0,  NULL, 18.0,  36.0,  25, 'Nutty and rich. Classic Brazilian profile. Great daily driver.'),
-  (8, 1, 4, 7, 'close',   0.3, 0.7, 30.0, 15.0, 250.0, 185, 'Interesting on pourover. Honey note clear but slightly flat. Prefer it as espresso.');
+-- Yirgacheffe on V60 4-6 (finished bag)
+(1, 5, 1, 5, 1, 23.0, 20.0, 300.0, 202, 'success', 65.0, 36.0, 'Lemon curd and bergamot. Very clean and light. Last bag gone.', '2025-02-20 08:20:00'),
+(1, 5, 1, 5, 1, 21.0, 20.0, 300.0, 190, 'close',   55.0, 34.0, 'Green and grassy. Could have rested longer off roast.', '2025-02-15 08:10:00');

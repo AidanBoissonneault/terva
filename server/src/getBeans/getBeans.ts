@@ -20,19 +20,16 @@ router.get('/', async (req, res) => {
     b.flavour_summary,
 
     -- Primary note
-    fn_pri.hue       AS pri_hue,
+    bp.pri_hue,
 
     -- Secondary note
-    fn_sec.hue       AS sec_hue,
+    bp.sec_hue,
 
     -- Accent note
-    fn_acc.hue       AS acc_hue
+    bp.acc_hue
 
   FROM beans b
   LEFT JOIN bean_palette bp       ON bp.bean_id      = b.id
-  LEFT JOIN flavour_note fn_pri   ON fn_pri.id        = bp.pri_note
-  LEFT JOIN flavour_note fn_sec   ON fn_sec.id        = bp.sec_note
-  LEFT JOIN flavour_note fn_acc   ON fn_acc.id        = bp.acc_note
 
   WHERE b.user = ?
   ORDER BY b.last_used DESC;

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { addBean } from '@/api/addBeans';
 import BeanForm from '@/components/BeanForm/BeanForm.vue';
 import type { AddBeanForm } from '@/types';
 import { ref } from 'vue';
@@ -11,9 +12,12 @@ const router = useRouter()
 
 // ran when the form to add a bean is submitted
 function getFormSubmit() {
+	if(!bean.value)
+		return
+
 	console.log(bean.value)
 
-	// TODO: add bean to database
+	addBean(bean.value, 1)
 
 	router.push({ name: "dashboard" })
 }

@@ -1,5 +1,8 @@
 // Add brew API
-// receives data
+// receives data from the end brew form
+// and logs to DB
+// CREATED: 31MAR2026
+// By: Aidan Boissonneault
 
 import { Router } from 'express'
 import connection from '../db/connection.js'

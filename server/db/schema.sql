@@ -22,22 +22,13 @@ CREATE TABLE beans (
   last_used       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE flavour_note (
-  id          INT AUTO_INCREMENT PRIMARY KEY,
-  note        VARCHAR(50) NOT NULL,
-  hue         FLOAT NOT NULL
-);
-
 CREATE TABLE bean_palette (
   id       INT AUTO_INCREMENT PRIMARY KEY,
   bean_id  INT NOT NULL,
-  pri_note INT NOT NULL,
-  sec_note INT NOT NULL,
-  acc_note INT NOT NULL,
-  FOREIGN KEY (bean_id)  REFERENCES beans(id) ON DELETE CASCADE,
-  FOREIGN KEY (pri_note) REFERENCES flavour_note(id) ON DELETE CASCADE,
-  FOREIGN KEY (sec_note) REFERENCES flavour_note(id) ON DELETE CASCADE,
-  FOREIGN KEY (acc_note) REFERENCES flavour_note(id) ON DELETE CASCADE
+  pri_hue INT NOT NULL,
+  sec_hue INT NOT NULL,
+  acc_hue INT NOT NULL,
+  FOREIGN KEY (bean_id)  REFERENCES beans(id) ON DELETE CASCADE
 );
 
 -- ─────────────────────────────────────────

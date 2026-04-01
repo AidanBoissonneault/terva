@@ -76,7 +76,7 @@ function clone(obj: AddBeanForm) {
 		</label>
 		<label>
 			Elevation (in meters)
-			<input type="text" v-model="form.elevation_m" placeholder="2200">
+			<input type="text" v-model.number="form.elevation_m" placeholder="2200">
 		</label>
 		<label class="centered large">
 			<div class="seperated">
@@ -84,7 +84,7 @@ function clone(obj: AddBeanForm) {
 				<span>Roast Level</span>
 				<span>Dark</span>
 			</div>
-			<input type="range" min="0" max="100" value="50" class="slider" v-model="form.roastLevel">
+			<input type="range" min="0" max="100" value="50" class="slider" v-model.number="form.roastLevel">
 		</label>
 
 		<label class="large">

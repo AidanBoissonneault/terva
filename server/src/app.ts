@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import testRoute from './test/test.js'
 import getBeans from './getBeans/getBeans.js'
+import addBean from './addBean/addBean.js'
 import getGear from './getGear/getGear.js'
 import getRecipes from './getRecipes/getRecipes.js'
 import addGear from './addGear/addGear.js'
@@ -19,6 +20,7 @@ const app = express()
 app.use(express.json())
 app.use('/api/test', testRoute)
 app.use('/api/getbeans', getBeans)
+app.use('/api/addbean', addBean)
 app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)
