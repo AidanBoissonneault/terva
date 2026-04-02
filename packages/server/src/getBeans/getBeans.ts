@@ -13,11 +13,11 @@ router.get('/', async (req, res) => {
     b.origin,
     b.variety,
     b.process,
-    b.roast_level,
-    b.elevation_m,
-    b.status,
+    b.roast_level AS roastLevel,
+    b.elevation_m AS elevationM,
+    b.status AS state,
     b.created_at,
-    b.flavour_summary,
+    b.flavour_summary AS flavourNotes,
 
     -- Primary note
     bp.pri_hue,

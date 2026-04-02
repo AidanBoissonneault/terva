@@ -37,7 +37,7 @@ const filteredBeans = computed(() => {
 
 	if (!activeFilter.value) return beans.value
 
-  return beans.value.filter((bean: Bean) => bean.status === activeFilter.value)
+  return beans.value.filter((bean: Bean) => bean.state === activeFilter.value)
 })
 
 // sets the current filter to a new filter.

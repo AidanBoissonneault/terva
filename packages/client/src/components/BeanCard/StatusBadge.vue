@@ -4,7 +4,7 @@ import { computed } from 'vue';
 
 
 const props = defineProps<{
-	status: BeanState
+	state: BeanState
 }>()
 
 // brightness of colour
@@ -12,7 +12,7 @@ const brightness = 400
 
 // calculated based on bean status
 const colour = computed(() => {
-	switch (props.status) {
+	switch (props.state) {
 		case 'fresh':
 			return `var(--green-${brightness})`
 		case 'frozen':

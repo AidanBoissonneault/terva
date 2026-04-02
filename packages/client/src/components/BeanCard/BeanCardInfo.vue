@@ -13,17 +13,17 @@ const props = defineProps<{
 	<div>
 		<span class="apart">
 			<h2>{{ bean.name }}</h2>
-			<StatusBadge :status="bean.status" />
+			<StatusBadge :state="bean.state" />
 		</span>
 		<span class="apart">
-			<small v-if="!!bean.roast_level">{{ getRoastLevelString(bean.roast_level) }} Roast</small>
+			<small v-if="!!bean.roastLevel">{{ getRoastLevelString(bean.roastLevel) }} Roast</small>
 			<small v-if="!!bean.roaster">{{ bean.roaster }}</small>
 		</span>
 		<div class="seperator"></div>
 		<small>
 			{{ bean.variety }}<span v-if="!!bean.process"><span v-if="!!bean.variety">, </span>{{ bean.process }}</span> <br />
-			{{ bean.origin }}<span v-if="!!bean.elevation_m"><span v-if="bean.origin">, </span>{{ bean.elevation_m }} MASL</span> <br />
-			{{ bean.flavour_summary }}
+			{{ bean.origin }}<span v-if="!!bean.elevationM"><span v-if="bean.origin">, </span>{{ bean.elevationM }} MASL</span> <br />
+			{{ bean.flavourNotes }}
 		</small>
 	</div>
 </template>

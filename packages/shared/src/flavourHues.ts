@@ -13,7 +13,7 @@ export function getFlavourHue(note: string): number | null {
   // Exact match
   if (key in hues) return hues[key as keyof typeof hues]
 
-  // Partial match — finds "black cherry" inside "black cherry jam"
+  // Partial match ex: finds "black cherry" inside "black cherry jam"
   const match = Object.keys(hues).find(k => key.includes(k) || k.includes(key))
   return match ? hues[match as keyof typeof hues] : null
 }

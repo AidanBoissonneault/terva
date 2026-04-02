@@ -22,7 +22,7 @@ onMounted(() => {
 
 // get chroma store and calculate
 const chromaCalculator = useChromaStore()
-const chroma = ref(chromaCalculator.getChroma(props.bean.status))
+const chroma = ref(chromaCalculator.getChroma(props.bean.state))
 
 // calculate colors
 const priColor = computed(() =>
@@ -37,7 +37,7 @@ const accColor = computed(() =>
 
 // calculate elevation from 0-1 to use as a scale for calculating positions in colours
 const elevationNorm = computed(() =>
-	Math.min((props.bean.elevation_m ?? 0) / 3000, 1)
+	Math.min((props.bean.elevationM ?? 0) / 3000, 1)
 )
 
 // calculate colours positions
