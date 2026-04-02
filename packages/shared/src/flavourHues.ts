@@ -7,7 +7,7 @@
 
 import hues from './coffee-flavour-hues.json' assert { type: 'json' }
 
-export function getFlavorHue(note: string): number | null {
+export function getFlavourHue(note: string): number | null {
   const key = note.toLowerCase().trim()
 
   // Exact match
@@ -19,5 +19,5 @@ export function getFlavorHue(note: string): number | null {
 }
 
 export function getFlavorHues(notes: string[]): Record<string, number | null> {
-  return Object.fromEntries(notes.map(n => [n, getFlavorHue(n)]))
+  return Object.fromEntries(notes.map(n => [n, getFlavourHue(n)]))
 }

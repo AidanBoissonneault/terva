@@ -9,7 +9,8 @@
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import type { ResultSetHeader } from 'mysql2'
-import type { AddBeanForm, Bean } from '@terva/shared'
+import { type AddBeanForm } from '@terva/shared'
+import { getFlavourHue } from '@terva/shared'
 
 const router = Router()
 
@@ -74,17 +75,22 @@ router.post<{}, { id: number } | { error: string }, AddBeanForm & { user: string
 
     const flavourNote: string[] = (flavourNotes ?? '').split(',').map((note: string) => note.trim())
 
-    const flavourHues = []
-    for (let i = 0; i < (flavourNote.length > 3 ? 3 : flavourNote.length); i++) {
-      flavourHues.push(stringToHue(flavourNote[i] ?? ""))
-    }
+    // Build hue list from flavour notes
+const flavourHues: number[] = []
 
-    if (flavourHues.length === 0) {
-      flavourHues.push(10)
-    }
+for (const note of flavourNote) {
+  const hue = getFlavourHue(note)
+  if (hue !== null) {
+    flavourHues.push(hue)
+  }
+}
 
     while(flavourHues.length < 3) {
-      flavourHues.push(flavourHues[0])
+      if (flavourHues.length === 0)
+        flavourHues.push(10)
+      const firstHue = flavourHues[0]
+      if (firstHue !== undefined)
+        flavourHues.push(firstHue)
     }
 
  const colourQuery = `
