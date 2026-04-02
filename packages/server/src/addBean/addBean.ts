@@ -3,9 +3,6 @@
 // CREATED: 01APR2026
 // BY: Aidan Boissonneault
 
-// TODO:
-// Make all colours outputted not the same.
-
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import type { ResultSetHeader } from 'mysql2'
@@ -13,18 +10,6 @@ import { type AddBeanForm } from '@terva/shared'
 import { getFlavourHue } from '@terva/shared'
 
 const router = Router()
-
-function stringToHue(str: string) {
-	let hash = 0
-	for (let i = 0; i < str.length; i++) {
-		// Generate a unique numeric hash
-		hash = str.charCodeAt(i) + ((hash << 5) - hash)
-	}
-
-	// Use the modulo operator to get a value between 0 and 360
-	// Math.abs ensures we don't get a negative degree
-	return Math.abs(hash % 361)
-}
 
 // insert bean into
 router.post<{}, { id: number } | { error: string }, AddBeanForm & { user: string }>(
@@ -73,11 +58,18 @@ router.post<{}, { id: number } | { error: string }, AddBeanForm & { user: string
 				flavourNotes,
 			])
 
+			// stores the ID of the returned bean
 			const beanId = result.insertId
 
-			const flavourNote: string[] = (flavourNotes ?? '')
+			// split the flavour notes
+			var flavourNote: string[] | string = (flavourNotes ?? '')
 				.split(',')
 				.map((note: string) => note.trim())
+
+			// if splitting failed, its possible the user seperated with spaces.
+			// in that case, split by spaces.
+			if (flavourNote.length === 1 && flavourNote[0])
+				flavourNote = (flavourNotes ?? '').split(' ').map((note: string) => note.trim())
 
 			// Build hue list from flavour notes
 			const flavourHues: number[] = []
@@ -89,22 +81,24 @@ router.post<{}, { id: number } | { error: string }, AddBeanForm & { user: string
 				}
 			}
 
+			// correct lists smaller than 3 to be equal to 3
 			while (flavourHues.length < 3) {
 				if (flavourHues.length === 0) flavourHues.push(10)
-				const firstHue = flavourHues[0]
+				const firstHue = flavourHues[flavourHues.length - 1]
 				if (firstHue !== undefined) flavourHues.push(firstHue)
 			}
 
 			const colourQuery = `
-  INSERT INTO bean_palette (
-    bean_id,
-    pri_hue,
-    sec_hue,
-    acc_hue
-  )
-  VALUES (?, ?, ?, ?)
- `
+				INSERT INTO bean_palette (
+					bean_id,
+					pri_hue,
+					sec_hue,
+					acc_hue
+				)
+				VALUES (?, ?, ?, ?)
+			`
 
+			// add to DB
 			const [resultColour] = await connection.query<ResultSetHeader>(colourQuery, [
 				beanId,
 				flavourHues[0],

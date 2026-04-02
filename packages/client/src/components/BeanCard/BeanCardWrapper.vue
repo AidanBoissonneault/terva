@@ -11,13 +11,13 @@ const emits = defineEmits<{
 	clicked: [Bean]
 }>()
 
-const lightness = ref('0.7') // fallback default
+const lightness = ref(0.7) // fallback default
 
 // reset lightness if possible
 onMounted(() => {
-	lightness.value = getComputedStyle(document.documentElement)
+	lightness.value = Number(getComputedStyle(document.documentElement)
 		.getPropertyValue('--lightness')
-		.trim()
+		.trim())
 })
 
 // get chroma store and calculate
@@ -29,16 +29,26 @@ const priColor = computed(() =>
 	`oklch(${lightness.value} ${chroma.value} ${props.bean.pri_hue})`
 )
 const secColor = computed(() =>
-	`oklch(${lightness.value} ${chroma.value} ${props.bean.sec_hue})`
+	`oklch(${lightness.value + 0.04} ${chroma.value} ${props.bean.sec_hue})`
 )
 const accColor = computed(() =>
-	`oklch(${lightness.value} ${chroma.value} ${props.bean.acc_hue})`
+	`oklch(${lightness.value + 0.08} ${chroma.value} ${props.bean.acc_hue})`
 )
 
 // calculate elevation from 0-1 to use as a scale for calculating positions in colours
-const elevationNorm = computed(() =>
-	Math.min((props.bean.elevationM ?? 0) / 3000, 1)
-)
+const elevationNorm = computed(() => {
+	const raw = props.bean.elevationM
+
+	if (!raw) return 0
+
+	// sanitize data
+	const match = String(raw).match(/\d+/)
+	const elevation = match ? Number(match[0]) : 0
+
+	if (Number.isNaN(elevation)) return 0
+
+	return Math.min(elevation / 3000, 1)
+})
 
 // calculate colours positions
 const g1x = computed(() => 10 + elevationNorm.value * 20)
@@ -64,14 +74,18 @@ button {
 }
 
 .bean-card {
+	position: relative;
+  isolation: isolate;
+
 	grid-column: 1 / 5;
 	border-radius: 12px;
 
 	box-sizing: border-box;
 
-	border: 1px inset oklch(from v-bind(priColor) l c h / 0.8);
+	border: 2px inset oklch(from v-bind(priColor) l c h / 0.2);
 
 	box-shadow:
+		0 0 0 1px oklch(from v-bind(priColor) l c h / 0.15),
 		0 4px 6px oklch(from var(--husk-shadow) l c h / 0.6),
 		0 2px 4px oklch(from v-bind(priColor) l c h / 0.35),
 		0 6px 12px oklch(from v-bind(secColor) l c h / 0.28),
@@ -79,20 +93,37 @@ button {
 	padding: 12px;
 	position: relative;
 	overflow: hidden;
-	background-color: var(--neutral-200);
-	background-image:
-		radial-gradient(ellipse 80% 100% at v-bind(g1x + '%') v-bind(g1y + '%'),
-			v-bind(priColor) 0%,
-			v-bind(priColor) 45%,
-			transparent 100%),
-		radial-gradient(ellipse 75% 110% at v-bind(g2x + '%') v-bind(g2y + '%'),
-			v-bind(secColor) 0%,
-			v-bind(secColor) 45%,
-			transparent 100%),
-		radial-gradient(ellipse 85% 100% at v-bind(g3x + '%') v-bind(g3y + '%'),
-			v-bind(accColor) 0%,
-			v-bind(accColor) 45%,
-			transparent 100%);
+
+	background:
+    linear-gradient(
+      rgba(255,255,255,0.25),
+      rgba(255,255,255,0.1)
+    ) border-box,
+
+    radial-gradient(
+      ellipse 80% 100% at v-bind(g1x + '%') v-bind(g1y + '%'),
+      v-bind(priColor) 0%,
+      v-bind(priColor) 30%,
+      transparent 80%
+    ) padding-box,
+
+    radial-gradient(
+      ellipse 75% 110% at v-bind(g2x + '%') v-bind(g2y + '%'),
+      v-bind(secColor) 0%,
+      v-bind(secColor) 30%,
+      transparent 80%
+    ) padding-box,
+
+    radial-gradient(
+      ellipse 85% 100% at v-bind(g3x + '%') v-bind(g3y + '%'),
+      v-bind(accColor) 0%,
+      v-bind(accColor) 30%,
+      transparent 80%
+    ) padding-box;
+
+		/* fallback background */
+		background-color: oklch(from var(--blue-900) l c h / 0.6);
+
 	z-index: 0;
 }
 
@@ -104,5 +135,7 @@ button {
 	filter: blur(30px);
 	opacity: 0.6;
 	z-index: -1;
+
+	background-clip: padding-box;
 }
 </style>

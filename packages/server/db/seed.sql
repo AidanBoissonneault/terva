@@ -9,11 +9,11 @@ USE husk;
 -- ─────────────────────────────────────────
 
 INSERT INTO beans (user, name, roaster, origin, variety, process, flavour_summary, roast_level, elevation_m, status) VALUES
-(1, 'Kayon Mountain Guracho', 'Monogram Coffee', 'Ethiopia', 'Heirloom', 'Natural', 'Blueberry, dark chocolate, jasmine', 18, 2100, 'fresh'),
-(1, 'La Palma y El Tucán Sidra', 'Pilot Coffee', 'Colombia', 'Sidra', 'Washed', 'Peach, rose water, honey, caramel', 22, 1850, 'fresh'),
-(1, 'Finca El Paraíso Gesha', 'Detour Coffee', 'Colombia', 'Gesha', 'Double Anaerobic Washed', 'Lychee, passionfruit, white tea', 14, 1950, 'frozen'),
-(1, 'Huila Caturra', 'Sam James Coffee Bar', 'Colombia', 'Caturra', 'Washed', 'Brown sugar, almond, orange zest', 38, 1700, 'fresh'),
-(1, 'Yirgacheffe Kochere', 'Pilot Coffee', 'Ethiopia', 'Heirloom', 'Washed', 'Lemon curd, green tea, bergamot', 20, 1980, 'finished');
+(1, 'Kayon Mountain Guracho', 'Monogram Coffee', 'Ethiopia', 'Heirloom', 'Natural', 'Blueberry, dark chocolate, jasmine', 18, '2100', 'fresh'),
+(1, 'La Palma y El Tucán Sidra', 'Pilot Coffee', 'Colombia', 'Sidra', 'Washed', 'Peach, rose water, honey, caramel', 22, '1850', 'fresh'),
+(1, 'Finca El Paraíso Gesha', 'Detour Coffee', 'Colombia', 'Gesha', 'Double Anaerobic Washed', 'Lychee, passionfruit, white tea', 14, '1950', 'frozen'),
+(1, 'Huila Caturra', 'Sam James Coffee Bar', 'Colombia', 'Caturra', 'Washed', 'Brown sugar, almond, orange zest', 38, '1700', 'fresh'),
+(1, 'Yirgacheffe Kochere', 'Pilot Coffee', 'Ethiopia', 'Heirloom', 'Washed', 'Lemon curd, green tea, bergamot', 20, '1980', 'finished');
 
 -- ─────────────────────────────────────────
 --  BEAN PALETTES  (OKLCH-derived hues)

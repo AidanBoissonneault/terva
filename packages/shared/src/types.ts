@@ -23,7 +23,7 @@ export interface AddBeanForm {
 	origin?: string
 	variety?: string
 	process?: string
-	elevationM?: number
+	elevationM?: string
 	roastLevel?: number
 	state: BeanState
 	flavourNotes?: string

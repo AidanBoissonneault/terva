@@ -5,7 +5,7 @@
 // CREATED ON: 01APR2026
 // By: Aidan Boissonneault
 
-import hues from './coffee-flavour-hues.json' assert { type: 'json' }
+import hues from './coffee-flavour-hues-expanded.json' assert { type: 'json' }
 
 export function getFlavourHue(note: string): number | null {
   const key = note.toLowerCase().trim()

@@ -16,7 +16,7 @@ CREATE TABLE beans (
   process         VARCHAR(100),
   flavour_summary VARCHAR(200),
   roast_level     INT, -- 0 - 100
-  elevation_m     INT,
+  elevation_m     VARCHAR(20),
   status          ENUM('fresh', 'frozen', 'finished') NOT NULL DEFAULT 'fresh',
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_used       TIMESTAMP DEFAULT CURRENT_TIMESTAMP

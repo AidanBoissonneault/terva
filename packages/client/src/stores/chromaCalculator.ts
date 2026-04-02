@@ -10,7 +10,7 @@ import { type BeanState } from "@terva/shared";
 
 export const useChromaStore = defineStore('chromaCalculator', {
 	state: () => ({
-		FRESH_CHROMA: 0.23,
+		FRESH_CHROMA: 0.22,
 		FROZEN_CHROMA: 0.15,
 		FINISHED_CHROMA: 0.05,
 	}),
