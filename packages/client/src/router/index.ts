@@ -16,6 +16,7 @@ const router = createRouter({
 		{ path: '/recipes', name: 'recipes', component: () => import('@/views/UserRecipes.vue') },
 		{ path: '/brew/start', name: 'startbrew', component: () => import('@/views/StartBrew.vue') },
 		{ path: '/brew/end', name: 'endbrew', component: () => import('@/views/EndBrew.vue') },
+		{ path: '/beaninfo', name: 'beaninfo', component: () => import('@/views/UserBeanInfo.vue')},
 
 		{ path: '/:pathMatch(.*)*', redirect: '/' },
 	],

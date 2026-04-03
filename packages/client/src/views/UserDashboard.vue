@@ -1,3 +1,12 @@
+<!--
+User Dashboard
+Main screen of the app after login.
+
+CREATED: 17MAR2026
+LAST EDITED: 02APR2026
+By: Aidan Boisonneault
+-->
+
 <script setup lang="ts">
 import { getBeans } from '@/api/getBeans'
 import BeanCard from '@/components/BeanCard/BeanCard.vue'
@@ -65,8 +74,8 @@ onMounted(async () => {
 			throw new Error(data.error);
 		}
 		// split payload
-		heroBean.value = data.payload[0]         // most recent is hero bean
-		beans.value = data.payload.slice(1)      // rest go to the regular beans
+		heroBean.value = data.payload[0]    // most recent is hero bean
+		beans.value = data.payload.slice(1) // rest go to the regular beans
 
 		// log data (for testing)
 		console.log(data)
@@ -79,10 +88,10 @@ onMounted(async () => {
 })
 
 // routes when bean card is pressed to the Bean Brew screen.
-function routeToStartBrew(bean: Bean) {
+function routeToBeanInfo(bean: Bean) {
 	const currentBean = useCurrentBeanStore()
 	currentBean.set(bean)
-	router.push({ name: 'startbrew' })
+	router.push({ name: 'beaninfo' })
 }
 </script>
 
@@ -91,7 +100,7 @@ function routeToStartBrew(bean: Bean) {
 		<div v-if="error">{{ error }}</div>
 
 		<template v-else-if="heroBean">
-			<HeroBeanCard :bean="heroBean" @clicked="routeToStartBrew"/>
+			<HeroBeanCard :bean="heroBean" @clicked="routeToBeanInfo"/>
 			<SectionSeperator />
 			<div class="filter-wrapper">
 				<h5>Beans</h5>
@@ -102,7 +111,7 @@ function routeToStartBrew(bean: Bean) {
 					</FilterButton>
 				</div>
 			</div>
-			<BeanCard v-for="bean in filteredBeans" :key="bean.id" :bean="bean" @clicked="routeToStartBrew"/>
+			<BeanCard v-for="bean in filteredBeans" :key="bean.id" :bean="bean" @clicked="routeToBeanInfo"/>
 		</template>
 	</div>
 </template>
