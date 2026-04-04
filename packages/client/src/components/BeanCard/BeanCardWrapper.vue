@@ -122,7 +122,7 @@ button {
     ) padding-box;
 
 		/* fallback background */
-		background-color: oklch(from var(--blue-900) l c h / 0.6);
+		background-color: oklch(from v-bind(priColor) calc(l - 0.05) c h / 0.6);
 
 	z-index: 0;
 }

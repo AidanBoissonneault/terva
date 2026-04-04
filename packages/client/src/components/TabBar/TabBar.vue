@@ -43,8 +43,8 @@ footer {
 	background-color: oklch(from var(--husk-tab-bar) l c h / 0.6);
 	border: 1px solid oklch(from var(--husk-tab-bar-border) l c h / 0.25);
 
-	backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(8px) saturate(1.4);
+  -webkit-backdrop-filter: blur(8px) saturate(1.4);
 
 	margin: var(--bar-margin);
 	margin-bottom: 24px;

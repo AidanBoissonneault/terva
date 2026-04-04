@@ -48,8 +48,8 @@ header {
   background-color: oklch(from var(--husk-app-bar) l c h / 0.6);
   border: 1px solid oklch(from var(--husk-app-bar-border) l c h / 0.25);
 
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(8px) saturate(1.4);
+  -webkit-backdrop-filter: blur(8px) saturate(1.4);
 
   margin-top: 20px;
   margin-left: var(--bar-margin);
