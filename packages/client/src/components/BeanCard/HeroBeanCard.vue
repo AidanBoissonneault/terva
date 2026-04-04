@@ -19,9 +19,7 @@ const buttons = reactive([{ text: 'Pour-over' }, { text: 'Sprover' }])
 
 <template>
 	<BeanCardWrapper :bean="bean" @clicked="emits('clicked', bean)">
-		<BeanCardInfo
-			:bean="bean"
-		/>
+		<BeanCardInfo :bean="bean" />
 		<div class="button-wrapper" @click.stop>
 			<QuickAccessButton v-for="(btn, i) in buttons" :text="btn.text" :key="i" />
 		</div>

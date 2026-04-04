@@ -61,7 +61,7 @@ const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.nam
 }
 
 .content.shift_down {
-top: 100px;
+top: 96px;
 }
 .steam-enter-active,
 .steam-leave-active {

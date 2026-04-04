@@ -2,6 +2,7 @@
 import type { Bean } from '@terva/shared';
 import { getRoastLevelString } from '@/utils/BeanHelpers';
 import StatusBadge from './StatusBadge.vue';
+import BeanCardSeperator from './BeanCardSeperator.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -19,7 +20,7 @@ const props = defineProps<{
 			<small v-if="!!bean.roastLevel">{{ getRoastLevelString(bean.roastLevel) }} Roast</small>
 			<small v-if="!!bean.roaster">{{ bean.roaster }}</small>
 		</span>
-		<div class="seperator"></div>
+		<BeanCardSeperator />
 		<small>
 			{{ bean.variety }}<span v-if="!!bean.process"><span v-if="!!bean.variety">, </span>{{ bean.process }}</span> <br />
 			{{ bean.origin }}<span v-if="!!bean.elevationM"><span v-if="bean.origin">, </span>{{ bean.elevationM }} MASL</span> <br />
@@ -32,20 +33,5 @@ const props = defineProps<{
 div {
 	--pico-color: #fff;
 	--pico-h2-color: #fff;
-}
-
-div.seperator {
-	width: 100%;
-	height: 2px;
-	margin: 0;
-	margin-bottom: 4px;
-
-	border-radius: 12px;
-	background: linear-gradient(to right,
-			oklch(from var(--husk-highlight) l c h / 0.2),
-			oklch(from var(--husk-highlight) l c h / 0.05));
-	background-color: oklch(from var(--husk-highlight) l c h / 0.2);
-
-	box-shadow: 0 1px 3px oklch(from var(--husk-shadow) l c h / 0.1);
 }
 </style>

@@ -76,7 +76,7 @@ button.glass.contrast {
 }
 
 button.big-text {
-	font-size: 24px;
+	font-size: clamp(20px, 4.5vw, 24px);
 	font-weight: 650;
 	padding: 4px;
 }
