@@ -7,10 +7,11 @@
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import type { ResultSetHeader } from 'mysql2'
+import { requireAuth } from '../middleware/requireAuth.js'
 
 const router = Router()
 
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const {
       grindSize,
@@ -25,8 +26,9 @@ router.post('/', async (req, res) => {
       profile,
       body,
       notes,
-      user,
     } = req.body
+
+    const userId = res.locals.user.id
 
     const query = `
       INSERT INTO brews (
@@ -49,7 +51,7 @@ router.post('/', async (req, res) => {
 
     const [result] = await connection.query<ResultSetHeader>(query, [
       beanId,
-      user,
+      userId,
       recipeId,
       brewerId,
       closeness,

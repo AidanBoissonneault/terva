@@ -1,12 +1,15 @@
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import type { ResultSetHeader } from 'mysql2'
+import { requireAuth } from '../middleware/requireAuth.js'
 
 const router = Router()
 
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
-    const { name, type, notes, user } = req.body
+    const { name, type, notes } = req.body
+
+    const userId = res.locals.user.id
 
     const query = `
       INSERT INTO gear (name, type, notes, user)
@@ -17,7 +20,7 @@ router.post('/', async (req, res) => {
       name,
       type,
       notes,
-      user
+      userId
     ])
 
     res.json({ id: result.insertId })

@@ -7,12 +7,14 @@
 
 import { Router } from 'express'
 import connection from "../db/connection.js"
+import { requireAuth } from 'src/middleware/requireAuth.js'
 
 const router = Router()
 
-router.get('/', async (req, res) => {
-  try {
-    const { userId } = req.query
+router.get('/',  requireAuth, async (req, res) => {
+	try {
+
+		const userId = res.locals.user.id
 
     if (!userId) {
       res.status(400).json({ error: 'userId is required' })

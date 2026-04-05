@@ -8,7 +8,7 @@ USE husk;
 
 CREATE TABLE beans (
   id              INT AUTO_INCREMENT PRIMARY KEY,
-  user            INT NOT NULL DEFAULT 1,
+  user            VARCHAR(50) NOT NULL DEFAULT "1",
   name            VARCHAR(100) NOT NULL,
   roaster         VARCHAR(100),
   origin          VARCHAR(100),
@@ -40,7 +40,7 @@ CREATE TABLE gear (
   name       VARCHAR(100) NOT NULL,
   type       ENUM('grinder', 'kettle', 'scale', 'brewer', 'espresso_machine', 'other') NOT NULL,
   notes      TEXT,
-  user       INT NOT NULL DEFAULT 1,
+  user       VARCHAR(50) NOT NULL DEFAULT "1",
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -52,7 +52,7 @@ CREATE TABLE recipes (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   name         VARCHAR(100) NOT NULL,
   brew_method  VARCHAR(100) NOT NULL,
-  user         INT NOT NULL DEFAULT 1,
+  user         VARCHAR(50) NOT NULL DEFAULT "1",
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -72,7 +72,7 @@ CREATE TABLE recipe_steps (
 
 CREATE TABLE brews (
   id            INT AUTO_INCREMENT PRIMARY KEY,
-  user_id       INT NOT NULL DEFAULT 1,
+  user_id       VARCHAR(50) NOT NULL DEFAULT "1",
   bean_id       INT NOT NULL,
   recipe_id     INT,
   brewer_id     INT,

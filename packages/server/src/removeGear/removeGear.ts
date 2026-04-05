@@ -1,12 +1,15 @@
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import type { ResultSetHeader } from 'mysql2'
+import { requireAuth } from '../middleware/requireAuth.js'
 
 const router = Router()
 
-router.delete('/', async (req, res) => {
+router.delete('/', requireAuth, async (req, res) => {
   try {
-    const { id, user } = req.body
+    const { id } = req.body
+
+    const userId = res.locals.user.id
 
     const query = `
       DELETE FROM gear
@@ -14,7 +17,7 @@ router.delete('/', async (req, res) => {
       AND user = ?
     `
 
-    const [result] = await connection.query<ResultSetHeader>(query, [id, user])
+    const [result] = await connection.query<ResultSetHeader>(query, [id, userId])
 
     // If no rows were affected, the bean didn't exist
     if (result.affectedRows === 0) {
