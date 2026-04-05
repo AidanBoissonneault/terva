@@ -1,0 +1,13 @@
+{
+    "name": "@terva/email",
+    "type": "module",
+    "version": "0.0.0",
+    "main": "src/index.ts",
+    "exports": "./src/index.ts",
+    "dependencies": {
+        "resend": "^6.10.0"
+    },
+    "devDependencies": {
+        "@types/node": "^24.12.0"
+    }
+}
