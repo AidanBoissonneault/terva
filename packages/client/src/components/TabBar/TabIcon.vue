@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
 	icon: string
-	text: string
 	route: string
 	activePage: string
 }>()
@@ -13,46 +12,62 @@ const emit = defineEmits<{
 }>()
 
 const isActivePage = computed(() => props.route === props.activePage)
-
-/*
-const hasOutline = <string[]>['house']
-const iconType = computed(() => (!isActivePage.value && hasOutline.includes(props.icon)) ? 'far' : 'fas')
-*/
-const iconType = ref('fas')
+const iconType = 'fas'
 </script>
 
 <template>
-	<button @click="emit('navigate', route)" :class="{ active_tab: isActivePage }">
-		<FontAwesomeIcon :icon="[iconType, icon]" class="big" />
-		<small>{{ text }}</small>
+	<button @click="emit('navigate', route)" :class="{ active_tab: isActivePage }"
+		:aria-current="isActivePage ? 'page' : undefined">
+		<FontAwesomeIcon :icon="[iconType, icon]" class="tab-icon" />
 	</button>
 </template>
 
 <style scoped>
 button {
+	position: relative;
+	z-index: 1;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
 
 	border: none;
 	background-color: transparent;
+	border-radius: 10px;
+	padding: 14px 0;
+	cursor: pointer;
 
-	border-radius: 12px;
+	color: oklch(from var(--husk-tab-bar-border) l c h / 0.65);
 
-	box-shadow: none;
+	transition:
+		color 0.2s ease,
+		transform 0.15s ease;
+}
+
+button:focus {
+	outline: none;
 }
 
 button:hover {
-	background-color: oklch(from var(--brand-300) l c h / 0.7);
+	color: oklch(from var(--brand-300) l c h / 0.85);
+}
+
+button:active {
+	transform: scale(0.92);
 }
 
 .active_tab {
-	background-color: oklch(from var(--brand-200) l c h / 0.3);
+	anchor-name: --active-tab;
+	color: var(--brand-300);
 }
 
-.big {
-	width: 32px;
-	height: 32px;
+.tab-icon {
+	width: 22px;
+	height: 22px;
+	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.active_tab .tab-icon {
+	transform: scale(1.15);
 }
 </style>

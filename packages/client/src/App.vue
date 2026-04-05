@@ -58,7 +58,7 @@ const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name
 	position: relative;
 	overflow-y: visible;
 	top: 24px;
-	padding-bottom: 110px;
+	padding-bottom: 96px;
 
 	z-index: 1;
 
