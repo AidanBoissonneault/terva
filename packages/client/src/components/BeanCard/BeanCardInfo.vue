@@ -22,9 +22,11 @@ const props = defineProps<{
 		</span>
 		<BeanCardSeperator />
 		<small>
-			{{ bean.variety }}<span v-if="!!bean.process"><span v-if="!!bean.variety">, </span>{{ bean.process }}</span> <br />
-			{{ bean.origin }}<span v-if="!!bean.elevationM"><span v-if="bean.origin">, </span>{{ bean.elevationM }} MASL</span> <br />
-			{{ bean.flavourNotes }}
+			<span v-if="!!bean.variety">{{ bean.variety }}</span><span v-if="!!bean.process"><span v-if="!!bean.variety">,
+				</span>{{ bean.process }}</span> <br v-if="!!bean.variety || !!bean.process" />
+			<span v-if="!!bean.origin">{{ bean.origin }}</span><span v-if="!!bean.elevationM"><span v-if="bean.origin">,
+				</span>{{ bean.elevationM }} MASL</span> <br v-if="!!bean.origin || !!bean.elevationM" />
+			<span v-if="!!bean.flavourNotes">{{ bean.flavourNotes }}</span>
 		</small>
 	</div>
 </template>
