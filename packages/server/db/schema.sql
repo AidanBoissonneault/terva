@@ -2,9 +2,9 @@ DROP DATABASE IF EXISTS husk;
 CREATE DATABASE husk;
 USE husk;
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  BEANS
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 CREATE TABLE beans (
   id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,9 +31,9 @@ CREATE TABLE bean_palette (
   FOREIGN KEY (bean_id)  REFERENCES beans(id) ON DELETE CASCADE
 );
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  GEAR
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 CREATE TABLE gear (
   id         INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,9 +44,9 @@ CREATE TABLE gear (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  RECIPES
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 CREATE TABLE recipes (
   id           INT AUTO_INCREMENT PRIMARY KEY,
@@ -66,13 +66,13 @@ CREATE TABLE recipe_steps (
   FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  BREWS
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 CREATE TABLE brews (
   id            INT AUTO_INCREMENT PRIMARY KEY,
-  user_id       VARCHAR(50) NOT NULL DEFAULT "1",
+  user          VARCHAR(50) NOT NULL DEFAULT "1",
   bean_id       INT NOT NULL,
   recipe_id     INT,
   brewer_id     INT,

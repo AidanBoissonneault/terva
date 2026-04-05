@@ -1,12 +1,12 @@
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  SEED DATA — husk
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 USE husk;
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  BEANS
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 INSERT INTO beans (user, name, roaster, origin, variety, process, flavour_summary, roast_level, elevation_m, status) VALUES
 (1, 'Kayon Mountain Guracho', 'Monogram Coffee', 'Ethiopia', 'Heirloom', 'Natural', 'Blueberry, dark chocolate, jasmine', 18, '2100', 'fresh'),
@@ -15,9 +15,9 @@ INSERT INTO beans (user, name, roaster, origin, variety, process, flavour_summar
 (1, 'Huila Caturra', 'Sam James Coffee Bar', 'Colombia', 'Caturra', 'Washed', 'Brown sugar, almond, orange zest', 38, '1700', 'fresh'),
 (1, 'Yirgacheffe Kochere', 'Pilot Coffee', 'Ethiopia', 'Heirloom', 'Washed', 'Lemon curd, green tea, bergamot', 20, '1980', 'finished');
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  BEAN PALETTES  (OKLCH-derived hues)
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 INSERT INTO bean_palette (bean_id, pri_hue, sec_hue, acc_hue) VALUES
 (1, 320, 270, 30),   -- blueberry / chocolate / amber
@@ -26,9 +26,9 @@ INSERT INTO bean_palette (bean_id, pri_hue, sec_hue, acc_hue) VALUES
 (4, 35,  25,  200),  -- brown sugar / almond / citrus blue
 (5, 75,  180, 55);   -- green tea / bergamot teal / lemon
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  GEAR
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 INSERT INTO gear (name, type, notes, user) VALUES
 ('Comandante C40 MK4',       'grinder',          'Red clix installed. Daily driver for filter.',    1),
@@ -39,9 +39,9 @@ INSERT INTO gear (name, type, notes, user) VALUES
 ('Origami Dripper (Large)',  'brewer',            'Used with Kalita Wave filters.',                 1),
 ('Flair 58x',                'espresso_machine',  'Stock piston. Preheating with boiling water.',   1);
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  RECIPES
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 INSERT INTO recipes (name, brew_method, user) VALUES
 ('4-6 Method Classic',   'V60',          1),
@@ -49,9 +49,9 @@ INSERT INTO recipes (name, brew_method, user) VALUES
 ('Origami Immersion',    'Origami',      1),
 ('Flair Espresso Shot',  'Espresso',     1);
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  RECIPE STEPS
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 -- 4-6 Method Classic (recipe 1)
 INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
@@ -84,9 +84,9 @@ INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUE
 (4, 5, 'Pull shot to 36g yield',     25),
 (4, 6, 'Rest and taste',             30);
 
--- ─────────────────────────────────────────
+-- -----------------------------------------
 --  BREWS
--- ─────────────────────────────────────────
+-- -----------------------------------------
 
 INSERT INTO brews (user_id, bean_id, recipe_id, brewer_id, grinder_id, grind_size, dose_g, yield_g, time_seconds, closeness, profile, body, notes, brewed_at) VALUES
 -- Kayon Mountain on V60 4-6

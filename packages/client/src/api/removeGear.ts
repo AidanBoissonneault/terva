@@ -10,11 +10,10 @@ import type { CheckedJSON } from '@terva/shared'
 
 export const removeGear = async (
 	id: number,
-	user: number,
 ): Promise<CheckedJSON<{ success: true }>> => {
 	try {
 		const { data } = await axios.delete('/api/removegear', {
-			data: { id, user },
+			data: { id },
 		})
 
 		return {

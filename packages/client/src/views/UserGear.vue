@@ -109,7 +109,7 @@ async function submitRemovalMenu(isRemoving: boolean, id: number) {
 // removes matching id
 async function removeSelectedGear(id: number) {
 	if (id > -1) {
-		const result = await removeGear(id, 1)
+		const result = await removeGear(id)
 		if (result.success) {
 			gears.value = gears.value.filter(gear => gear.id !== id)
 			console.log("Removed gear")

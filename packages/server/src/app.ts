@@ -14,6 +14,9 @@ import getRecipes from './getRecipes/getRecipes.js'
 import addGear from './addGear/addGear.js'
 import removeGear from './removeGear/removeGear.js'
 import addBrew from './addBrew/addBrew.js'
+import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js'
+import connection from './db/connection.js'
+import seedDemo from './seedDemo/seedDemo.js'
 
 const { CLIENT_PORT } = process.env
 
@@ -28,6 +31,37 @@ app.use(cors({
   credentials: true,
 }))
 
+app.post("/api/auth/sign-up/email", express.json(), async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const result = await auth.api.signUpEmail({
+      body: { name, email, password },
+    });
+
+    if (result?.user?.id) {
+      await seedDefaultRecipes(connection, result.user.id).catch((err) =>
+        console.error("Seed error:", err)
+      );
+    }
+
+    // Sign in immediately so the session cookie gets set on the response
+    const signInResult = await auth.api.signInEmail({
+      body: { email, password },
+      asResponse: true,
+    });
+
+    // Forward BetterAuth's response headers (including Set-Cookie) to the client
+    signInResult.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+
+    res.json(result);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 app.all("/api/auth/*splat", toNodeHandler(auth))
 
 app.use(express.json())
@@ -40,5 +74,6 @@ app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)
 app.use('/api/getRecipes', getRecipes)
 app.use('/api/addbrew', addBrew)
+app.use('/api/seeddemo', seedDemo)
 
 export default app

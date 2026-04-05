@@ -56,7 +56,8 @@ BetterAuth manages its own tables (`user`, `session`, `account`, `verification`)
 
 ```bash
 cd packages/server
-npx better-auth migrate
+npx @better-auth/cli migrate
+cd ../..
 ```
 
 ### 3. (Optional) Seed with sample data

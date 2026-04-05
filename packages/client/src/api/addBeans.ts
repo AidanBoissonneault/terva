@@ -9,11 +9,10 @@
 import axios from 'axios'
 import type { AddBeanForm, CheckedJSON } from '@terva/shared'
 
-export const addBean = async (bean: AddBeanForm, user: number): Promise<CheckedJSON<{ id: number }>> => {
+export const addBean = async (bean: AddBeanForm): Promise<CheckedJSON<{ id: number }>> => {
 	try {
 		const { data } = await axios.post('/api/addbean', {
 			...bean,
-			user: user,
 		})
 
 		return {

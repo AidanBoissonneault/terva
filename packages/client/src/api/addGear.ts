@@ -12,7 +12,6 @@ export const addGear = async (gear: Gear): Promise<CheckedJSON<{ id: number }>> 
 	try {
 		const { data } = await axios.post('/api/addgear', {
 			...gear,
-			user: 1,
 		})
 
 		return {

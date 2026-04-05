@@ -1,146 +1,136 @@
+<!--
+Register View
+Used when a user is signing up for Terva
+
+CREATED ON: 04APR2026
+LAST EDITED: 04APR2026
+By: Aidan Boissonneault
+-->
+
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authClient } from "@/lib/auth-client";
 
-const router = useRouter();
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const error = ref("");
-const loading = ref(false);
+const router = useRouter()
+const name = ref("")
+const email = ref("")
+const password = ref("")
+const error = ref("")
+const loading = ref(false)
 
 async function handleRegister() {
-  error.value = "";
-  loading.value = true;
+	error.value = ""
+	loading.value = true
 
-  const { error: authError } = await authClient.signUp.email({
-    name: name.value,
-    email: email.value,
-    password: password.value,
-  });
+	const { error: authError } = await authClient.signUp.email({
+		name: name.value,
+		email: email.value,
+		password: password.value,
+	})
 
-  loading.value = false;
+	loading.value = false
 
-  if (authError) {
-    error.value = authError.message ?? "Registration failed.";
-  } else {
-    router.push("/");
-  }
+	if (authError) {
+		error.value = authError.message ?? "Registration failed."
+		return;
+	}
+
+	router.push("/")
 }
 </script>
 
 <template>
-  <div class="auth-page">
-    <div class="auth-card">
-      <h1 class="auth-title">terva</h1>
-      <p class="auth-sub">create your account</p>
+	<div class="dashboard">
+		<article>
+			<hgroup>
+				<h1>Create account</h1>
+				<p>or <RouterLink to="/login">sign in</RouterLink>
+				</p>
+			</hgroup>
 
-      <div v-if="error" class="auth-error">{{ error }}</div>
+			<p v-if="error" class="error-msg">{{ error }}</p>
 
-      <div class="auth-form">
-        <label>name</label>
-        <input v-model="name" type="text" placeholder="your name" />
+			<label for="name">
+				name
+				<input id="name" v-model="name" type="text" placeholder="your name" autocomplete="name" required />
+			</label>
 
-        <label>email</label>
-        <input v-model="email" type="email" placeholder="you@example.com" />
+			<label for="email">
+				email
+				<input id="email" v-model="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+			</label>
 
-        <label>password</label>
-        <input v-model="password" type="password" placeholder="min. 8 characters" />
+			<label for="password">
+				password
+				<input id="password" v-model="password" type="password" placeholder="min. 8 characters"
+					autocomplete="new-password" required />
+			</label>
 
-        <button :disabled="loading" @click="handleRegister">
-          {{ loading ? "creating account…" : "create account" }}
-        </button>
-      </div>
+			<button :aria-busy="loading" :disabled="loading" @click="handleRegister" class="glass big-text">
+				{{ loading ? "" : "create account" }}
+			</button>
 
-      <p class="auth-link">
-        already have one? <RouterLink to="/login">sign in</RouterLink>
-      </p>
-    </div>
-  </div>
+			<footer>
+				already have one? <RouterLink to="/login">sign in</RouterLink>
+			</footer>
+		</article>
+	</div>
 </template>
 
 <style scoped>
-/* Reuse the same styles as LoginView — extract to a shared auth.css if preferred */
-.auth-page {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  background: var(--color-bg, #0a0a0a);
+article {
+	width: 100%;
+	max-width: 380px;
+	grid-column: span 4;
+	padding: 8px;
 }
-.auth-card {
-  width: 100%;
-  max-width: 400px;
-  padding: 2.5rem;
-  border: 1px solid var(--color-border, #2a2a2a);
-  border-radius: 4px;
-  background: var(--color-surface, #111);
+
+hgroup {
+	margin-bottom: var(--pico-spacing);
 }
-.auth-title {
-  font-family: var(--font-display, "Canela", serif);
-  font-size: 2rem;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.25rem;
+
+hgroup h1 {
+	margin-bottom: 0;
 }
-.auth-sub {
-  color: var(--color-muted, #888);
-  font-size: 0.875rem;
-  margin-bottom: 2rem;
+
+hgroup p {
+	margin-bottom: 0;
+	color: var(--pico-muted-color);
 }
-.auth-error {
-  background: #2a1212;
-  border: 1px solid #5a2020;
-  color: #f88;
-  padding: 0.75rem 1rem;
-  border-radius: 3px;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
+
+button {
+	width: 100%;
 }
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+
+.seed-label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+	color: var(--pico-muted-color);
+	cursor: pointer;
+	margin-bottom: 0;
 }
-.auth-form label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted, #888);
-  margin-top: 0.5rem;
+
+.seed-label input[type="checkbox"] {
+	margin: 0;
+	width: auto;
 }
-.auth-form input {
-  background: var(--color-input-bg, #1a1a1a);
-  border: 1px solid var(--color-border, #2a2a2a);
-  border-radius: 3px;
-  padding: 0.625rem 0.875rem;
-  color: inherit;
-  font-size: 0.9rem;
-  width: 100%;
-  outline: none;
-  transition: border-color 0.15s;
+
+.error-msg {
+	color: var(--pico-del-color);
+	background: color-mix(in srgb, var(--pico-del-color) 10%, transparent);
+	border: 1px solid color-mix(in srgb, var(--pico-del-color) 30%, transparent);
+	padding: 0.5rem 0.75rem;
+	border-radius: var(--pico-border-radius);
+	font-size: 0.875rem;
 }
-.auth-form input:focus {
-  border-color: var(--color-accent, #c8a96e);
+
+footer {
+	margin-top: var(--pico-spacing);
+	text-align: center;
+	font-size: 0.875rem;
+	color: var(--pico-muted-color);
 }
-.auth-form button {
-  margin-top: 1.25rem;
-  padding: 0.75rem;
-  background: var(--color-accent, #c8a96e);
-  color: #000;
-  border: none;
-  border-radius: 3px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-.auth-form button:disabled { opacity: 0.5; cursor: not-allowed; }
-.auth-link {
-  margin-top: 1.5rem;
-  font-size: 0.8rem;
-  color: var(--color-muted, #888);
-  text-align: center;
-}
-.auth-link a { color: var(--color-accent, #c8a96e); text-decoration: none; }
 </style>

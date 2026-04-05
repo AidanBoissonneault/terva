@@ -10,11 +10,10 @@ import type { CheckedJSON, Gear, Recipe } from '@terva/shared'
 
 export const getBrewStartData = async (): Promise<CheckedJSON<{ gears: Gear[], recipes: Recipe[]}>> => {
 	try {
-		const userId = 1
 
 		const [{ data: gear }, { data: recipes }] = await Promise.all([
-			axios.get('/api/getgear', { params: { userId } }),
-			axios.get('/api/getrecipes', { params: { userId } }),
+			axios.get('/api/getgear'),
+			axios.get('/api/getrecipes'),
 		])
 
 		return {

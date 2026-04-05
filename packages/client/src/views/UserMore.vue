@@ -2,6 +2,8 @@
 import TabLink from '@/components/MoreView/TabLink.vue';
 import router from '@/router';
 import { type TabLinkType } from '@/types';
+import { authClient } from '@/lib/auth-client';
+import { seedDemo } from '@/api/seedDemo';
 
 // tabs clickable in the more menu
 // to add additional tabs, place the relevant info in here.
@@ -14,6 +16,11 @@ const tabs = <TabLinkType[]>[
 function goToLink(route: string) {
 	router.push({ name: route })
 }
+
+async function logOut() {
+	await authClient.signOut()
+	router.push({ name: 'login' })
+}
 </script>
 
 <template>
@@ -21,6 +28,8 @@ function goToLink(route: string) {
 		<div class="stack">
 			<TabLink v-for="tab in tabs" :icon="tab.icon" :name="tab.name" :route="tab.route" :key="tab.name"
 			@go-to-link="goToLink" />
+			<a @click="seedDemo">Seed demo data (for testing)</a>
+			<a @click="logOut">Logout</a>
 		</div>
 	</div>
 </template>

@@ -31,7 +31,7 @@ function formSubmitted() {
 		return
 
 	console.log(endingBrew.value)
-	addBrew(endingBrew.value, 1)
+	addBrew(endingBrew.value)
 
 	router.push({ name: 'dashboard' })
 }

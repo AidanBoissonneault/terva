@@ -37,7 +37,7 @@ router.get('/',  requireAuth, async (req, res) => {
       ORDER BY r.id, rs.step_order;
     `
 
-    const [rows] = await connection.query(query, [Number(userId)])
+    const [rows] = await connection.query(query, [userId])
 
     // Group steps under their recipe
     const recipeMap = new Map()

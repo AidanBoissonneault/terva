@@ -17,7 +17,7 @@ function getFormSubmit() {
 
 	console.log(bean.value)
 
-	addBean(bean.value, 1)
+	addBean(bean.value)
 
 	router.push({ name: "dashboard" })
 }

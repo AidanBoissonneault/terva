@@ -1,21 +1,20 @@
-import { betterAuth } from "better-auth";
-import connection from "../db/connection"; // or relative path
+import { betterAuth } from 'better-auth'
+import connection from '../db/connection'
+import { seedDefaultRecipes } from './seedDefaultRecipes'
 
 export const auth = betterAuth({
-  database: connection,
+	database: connection,
 
-  emailAndPassword: {
-    enabled: true,
-  },
+	emailAndPassword: {
+		enabled: true,
+	},
 
-  trustedOrigins: [
-    "http://localhost:5173",
-  ],
+	trustedOrigins: ['http://localhost:5173'],
 
-  session: {
-    cookieCache: {
-      enabled: true,
-      maxAge: 60 * 5,
-    },
-  },
-});
+	session: {
+		cookieCache: {
+			enabled: true,
+			maxAge: 60 * 5,
+		},
+	},
+})
