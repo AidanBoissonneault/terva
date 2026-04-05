@@ -8,7 +8,7 @@ import { computed } from 'vue'
 const loading = useLoadingStore()
 const route = useRoute()
 
-const ignoredAppBarPages = ['startbrew', 'endbrew', 'beaninfo', 'login', 'register']
+const ignoredAppBarPages = ['startbrew', 'endbrew', 'beaninfo']
 const ignoreNavBarPages = ['endbrew', 'login', 'register']
 const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name as string))

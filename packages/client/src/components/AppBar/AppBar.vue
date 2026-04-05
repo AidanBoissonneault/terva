@@ -7,7 +7,7 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 const route = useRoute()
 const router = useRouter()
 
-const ignorePlusButton = <string[]>['addbeans']
+const ignorePlusButton = <string[]>['addbeans', 'login', 'register']
 const isDisplayPage = computed(() => !ignorePlusButton.includes(route.name as string))
 
 function navigate(route: string) {
