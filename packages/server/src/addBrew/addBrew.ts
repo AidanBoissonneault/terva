@@ -33,7 +33,7 @@ router.post('/', requireAuth, async (req, res) => {
     const query = `
       INSERT INTO brews (
         bean_id,
-        user_id,
+        user,
         recipe_id,
         brewer_id,
         closeness,
