@@ -549,7 +549,7 @@ details summary[role='button']:not(.outline)::after {
 		[type='radio'],
 		[type='file']
 	) {
-	--pico-form-element-focus-color: var(--pico-primary-focus);
+	--pico-form-element-focus-color: var(--pico-primary-focus)
 }
 [data-theme='dark'] details summary[role='button'].contrast:not(.outline)::after {
 	filter: brightness(0);

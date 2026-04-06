@@ -33,8 +33,7 @@ const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
 footer {
 	position: fixed;
 	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
+	left: var(--bar-margin);
 	width: calc(100% - (2 * var(--bar-margin)));
 
 	padding: 8px;

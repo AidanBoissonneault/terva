@@ -23,6 +23,7 @@ import {
 	faBars,
 	faArrowRotateRight,
 	faFileLines,
+	faScroll,
 } from '@fortawesome/free-solid-svg-icons'
 import {
 	faHouse as faHouseRegular,
@@ -47,6 +48,7 @@ library.add(
 	faBars,
 	faArrowRotateRight,
 	faFileLines,
+	faScroll,
 )
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 

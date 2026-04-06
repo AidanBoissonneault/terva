@@ -32,12 +32,13 @@ button {
 	justify-content: center;
 
 	border: none;
+	box-shadow: none;
 	background-color: transparent;
 	border-radius: 10px;
 	padding: 14px 0;
 	cursor: pointer;
 
-	color: oklch(from var(--husk-tab-bar-border) l c h / 0.65);
+	color: oklch(from var(--husk-shadow) l c h / 0.65);
 
 	transition:
 		color 0.2s ease,
@@ -48,8 +49,12 @@ button:focus {
 	outline: none;
 }
 
+button:focus-visible {
+	outline: none;
+}
+
 button:hover {
-	color: oklch(from var(--brand-300) l c h / 0.85);
+	color: oklch(from var(--brand-400) l c h / 0.85);
 }
 
 button:active {
@@ -58,7 +63,7 @@ button:active {
 
 .active_tab {
 	anchor-name: --active-tab;
-	color: var(--brand-300);
+	color: var(--brand-400);
 }
 
 .tab-icon {

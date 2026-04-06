@@ -9,7 +9,7 @@ import { seedDemo } from '@/api/seedDemo';
 // to add additional tabs, place the relevant info in here.
 const tabs = <TabLinkType[]>[
 	{ icon: "circle-user", name: "Profile", route: "profile" },
-	{ icon: "circle-user", name: "Recipes", route: "recipes" },
+	{ icon: "scroll", name: "Recipes", route: "recipes" },
 	{ icon: "file-lines", name: "Terms and Condtions", route: "terms" },
 	{ icon: "file-lines", name: "Privacy Policy", route: "privacy" },
 	{ icon: "file-lines", name: "Cookie Policy", route: "cookies" },
