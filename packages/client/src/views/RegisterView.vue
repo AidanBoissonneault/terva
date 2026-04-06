@@ -11,6 +11,9 @@ By: Aidan Boissonneault
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authClient } from "@/lib/auth-client";
+import BottomSheet from "@/components/Utils/BottomSheet.vue";
+import TermsAndCondtions from "./TermsAndCondtions.vue";
+import PrivacyPolicy from "./PrivacyPolicy.vue";
 
 const router = useRouter()
 const name = ref("")
@@ -18,6 +21,9 @@ const email = ref("")
 const password = ref("")
 const error = ref("")
 const loading = ref(false)
+
+const showPrivacyPolicy = ref(false)
+const showTermsAndConditions = ref(false)
 
 async function handleRegister() {
 	error.value = ""
@@ -42,47 +48,67 @@ async function handleRegister() {
 
 <template>
 	<div class="dashboard">
-		<article>
-			<hgroup>
-				<h1>Create account</h1>
-				<p>or <RouterLink to="/login">sign in</RouterLink>
-				</p>
-			</hgroup>
+		<form @submit.prevent="handleRegister">
+			<article>
+				<hgroup>
+					<h1>Create account</h1>
+					<p>or <RouterLink to="/login">sign in</RouterLink>
+					</p>
+				</hgroup>
 
-			<p v-if="error" class="error-msg">{{ error }}</p>
+				<p v-if="error" class="error-msg">{{ error }}</p>
 
-			<label for="name">
-				name
-				<input id="name" v-model="name" type="text" placeholder="your name" autocomplete="name" required />
-			</label>
+				<label>
+					name
+					<input id="name" v-model="name" type="text" placeholder="your name" autocomplete="name" required />
+				</label>
 
-			<label for="email">
-				email
-				<input id="email" v-model="email" type="email" placeholder="you@example.com" autocomplete="email" required />
-			</label>
+				<label>
+					email
+					<input id="email" v-model="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+				</label>
 
-			<label for="password">
-				password
-				<input id="password" v-model="password" type="password" placeholder="min. 8 characters"
-					autocomplete="new-password" required />
-			</label>
+				<label>
+					password
+					<input id="password" v-model="password" type="password" placeholder="min. 8 characters"
+						autocomplete="new-password" required />
+				</label>
 
-			<button :aria-busy="loading" :disabled="loading" @click="handleRegister" class="glass big-text">
-				{{ loading ? "" : "create account" }}
-			</button>
+				<div>
+					<input type="checkbox" required>
+					I agree to the <a @click="showTermsAndConditions = !showTermsAndConditions">Terms and Condtions</a> and <a
+						@click="showPrivacyPolicy = !showPrivacyPolicy">Privacy Policy</a>.
+				</div>
 
-			<footer>
-				already have one? <RouterLink to="/login">sign in</RouterLink>
-			</footer>
-		</article>
+				<button :aria-busy="loading" :disabled="loading" class="glass big-text">
+					{{ loading ? "" : "create account" }}
+				</button>
+
+				<footer>
+					already have one? <RouterLink to="/login">sign in</RouterLink>
+				</footer>
+			</article>
+
+		</form>
 	</div>
+
+	<BottomSheet v-model="showPrivacyPolicy" title="Privacy Policy">
+		<PrivacyPolicy/>
+	</BottomSheet>
+
+	<BottomSheet v-model="showTermsAndConditions" title="Terms and Conditions">
+		<TermsAndCondtions/>
+	</BottomSheet>
 </template>
 
 <style scoped>
+form {
+	grid-column: span 4;
+}
+
 article {
 	width: 100%;
 	max-width: 380px;
-	grid-column: span 4;
 	padding: 8px;
 }
 

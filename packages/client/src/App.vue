@@ -9,7 +9,7 @@ const loading = useLoadingStore()
 const route = useRoute()
 
 const ignoredAppBarPages = ['startbrew', 'endbrew', 'beaninfo']
-const ignoreNavBarPages = ['endbrew', 'login', 'register']
+const ignoreNavBarPages = ['endbrew', 'login', 'register', 'cookies', 'terms', 'privacy']
 const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name as string))
 </script>

@@ -22,6 +22,10 @@ const router = createRouter({
 		{ path: '/brew/end', name: 'endbrew', component: () => import('@/views/EndBrew.vue'), meta: { requiresAuth: true } },
 		{ path: '/beaninfo', name: 'beaninfo', component: () => import('@/views/UserBeanInfo.vue'), meta: { requiresAuth: true }},
 
+		{ path: '/cookies', name: 'cookies', component: () => import('@/views/CookiePolicy.vue') },
+		{ path: '/privacy', name: 'privacy', component: () => import('@/views/PrivacyPolicy.vue') },
+		{ path: '/terms', name: 'terms', component: () => import('@/views/TermsAndCondtions.vue') },
+
 		{ path: '/:pathMatch(.*)*', redirect: '/' },
 	],
 })

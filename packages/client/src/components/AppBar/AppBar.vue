@@ -7,7 +7,7 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 const route = useRoute()
 const router = useRouter()
 
-const ignorePlusButton = <string[]>['addbeans', 'login', 'register']
+const ignorePlusButton = <string[]>['addbeans', 'login', 'register', 'cookies', 'terms', 'privacy']
 const isDisplayPage = computed(() => !ignorePlusButton.includes(route.name as string))
 
 function navigate(route: string) {
@@ -31,7 +31,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 <template>
   <TransitionGroup name="swap" tag="header" :class="{ hidden: isHidden }">
-    <h1 :key="2">Terva</h1>
+    <h1 :key="2" @click="navigate('dashboard')">Terva</h1>
     <PlusButton v-if="isDisplayPage" :key="1" @navigate="navigate" route="addbeans" :active-route="activePage" />
     <img v-else :key="3" src="@/assets/images/title-image.PNG" alt="" />
   </TransitionGroup>
