@@ -2,23 +2,42 @@
 
 import BeanCard from '@/components/BeanCard/BeanCard.vue';
 import { useRouter } from 'vue-router';
-import { type Bean } from '@terva/shared'
+import { type Brew, type Bean, type Gear, type Recipe } from '@terva/shared'
 import { onMounted, ref } from 'vue';
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean';
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue';
+import { getBrews } from '@/api/getBrews';
+import { getBrewStartData } from '@/api/getStartBrewData';
 
 const router = useRouter()
 
 const currentBean = ref<Bean>()
+const brews = ref<Brew[]>()
+const gears = ref<Gear[]>()
+const recipes = ref<Recipe[]>()
 
 function skip() {
 	router.push({ name: 'startbrew' })
 }
 
-onMounted(() => {
+onMounted(async () => {
 	const beanStore = useCurrentBeanStore()
 
 	currentBean.value = beanStore.get()
+
+	const resBrews = await getBrews(currentBean.value.id)
+	console.log(resBrews)
+
+	if (resBrews.success)
+		brews.value = resBrews.payload
+
+	const resBrewStartData = await getBrewStartData()
+	console.log(resBrewStartData)
+
+	if (resBrewStartData.success) {
+		gears.value = resBrewStartData.payload.gears
+		recipes.value = resBrewStartData.payload.recipes
+	}
 })
 </script>
 

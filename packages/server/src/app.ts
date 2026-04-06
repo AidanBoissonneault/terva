@@ -13,6 +13,7 @@ import getGear from './getGear/getGear.js'
 import getRecipes from './getRecipes/getRecipes.js'
 import addGear from './addGear/addGear.js'
 import removeGear from './removeGear/removeGear.js'
+import getBrews from './getBrews/getBrews.js'
 import addBrew from './addBrew/addBrew.js'
 import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js'
 import connection from './db/connection.js'
@@ -79,6 +80,7 @@ app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)
 app.use('/api/getRecipes', getRecipes)
+app.use('/api/getbrews', getBrews)
 app.use('/api/addbrew', addBrew)
 app.use('/api/seeddemo', seedDemo)
 

@@ -22,6 +22,7 @@ import {
 	faScrewdriverWrench,
 	faBars,
 	faArrowRotateRight,
+	faFileLines,
 } from '@fortawesome/free-solid-svg-icons'
 import {
 	faHouse as faHouseRegular,
@@ -45,6 +46,7 @@ library.add(
 	faScrewdriverWrench,
 	faBars,
 	faArrowRotateRight,
+	faFileLines,
 )
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 

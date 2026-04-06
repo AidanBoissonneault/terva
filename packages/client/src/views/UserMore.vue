@@ -10,6 +10,9 @@ import { seedDemo } from '@/api/seedDemo';
 const tabs = <TabLinkType[]>[
 	{ icon: "circle-user", name: "Profile", route: "profile" },
 	{ icon: "circle-user", name: "Recipes", route: "recipes" },
+	{ icon: "file-lines", name: "Terms and Condtions", route: "terms" },
+	{ icon: "file-lines", name: "Privacy Policy", route: "privacy" },
+	{ icon: "file-lines", name: "Cookie Policy", route: "cookies" },
 ]
 
 // enters the link supplied in the "route" section of the tab above
