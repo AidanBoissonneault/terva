@@ -12,7 +12,7 @@ const defaultBean: Bean = {
 	name: "Error Loading Bean",
 	id: -1,
 	variety: "Go back to dashboard and reload.",
-	status: "finished",
+	state: "finished",
 	pri_hue: 0,
 	sec_hue: 10,
 	acc_hue: 20,

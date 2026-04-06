@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@terva/shared": ["../shared/src/index.ts"],
       "@terva/shared/*": ["../shared/src/*"]
