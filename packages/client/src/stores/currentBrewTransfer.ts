@@ -41,6 +41,7 @@ export const useBrewTransferStore = defineStore('currentBrew', {
 
 		clear() {
 			localStorage.removeItem(localStorageName)
+			this.currentBrew = defaultBrew
 		}
 	}
 })

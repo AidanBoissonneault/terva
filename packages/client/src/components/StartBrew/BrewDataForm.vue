@@ -95,12 +95,12 @@ watch(() => form.value.grinderId, (newVal) => {
 				<small>Grinder</small>
 				<select v-model="form.grinderId" required>
 					<option v-for="grinder in grinders" :key="grinder.name" :value="grinder.id">{{ grinder.name }}</option>
-					<option :value="-1">Pre-ground</option>
+					<option :value="null">Pre-ground</option>
 				</select>
 			</label>
 			<label class="small">
 				<small>Grind Size</small>
-				<input type="number" v-model="form.grindSize" min="0" max="999" :disabled="form.grinderId === -1">
+				<input type="number" v-model="form.grindSize" min="0" max="999" :disabled="form.grinderId === null">
 			</label>
 		</div>
 

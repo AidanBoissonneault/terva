@@ -33,6 +33,10 @@ function formSubmitted() {
 	console.log(endingBrew.value)
 	addBrew(endingBrew.value)
 
+	// clear cached brew
+	const brewTransfer = useBrewTransferStore()
+	brewTransfer.clear()
+
 	router.push({ name: 'dashboard' })
 }
 </script>

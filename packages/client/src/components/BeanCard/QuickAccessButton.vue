@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { fetchTest } from '@/api/test.ts';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
 	text: string
 }>()
+
+const emits = defineEmits<{
+	brewSelected: [void]
+}>()
 </script>
 
 <template>
-  <button @click="fetchTest" class="glass big-text">
+  <button @click="emits('brewSelected')" class="glass big-text">
     <FontAwesomeIcon :icon="['fas', 'arrow-rotate-right']" class="recents-icon" />
     {{ text }}
   </button>

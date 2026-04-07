@@ -140,3 +140,5 @@ CREATE TABLE recipe_steps (
   FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
  */
+
+export type BrewWithRecipeName = Brew & Recipe

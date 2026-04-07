@@ -15,9 +15,11 @@ import FilterButton from '@/components/FilterButton/FilterButton.vue'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { computed, onMounted, reactive, ref } from 'vue'
-import { type Bean, type BeanState } from '@terva/shared'
+import { type Bean, type BeanState, type Brew } from '@terva/shared'
 import { useRouter } from 'vue-router'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
+import { getRecentBrews } from '@/api/getRecentBrews'
+import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 
 // for routing when a bean card is pressed
 const router = useRouter()
@@ -26,6 +28,9 @@ const router = useRouter()
 const beans = ref()
 const heroBean = ref()
 const error = ref<string | null>(null)
+
+// for hero bean quick-access
+const recentHeroBrews = ref()
 
 // stores the currently active filter for the filter buttons
 const activeFilter = ref<BeanState | null>(null)
@@ -66,7 +71,7 @@ onMounted(async () => {
 	const loading = useLoadingStore()
 	loading.start()
 	try {
-		// get data
+		// get bean data
 		const data = await getBeans()
 
 		// error handling
@@ -76,6 +81,14 @@ onMounted(async () => {
 		// split payload
 		heroBean.value = data.payload[0]    // most recent is hero bean
 		beans.value = data.payload.slice(1) // rest go to the regular beans
+
+		// get recent brew data for hero bean
+		if (heroBean.value) {
+			const recentBrews = await getRecentBrews(heroBean.value.id)
+			if (recentBrews.success)
+				recentHeroBrews.value = recentBrews.payload
+			console.log(recentBrews)
+		}
 
 		// log data (for testing)
 		console.log(data)
@@ -93,6 +106,14 @@ function routeToBeanInfo(bean: Bean) {
 	currentBean.set(bean)
 	router.push({ name: 'beaninfo' })
 }
+
+// saves the selected brew to state
+// and routes to the startbrew screen for quicker access
+function quickAccessBrew(brew: Brew) {
+	const brewTransfer = useBrewTransferStore()
+	brewTransfer.set(brew)
+	router.push({ name: 'startbrew' })
+}
 </script>
 
 <template>
@@ -100,7 +121,7 @@ function routeToBeanInfo(bean: Bean) {
 		<div v-if="error">{{ error }}</div>
 
 		<template v-else-if="heroBean">
-			<HeroBeanCard :bean="heroBean" @clicked="routeToBeanInfo"/>
+			<HeroBeanCard :bean="heroBean" :brews="recentHeroBrews" @clicked="routeToBeanInfo" @brew-selected="quickAccessBrew"/>
 			<SectionSeperator />
 			<div class="filter-wrapper">
 				<h5>Beans</h5>

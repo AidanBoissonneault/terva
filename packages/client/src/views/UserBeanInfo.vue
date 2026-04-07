@@ -8,6 +8,7 @@ import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import { getBrews } from '@/api/getBrews'
 import { getBrewStartData } from '@/api/getStartBrewData'
+import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 
 const router = useRouter()
 
@@ -16,7 +17,10 @@ const brews = ref<Brew[]>([])
 const gears = ref<Gear[]>([])
 const recipes = ref<Recipe[]>([])
 
+// clear the brew transfer (in case) and go to start brew
 function skip() {
+	const brewTransfer = useBrewTransferStore()
+	brewTransfer.clear()
 	router.push({ name: 'startbrew' })
 }
 
