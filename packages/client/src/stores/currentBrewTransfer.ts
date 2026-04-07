@@ -9,13 +9,7 @@ import { defineStore } from 'pinia'
 import { type Brew } from '@terva/shared'
 
 const defaultBrew = <Brew>{
-	grindSize: 0,
-    grinderId: -1,
-    brewerId: -1,
-    doseG: 0,
-    yieldG: 0,
-    recipeId: -1,
-		closeness: "success"
+
 }
 
 const localStorageName = 'currentBrew'

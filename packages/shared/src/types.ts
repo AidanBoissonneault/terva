@@ -66,13 +66,13 @@ export type GearCategory =
 
 export interface Brew {
 	id: number
-	grindSize: number
-	grinderId: number
-	brewerId: number
-	beanId: number
-	doseG: number
-	yieldG: number
-	recipeId: number
+	grindSize?: number
+	grinderId?: number
+	brewerId?: number
+	beanId?: number
+	doseG?: number
+	yieldG?: number
+	recipeId?: number
 	time_seconds?: number
 	closeness?: | "success" | "close" | "miss"
 	profile?: number
