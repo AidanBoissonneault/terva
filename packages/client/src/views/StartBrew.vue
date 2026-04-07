@@ -67,6 +67,13 @@ onMounted(async () => {
 		if (err instanceof Error) error.value = err.message
 		else error.value = 'An unknown error occurred'
 	} finally {
+		const currentBrewStore = useBrewTransferStore()
+		const stored = currentBrewStore.get()
+
+		if (stored) {
+			newBrew.value = stored
+			currentBrewStore.clear()
+		}
 		loading.stop()
 	}
 })

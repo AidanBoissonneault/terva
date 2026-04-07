@@ -65,6 +65,7 @@ export type GearCategory =
 // -----------------------------------------
 
 export interface Brew {
+	id: number
 	grindSize: number
 	grinderId: number
 	brewerId: number
@@ -76,7 +77,7 @@ export interface Brew {
 	closeness?: | "success" | "close" | "miss"
 	profile?: number
 	body?: number
-	notes?: number
+	notes?: string
 }
 
 /**

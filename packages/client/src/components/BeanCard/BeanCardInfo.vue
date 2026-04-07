@@ -16,7 +16,7 @@ const props = defineProps<{
 			<h2>{{ bean.name }}</h2>
 			<StatusBadge :state="bean.state" />
 		</span>
-		<span class="apart">
+		<span class="apart roaster-row">
 			<small v-if="!!bean.roastLevel">{{ getRoastLevelString(bean.roastLevel) }} Roast</small>
 			<small v-if="!!bean.roaster">{{ bean.roaster }}</small>
 		</span>
@@ -35,5 +35,10 @@ const props = defineProps<{
 div {
 	--pico-color: #fff;
 	--pico-h2-color: #fff;
+}
+
+.roaster-row {
+	margin-top: 2px;
+	opacity: 0.85;
 }
 </style>

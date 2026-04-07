@@ -4,12 +4,12 @@ used to display a reactive component for getting
 dose, ratio, and yield
 on the Brew Data Form component.
 CREATED: 27MAR2026
-LAST EDITED: 27MAR2026
+LAST EDITED: 06APR2026
 By: Aidan Boissonneault
 -->
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { Brew } from '@terva/shared'
 
 const form = defineModel<Brew>({
@@ -18,6 +18,7 @@ const form = defineModel<Brew>({
 		grinderId: 0,
 		doseG: 0,
 		yieldG: 0,
+		ratio: 15,
 		recipeId: 0,
 	}
 })
@@ -42,6 +43,13 @@ const water = computed({
 		form.value = { ...form.value, yieldG: val }
 	}
 })
+
+// Watch for ratio changes from import on quick start brew
+watch(() => [form.value.doseG, form.value.yieldG], ([dose, yield_]) => {
+    if (dose && yield_) {
+        ratio.value = Math.round(yield_ / dose)
+    }
+}, { immediate: false })
 
 function onDoseChange(val: number) {
 	if (isNaN(val)) return
