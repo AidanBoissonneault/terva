@@ -10,6 +10,7 @@ import testRoute from './test/test.js'
 import getBeans from './getBeans/getBeans.js'
 import addBean from './addBean/addBean.js'
 import getGear from './getGear/getGear.js'
+import getProfile from './getProfile/getProfile.js'
 import getRecipes from './getRecipes/getRecipes.js'
 import addGear from './addGear/addGear.js'
 import removeGear from './removeGear/removeGear.js'
@@ -80,6 +81,7 @@ app.use('/api/addbean', addBean)
 app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)
+app.use('/api/profile', getProfile)
 app.use('/api/getRecipes', getRecipes)
 app.use('/api/getbrews', getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)

@@ -142,3 +142,28 @@ CREATE TABLE recipe_steps (
  */
 
 export type BrewWithRecipeName = Brew & Recipe
+
+// -----------------------------------------
+//  User Profile
+// -----------------------------------------
+
+export interface UserProfile {
+	name: string
+	email: string
+	memberSince: string
+	totalBrews: number
+	closeness: {
+		success: number
+		close: number
+		miss: number
+	}
+	totalDoseG: number
+	favouriteMethod: string | null
+	favouriteMethodCount: number
+	favouriteBean: string | null
+	favouriteBeanRoaster: string | null
+	favouriteGrinder: string | null
+	favouriteGrinderCount: number
+	favouriteBrewer: string | null
+	favouriteBrewerCount: number
+}
