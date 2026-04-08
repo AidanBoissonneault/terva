@@ -14,15 +14,17 @@ router.get('/', requireAuth, async (req, res) => {
 		const userId = res.locals.user.id
 		const user = res.locals.user
 
-		// ── Closeness counts ───────────────────────────────────────────────────
-		const [closenessRows] = await connection.query<any[]>(`
+		const [closenessRows] = await connection.query<any[]>(
+			`
 			SELECT
 				closeness,
 				COUNT(*) AS count
 			FROM brews
 			WHERE user = ?
 			GROUP BY closeness
-		`, [userId])
+		`,
+			[userId],
+		)
 
 		const closeness = { success: 0, close: 0, miss: 0 }
 		for (const row of closenessRows) {
@@ -32,15 +34,17 @@ router.get('/', requireAuth, async (req, res) => {
 		}
 		const totalBrews = closeness.success + closeness.close + closeness.miss
 
-		// ── Total dose ─────────────────────────────────────────────────────────
-		const [[doseRow]] = await connection.query<any[]>(`
+		const [[doseRow]] = await connection.query<any[]>(
+			`
 			SELECT COALESCE(SUM(dose_g), 0) AS totalDoseG
 			FROM brews
 			WHERE user = ?
-		`, [userId])
+		`,
+			[userId],
+		)
 
-		// ── Favourite brew method ──────────────────────────────────────────────
-		const [[methodRow]] = await connection.query<any[]>(`
+		const [[methodRow]] = await connection.query<any[]>(
+			`
 			SELECT
 				r.brew_method AS brewMethod,
 				COUNT(*) AS count
@@ -50,10 +54,12 @@ router.get('/', requireAuth, async (req, res) => {
 			GROUP BY r.brew_method
 			ORDER BY count DESC
 			LIMIT 1
-		`, [userId])
+		`,
+			[userId],
+		)
 
-		// ── Favourite bean ─────────────────────────────────────────────────────
-		const [[beanRow]] = await connection.query<any[]>(`
+		const [[beanRow]] = await connection.query<any[]>(
+			`
 			SELECT
 				bn.name,
 				bn.roaster,
@@ -64,10 +70,12 @@ router.get('/', requireAuth, async (req, res) => {
 			GROUP BY b.bean_id, bn.name, bn.roaster
 			ORDER BY count DESC
 			LIMIT 1
-		`, [userId])
+		`,
+			[userId],
+		)
 
-		// ── Favourite grinder ──────────────────────────────────────────────────
-		const [[grinderRow]] = await connection.query<any[]>(`
+		const [[grinderRow]] = await connection.query<any[]>(
+			`
 			SELECT
 				g.name,
 				COUNT(*) AS count
@@ -78,10 +86,12 @@ router.get('/', requireAuth, async (req, res) => {
 			GROUP BY b.grinder_id, g.name
 			ORDER BY count DESC
 			LIMIT 1
-		`, [userId])
+		`,
+			[userId],
+		)
 
-		// ── Favourite brewer ───────────────────────────────────────────────────
-		const [[brewerRow]] = await connection.query<any[]>(`
+		const [[brewerRow]] = await connection.query<any[]>(
+			`
 			SELECT
 				g.name,
 				COUNT(*) AS count
@@ -92,7 +102,9 @@ router.get('/', requireAuth, async (req, res) => {
 			GROUP BY b.brewer_id, g.name
 			ORDER BY count DESC
 			LIMIT 1
-		`, [userId])
+		`,
+			[userId],
+		)
 
 		res.json({
 			name: user.name,
@@ -110,7 +122,6 @@ router.get('/', requireAuth, async (req, res) => {
 			favouriteBrewer: brewerRow?.name ?? null,
 			favouriteBrewerCount: Number(brewerRow?.count ?? 0),
 		})
-
 	} catch (err) {
 		const error = err as Error
 		console.error(error)
@@ -118,7 +129,6 @@ router.get('/', requireAuth, async (req, res) => {
 	}
 })
 
-// ── Delete account ─────────────────────────────────────────────────────────────
 router.delete('/', requireAuth, async (req, res) => {
 	try {
 		const userId = res.locals.user.id

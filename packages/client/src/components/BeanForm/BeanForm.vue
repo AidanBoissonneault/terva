@@ -16,6 +16,11 @@ const modelValue = defineModel<AddBeanForm>({
 	}
 })
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps<{
+	submitLabel?: string
+}>()
+
 const emits = defineEmits<{
 	formSubmitted: [ void ]
 }>()
@@ -92,7 +97,7 @@ function clone(obj: AddBeanForm) {
 			<input type="text" v-model="form.flavourNotes">
 		</label>
 
-		<button :disabled="! !!form.name?.trim()" class="big-text glass">Add Bean</button>
+		<button :disabled="! !!form.name?.trim()" class="big-text glass">{{ submitLabel ?? 'Add Bean' }}</button>
 	</form>
 </template>
 

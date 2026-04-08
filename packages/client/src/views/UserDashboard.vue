@@ -33,7 +33,7 @@ const error = ref<string | null>(null)
 const recentHeroBrews = ref()
 
 // stores the currently active filter for the filter buttons
-const activeFilter = ref<BeanState | null>(null)
+const activeFilter = ref<string | null>(null)
 
 // stores all filter buttons.
 // name is displaced, type is for backend.
@@ -51,12 +51,12 @@ const filteredBeans = computed(() => {
 
 	if (!activeFilter.value) return beans.value
 
-  return beans.value.filter((bean: Bean) => bean.state === activeFilter.value)
+  return beans.value.filter((bean: Bean) => String(bean.state) === String(activeFilter.value))
 })
 
 // sets the current filter to a new filter.
 // if a button that is currently active is pressed again, remove filter
-function newFilter(type: BeanState | null) {
+function newFilter(type: string | null) {
 	if (activeFilter.value === type) {
 		activeFilter.value = null
 		return

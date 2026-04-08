@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { type BeanState } from '@terva/shared';
 
 const props = defineProps<{
-	type: BeanState | null
-	activeFilter: BeanState | null
+	type: string | null
+	activeFilter: string | null
 }>()
 
 const emit = defineEmits<{
-	filter: [type: BeanState | null]
+	filter: [type: string | null]
 }>()
 
 const isActiveFilter = computed(() => props.type === props.activeFilter)
@@ -22,11 +21,8 @@ const isActiveFilter = computed(() => props.type === props.activeFilter)
 
 <style scoped>
 button {
-	padding: 0;
-	margin: 0;
-	padding-left: 4px;
-	padding-right: 4px;
-	margin-left: 4px;
+	margin: 0 0 0 4px;
+	padding: 0 4px;
 	border-radius: 4px;
 }
 

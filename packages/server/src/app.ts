@@ -9,6 +9,7 @@ import { auth } from './lib/auth.js'
 import testRoute from './test/test.js'
 import getBeans from './getBeans/getBeans.js'
 import addBean from './addBean/addBean.js'
+import editBean from './editBean/editBean.js'
 import getGear from './getGear/getGear.js'
 import getProfile from './getProfile/getProfile.js'
 import getRecipes from './getRecipes/getRecipes.js'
@@ -78,6 +79,7 @@ app.use(express.json())
 app.use('/api/test', testRoute)
 app.use('/api/getbeans', getBeans)
 app.use('/api/addbean', addBean)
+app.use('/api/editbean', editBean)
 app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)
 app.use('/api/removegear', removeGear)

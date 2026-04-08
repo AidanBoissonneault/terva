@@ -8,7 +8,7 @@ import { computed } from 'vue'
 const loading = useLoadingStore()
 const route = useRoute()
 
-const ignoredAppBarPages = ['startbrew', 'endbrew', 'beaninfo']
+const ignoredAppBarPages = ['startbrew', 'endbrew']
 const ignoreNavBarPages = ['endbrew', 'login', 'register', 'cookies', 'terms', 'privacy']
 const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name as string))
@@ -17,7 +17,7 @@ const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name
 <template>
 	<div class="app-layout">
 		<Transition name="slide-out-top" mode="out-in">
-			<AppBar v-if="isActiveAppBarPage"/>
+			<AppBar v-if="isActiveAppBarPage" />
 		</Transition>
 
 		<Transition name="steam" mode="out-in">
@@ -27,7 +27,7 @@ const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name
 		</Transition>
 
 		<Transition name="slide-out-bottom" mode="out-in">
-			<TabBar v-if="isActiveNavBarPage"/>
+			<TabBar v-if="isActiveNavBarPage" />
 		</Transition>
 
 		<div v-if="loading.isRouteLoading" class="route-loading">
@@ -63,12 +63,13 @@ const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name
 	z-index: 1;
 
 	box-sizing: border-box;
-  width: 100%;
+	width: 100%;
 }
 
 .content.shift_down {
-top: 96px;
+	top: 96px;
 }
+
 .steam-enter-active,
 .steam-leave-active {
 	transition: all 0.3s ease-out;
