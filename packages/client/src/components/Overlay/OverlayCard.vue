@@ -8,7 +8,7 @@
 
 <style scoped>
 div {
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 
 	box-shadow: 0 2px 2px var(--husk-shadow),
 							0 4px 3px oklch(from var(--husk-shadow) l c h / 0.4);

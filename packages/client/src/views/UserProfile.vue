@@ -210,7 +210,7 @@ article {
 
 .hero-card {
 	grid-column: 1 / 5;
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 	padding: 20px;
 	position: relative;
 	isolation: isolate;

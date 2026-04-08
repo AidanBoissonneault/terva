@@ -134,7 +134,7 @@ function navigateToStartBrew() {
 	isolation: isolate;
 
 	grid-column: 1 / 5;
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 	box-sizing: border-box;
 
 	border: 2px inset oklch(from v-bind(priColor) l c h / 0.2);

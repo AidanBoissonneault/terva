@@ -65,7 +65,7 @@ header {
 		0 8px 24px oklch(from var(--husk-shadow) l c h / 0.4),
 		inset 0 1px 0 oklch(from var(--husk-highlight) l c h / 0.4);
 
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 	z-index: 99999;
 
 	transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);

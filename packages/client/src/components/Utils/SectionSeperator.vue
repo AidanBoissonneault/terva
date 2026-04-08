@@ -8,7 +8,7 @@ div {
 	height: 4px;
 	grid-column: 1 / 5;
 
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 
 	margin: 0;
 	padding: 0;

@@ -188,7 +188,7 @@ label.small {
 }
 
 .card {
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 	background: var(--pico-form-element-background-color);
 	box-shadow: 0 2px 4px oklch(from var(--husk-shadow) calc(l - 1) c h / 0.6);
 	padding: 16px;

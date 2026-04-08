@@ -89,7 +89,7 @@ button {
 	gap: 12px;
 
 	background-color: oklch(from var(--pico-contrast) l c h / 0.4);
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 	padding: 12px;
 }
 
@@ -106,7 +106,7 @@ button {
 
 .gear-card {
 	padding: 12px 16px;
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 	background: var(--card-bg);
 	box-shadow: var(--shadow-sm);
 	transition: 0.15s ease;

@@ -101,7 +101,7 @@ function onRatioChange(val: number) {
 	align-items: center;
 	gap: 16px;
 	padding: 0.75rem 1rem;
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 
 	background: var(--pico-form-element-background-color);
 

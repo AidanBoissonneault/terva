@@ -78,7 +78,7 @@ button {
   isolation: isolate;
 
 	grid-column: 1 / 5;
-	border-radius: 12px;
+	border-radius: var(--pico-border-radius);
 
 	box-sizing: border-box;
 
