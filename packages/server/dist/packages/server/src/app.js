@@ -66,12 +66,12 @@ const apiLimiter = rateLimit({
 });
 // Auth limiter applied first, then general limiter skips auth routes
 // so requests never hit both limiters
-app.use('/api/auth', authLimiter);
+/*
+app.use('/api/auth', authLimiter)
 app.use('/api', (req, res, next) => {
-    if (req.path.startsWith('/auth'))
-        return next();
-    apiLimiter(req, res, next);
-});
+    if (req.path.startsWith('/auth')) return next()
+    apiLimiter(req, res, next)
+}) */
 // Auth routes
 app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
     try {
