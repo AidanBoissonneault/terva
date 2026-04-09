@@ -10,7 +10,7 @@ import type { CheckedJSON, Gear } from '@terva/shared'
 
 export const addGear = async (gear: Gear): Promise<CheckedJSON<{ id: number }>> => {
 	try {
-		const { data } = await axios.post('/api/addgear', {
+		const { data } = await axios.post('/api/gear', {
 			...gear,
 		})
 

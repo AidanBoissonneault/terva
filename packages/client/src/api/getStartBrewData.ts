@@ -12,8 +12,8 @@ export const getBrewStartData = async (): Promise<CheckedJSON<{ gears: Gear[], r
 	try {
 
 		const [{ data: gear }, { data: recipes }] = await Promise.all([
-			axios.get('/api/getgear'),
-			axios.get('/api/getrecipes'),
+			axios.get('/api/gear'),
+			axios.get('/api/recipe'),
 		])
 
 		return {

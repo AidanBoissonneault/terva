@@ -9,7 +9,7 @@ import type { CheckedJSON, Gear } from '@terva/shared'
 export const getGear = async (): Promise<CheckedJSON<Gear[]>> => {
 	try {
 
-		const { data } = await axios.get('/api/getgear')
+		const { data } = await axios.get('/api/gear')
 
 		return {
 			success: true,

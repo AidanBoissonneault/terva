@@ -9,7 +9,7 @@ import type { CheckedJSON, Brew } from '@terva/shared'
 export const getBrews = async (beanId: number): Promise<CheckedJSON<Brew[]>> => {
 	try {
 
-		const { data } = await axios.get('/api/getbrews', { params: { beanId } })
+		const { data } = await axios.get('/api/brew', { params: { beanId } })
 
 		return {
 			success: true,

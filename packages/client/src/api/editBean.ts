@@ -8,7 +8,7 @@ import type { AddBeanForm, CheckedJSON } from '@terva/shared'
 
 export const editBean = async (id: number, bean: AddBeanForm): Promise<CheckedJSON<{ id: number }>> => {
 	try {
-		const { data } = await axios.put(`/api/editbean/${id}`, { ...bean })
+		const { data } = await axios.put(`/api/bean/${id}`, { ...bean })
 
 		return {
 			success: true,

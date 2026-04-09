@@ -11,7 +11,7 @@ import type { Brew, CheckedJSON } from '@terva/shared'
 
 export const addBrew = async (brew: Brew): Promise<CheckedJSON<{ id: number }>> => {
 	try {
-		const { data } = await axios.post('/api/addbrew', {
+		const { data } = await axios.post('/api/brew', {
 			...brew,
 		})
 

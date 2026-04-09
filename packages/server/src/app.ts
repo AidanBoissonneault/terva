@@ -5,19 +5,19 @@ import cors from 'cors'
 import { toNodeHandler } from 'better-auth/node'
 import { auth } from './lib/auth.js'
 
-// your existing routes
-import testRoute from './test/test.js'
-import getBeans from './getBeans/getBeans.js'
-import addBean from './addBean/addBean.js'
-import editBean from './editBean/editBean.js'
-import getGear from './getGear/getGear.js'
-import getProfile from './getProfile/getProfile.js'
-import getRecipes from './getRecipes/getRecipes.js'
-import addGear from './addGear/addGear.js'
-import removeGear from './removeGear/removeGear.js'
-import getBrews from './getBrews/getBrews.js'
-import getRecentBrews from './getBrews/getRecentBrews.js'
-import addBrew from './addBrew/addBrew.js'
+
+import getBeans from './bean/getBeans.js'
+import addBean from './bean/addBean.js'
+import editBean from './bean/editBean.js'
+import getGear from './gear/getGear.js'
+import getProfile from './profile/getProfile.js'
+import removeProfile from './profile/removeProfile.js'
+import getRecipes from './recipe/getRecipes.js'
+import addGear from './gear/addGear.js'
+import removeGear from './gear/removeGear.js'
+import getBrews from './brews/getBrews.js'
+import getRecentBrews from './brews/getRecentBrews.js'
+import addBrew from './brews/addBrew.js'
 import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js'
 import connection from './db/connection.js'
 import seedDemo from './seedDemo/seedDemo.js'
@@ -76,18 +76,12 @@ app.all('/api/auth/*splat', toNodeHandler(auth))
 
 app.use(express.json())
 
-app.use('/api/test', testRoute)
-app.use('/api/getbeans', getBeans)
-app.use('/api/bean', addBean)
-app.use('/api/editbean', editBean)
-app.use('/api/getgear', getGear)
-app.use('/api/addgear', addGear)
-app.use('/api/removegear', removeGear)
-app.use('/api/profile', getProfile)
-app.use('/api/getRecipes', getRecipes)
-app.use('/api/getbrews', getBrews)
+app.use('/api/bean', addBean, editBean, getBeans)
+app.use('/api/gear', addGear, getGear, removeGear)
+app.use('/api/profile', getProfile, removeProfile)
+app.use('/api/recipe', getRecipes)
+app.use('/api/brew', addBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)
-app.use('/api/addbrew', addBrew)
 app.use('/api/seeddemo', seedDemo)
 
 export default app
