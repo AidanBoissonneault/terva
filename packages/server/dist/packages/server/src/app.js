@@ -23,11 +23,13 @@ import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 const { CLIENT_PORT } = process.env;
 if (!CLIENT_PORT) {
     throw new Error('Missing required client port variable');
 }
 const app = express();
+app.use(helmet());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientDist = path.resolve(process.cwd(), 'packages/client/dist');
@@ -45,25 +47,32 @@ app.use(cors({
     ],
     credentials: true,
 }));
-// rate limiters on authorization / api routes.
-// Strict limiter for auth routes — 10 attempts per 15 minutes
+// ── Rate limiters ──────────────────────────────────────────────────────────────
+// Auth limiter — 20 attempts per 15 minutes
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10,
+    max: 20,
     message: { error: 'Too many attempts, please try again later.' },
     standardHeaders: true,
     legacyHeaders: false,
 });
-// General limiter for all other API routes — 200 requests per 15 minutes
+// General API limiter
 const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 200,
+    windowMs: 1 * 60 * 1000,
+    max: 500000,
     message: { error: 'Too many requests, please try again later.' },
     standardHeaders: true,
     legacyHeaders: false,
 });
+// Auth limiter applied first, then general limiter skips auth routes
+// so requests never hit both limiters
 app.use('/api/auth', authLimiter);
-app.use('/api', apiLimiter);
+app.use('/api', (req, res, next) => {
+    if (req.path.startsWith('/auth'))
+        return next();
+    apiLimiter(req, res, next);
+});
+// Auth routes
 app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
@@ -91,6 +100,7 @@ app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
 });
 app.all('/api/auth/*splat', toNodeHandler(auth));
 app.use(express.json());
+// App routes
 app.use('/api/bean', addBean, editBean, getBeans, removeBean);
 app.use('/api/gear', addGear, getGear, removeGear);
 app.use('/api/profile', getProfile, removeProfile);

@@ -7,10 +7,10 @@ Terva is a coffee brew tracking app. Log brews, manage bean and gear data, and u
 
 ## Stack
 
-- **Client** — Vue 3, TypeScript, Vite
-- **Server** — Node.js, Express v5
-- **Database** — MySQL 8.0+
-- **Auth** — BetterAuth (email/password, cookie-based sessions)
+- **Client** - Vue 3, TypeScript, Vite
+- **Server** - Node.js, Express v5
+- **Database** - MySQL 8.0+
+- **Auth** - BetterAuth (email/password, cookie-based sessions)
 
 ---
 

@@ -54,7 +54,7 @@ export async function sendWelcomeEmail(to: string) {
 
           <tr><td style="height: 12px;"></td></tr>
 
-          <!-- Hero Card — gradient like the Ethiopian card -->
+          <!-- Hero Card - gradient like the Ethiopian card -->
           <tr>
             <td style="
               background: linear-gradient(135deg, #7c6cd4 0%, #a78be0 40%, #6ab4e8 100%);
@@ -117,7 +117,7 @@ export async function sendWelcomeEmail(to: string) {
 
           <tr><td style="height: 12px;"></td></tr>
 
-          <!-- Info row — like the bean meta rows -->
+          <!-- Info row - like the bean meta rows -->
           <tr>
             <td style="
               background-color: #2e1f0e;

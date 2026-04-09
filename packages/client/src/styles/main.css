@@ -38,14 +38,14 @@
 	--pico-nav-link-spacing-horizontal: 0.5rem;
 	--pico-nav-breadcrumb-divider: '>';
 	/*
-    SVG icon colours must be literal values inside data URIs — CSS custom properties
+    SVG icon colours must be literal values inside data URIs - CSS custom properties
     cannot be resolved inside url(). White strokes stay as-is (#ffffff). All other
     strokes use the closest hex approximation of the relevant token:
-      --neutral-400  (oklch 0.70 0.025 70) ≈ #7d756e   — muted UI icons
-      --green-500    (oklch 0.70 0.16 135) ≈ #3f9e87   — valid (light)
-      --red-500      (oklch 0.66 0.15  25) ≈ #c44242   — invalid (light)
-      --green-700    (oklch 0.50 0.14 135) ≈ #2e7a6b   — valid (dark)
-      --red-700      (oklch 0.48 0.14  25) ≈ #8c4040   — invalid (dark)
+      --neutral-400  (oklch 0.70 0.025 70) ≈ #7d756e   - muted UI icons
+      --green-500    (oklch 0.70 0.16 135) ≈ #3f9e87   - valid (light)
+      --red-500      (oklch 0.66 0.15  25) ≈ #c44242   - invalid (light)
+      --green-700    (oklch 0.50 0.14 135) ≈ #2e7a6b   - valid (dark)
+      --red-700      (oklch 0.48 0.14  25) ≈ #8c4040   - invalid (dark)
   */
 	--pico-icon-checkbox: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
 	--pico-icon-minus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3C/svg%3E");

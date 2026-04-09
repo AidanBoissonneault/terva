@@ -46,22 +46,22 @@ const chroma = computed(() => {
 	}
 })
 
-// Three colour stops — same offset logic as BeanCardWrapper
+// Three colour stops - same offset logic as BeanCardWrapper
 const priColor = computed(() => `oklch(${lightness.value} ${chroma.value} ${hue.value})`)
 const secColor = computed(() => `oklch(${lightness.value + 0.04} ${chroma.value} ${hue.value})`)
 const accColor = computed(() => `oklch(${lightness.value + 0.08} ${chroma.value} ${hue.value})`)
 
-// Gradient anchors — fixed positions (no elevation data on a brew)
+// Gradient anchors - fixed positions (no elevation data on a brew)
 const g1x = 15, g1y = 40
 const g2x = 50, g2y = 55
 const g3x = 80, g3y = 30
 
 // Gear lookups
-const brewerName = computed(() => props.gear.find(g => g.id === props.brew.brewerId)?.name ?? '—')
-const grinderName = computed(() => props.gear.find(g => g.id === props.brew.grinderId)?.name ?? '—')
+const brewerName = computed(() => props.gear.find(g => g.id === props.brew.brewerId)?.name ?? '-')
+const grinderName = computed(() => props.gear.find(g => g.id === props.brew.grinderId)?.name ?? '-')
 
 // Recipe lookup
-const recipeName = computed(() => props.recipes.find(r => r.id === props.brew.recipeId)?.name ?? '—')
+const recipeName = computed(() => props.recipes.find(r => r.id === props.brew.recipeId)?.name ?? '-')
 
 // Ratio
 const ratio = computed(() => {

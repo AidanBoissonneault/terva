@@ -1,5 +1,5 @@
 -- -----------------------------------------
---  SEED DATA — husk
+--  SEED DATA - husk
 -- -----------------------------------------
 
 USE husk;
@@ -55,7 +55,7 @@ INSERT INTO recipes (name, brew_method, user) VALUES
 
 -- 4-6 Method Classic (recipe 1)
 INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
-(1, 1, 'Bloom — pour 50g water',    45),
+(1, 1, 'Bloom - pour 50g water',    45),
 (1, 2, 'Pour to 150g (1st main)',   40),
 (1, 3, 'Pour to 200g (2nd main)',   40),
 (1, 4, 'Pour to 250g (3rd main)',   40),
@@ -64,13 +64,13 @@ INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUE
 
 -- Rao Allongé (recipe 2)
 INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
-(2, 1, 'Bloom — pour 60g water',    30),
+(2, 1, 'Bloom - pour 60g water',    30),
 (2, 2, 'Continuous pour to 360g',   90),
 (2, 3, 'Draw down',                 60);
 
 -- Origami Immersion (recipe 3)
 INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES
-(3, 1, 'Saturate grounds — 50g',    10),
+(3, 1, 'Saturate grounds - 50g',    10),
 (3, 2, 'Pour to 250g',              20),
 (3, 3, 'Steep with lid on',        240),
 (3, 4, 'Open valve and draw down',  90);

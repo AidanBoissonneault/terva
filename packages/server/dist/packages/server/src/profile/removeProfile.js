@@ -9,12 +9,12 @@ const router = Router();
 router.delete('/', requireAuth, async (req, res) => {
     try {
         const userId = res.locals.user.id;
-        // Delete app data — foreign keys cascade from schema
+        // Delete app data - foreign keys cascade from schema
         await connection.query('DELETE FROM brews WHERE user = ?', [userId]);
         await connection.query('DELETE FROM beans WHERE user = ?', [userId]);
         await connection.query('DELETE FROM gear WHERE user = ?', [userId]);
         await connection.query('DELETE FROM recipes WHERE user = ?', [userId]);
-        // Delete the BetterAuth user — this also removes sessions/accounts
+        // Delete the BetterAuth user - this also removes sessions/accounts
         await connection.query('DELETE FROM user WHERE id = ?', [userId]);
         res.json({ success: true });
     }

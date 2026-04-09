@@ -92,7 +92,7 @@
 					</tr>
 					<tr>
 						<td class="label">Service:</td>
-						<td class="value">Google Analytics — <a href="https://business.safety.google/privacy/" target="_blank"
+						<td class="value">Google Analytics - <a href="https://business.safety.google/privacy/" target="_blank"
 								rel="noopener noreferrer">View Service Privacy Policy</a></td>
 					</tr>
 					<tr>
@@ -124,7 +124,7 @@
 					</tr>
 					<tr>
 						<td class="label">Service:</td>
-						<td class="value">Google Analytics — <a href="https://business.safety.google/privacy/" target="_blank"
+						<td class="value">Google Analytics - <a href="https://business.safety.google/privacy/" target="_blank"
 								rel="noopener noreferrer">View Service Privacy Policy</a></td>
 					</tr>
 					<tr>
@@ -157,7 +157,7 @@
 					</tr>
 					<tr>
 						<td class="label">Service:</td>
-						<td class="value">Google Analytics — <a href="https://business.safety.google/privacy/" target="_blank"
+						<td class="value">Google Analytics - <a href="https://business.safety.google/privacy/" target="_blank"
 								rel="noopener noreferrer">View Service Privacy Policy</a></td>
 					</tr>
 					<tr>
@@ -190,7 +190,7 @@
 					</tr>
 					<tr>
 						<td class="label">Service:</td>
-						<td class="value">Google Analytics — <a href="https://business.safety.google/privacy/" target="_blank"
+						<td class="value">Google Analytics - <a href="https://business.safety.google/privacy/" target="_blank"
 								rel="noopener noreferrer">View Service Privacy Policy</a></td>
 					</tr>
 					<tr>

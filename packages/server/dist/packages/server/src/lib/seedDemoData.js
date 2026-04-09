@@ -88,23 +88,23 @@ export async function seedDemoData(pool, userId) {
         const recipeIds = recipeRows.map((r) => r.id);
         if (recipeIds.length < 4) {
             await conn.commit();
-            console.warn(`Skipping brews — only ${recipeIds.length} recipes found for user: ${userId}`);
+            console.warn(`Skipping brews - only ${recipeIds.length} recipes found for user: ${userId}`);
             return;
         }
         // column: user_id (VARCHAR 50)
         // gear index ref: 0=filter grinder, 1=espresso grinder, 4=V60, 5=immersion, 6=espresso machine
         // recipe index ref: 0=4-6, 1=Quan, 2=Hoffman, 3=Espresso, 4=Immersion
         const brews = [
-            // Ethiopian Natural — V60 4-6
+            // Ethiopian Natural - V60 4-6
             { bean: 0, recipe: 0, brewer: 4, grinder: 0, grind: 24.0, dose: 20.0, yield: 300.0, time: 210, closeness: 'success', profile: 52.0, body: 45.0, notes: 'Blueberry jam on the nose. Sweet and clean.', brewed_at: '2025-03-01 08:12:00' },
             { bean: 0, recipe: 0, brewer: 4, grinder: 0, grind: 22.0, dose: 20.0, yield: 300.0, time: 198, closeness: 'close', profile: 38.0, body: 40.0, notes: 'Slightly astringent. Grind may be too fine.', brewed_at: '2025-03-03 08:30:00' },
-            // Colombian Washed — Espresso
+            // Colombian Washed - Espresso
             { bean: 1, recipe: 3, brewer: 6, grinder: 1, grind: 2.2, dose: 18.0, yield: 36.0, time: 28, closeness: 'success', profile: 50.0, body: 65.0, notes: 'Balanced, nutty, brown sugar finish.', brewed_at: '2025-03-12 08:00:00' },
             { bean: 1, recipe: 3, brewer: 6, grinder: 1, grind: 2.0, dose: 18.0, yield: 36.0, time: 24, closeness: 'miss', profile: 30.0, body: 70.0, notes: 'Under-extracted. Sour and thin. Grind finer.', brewed_at: '2025-03-13 08:05:00' },
             { bean: 1, recipe: 3, brewer: 6, grinder: 1, grind: 2.4, dose: 18.0, yield: 38.0, time: 32, closeness: 'close', profile: 55.0, body: 68.0, notes: 'Slightly bitter on the tail but body is great.', brewed_at: '2025-03-14 07:58:00' },
-            // Colombian Gesha — Immersion
+            // Colombian Gesha - Immersion
             { bean: 2, recipe: 4, brewer: 5, grinder: 0, grind: 25.0, dose: 15.0, yield: 250.0, time: 360, closeness: 'success', profile: 72.0, body: 42.0, notes: 'Wild. Lychee and white grape. Immersion works great.', brewed_at: '2025-03-10 07:55:00' },
-            // Ethiopian Washed — V60 4-6
+            // Ethiopian Washed - V60 4-6
             { bean: 3, recipe: 0, brewer: 4, grinder: 0, grind: 23.0, dose: 20.0, yield: 300.0, time: 202, closeness: 'success', profile: 65.0, body: 36.0, notes: 'Lemon curd and bergamot. Very clean.', brewed_at: '2025-02-20 08:20:00' },
             { bean: 3, recipe: 0, brewer: 4, grinder: 0, grind: 21.0, dose: 20.0, yield: 300.0, time: 190, closeness: 'close', profile: 55.0, body: 34.0, notes: 'Green and grassy. Needs more rest off roast.', brewed_at: '2025-02-15 08:10:00' },
         ];

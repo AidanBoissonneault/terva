@@ -7,7 +7,7 @@ export async function seedDefaultRecipes(pool, userId) {
                 name: "Hoffman 1-Cup V60",
                 brew_method: "V60",
                 steps: [
-                    { action: "Bloom — pour 2× dose weight, swirl", duration_seconds: 45 },
+                    { action: "Bloom - pour 2× dose weight, swirl", duration_seconds: 45 },
                     { action: "Pour in slow circles to 60% total", duration_seconds: 30 },
                     { action: "Pour remainder to target weight", duration_seconds: 30 },
                     { action: "Swirl gently, draw down", duration_seconds: 60 },
@@ -17,7 +17,7 @@ export async function seedDefaultRecipes(pool, userId) {
                 name: "Quan-Style Percolation",
                 brew_method: "V60",
                 steps: [
-                    { action: "Bloom — pour 3× dose, wait", duration_seconds: 50 },
+                    { action: "Bloom - pour 3× dose, wait", duration_seconds: 50 },
                     { action: "Pour to 40% total weight", duration_seconds: 20 },
                     { action: "Pour to 70% total weight", duration_seconds: 20 },
                     { action: "Pour to 100% total weight", duration_seconds: 20 },
@@ -28,7 +28,7 @@ export async function seedDefaultRecipes(pool, userId) {
                 name: "4-6 Method",
                 brew_method: "V60",
                 steps: [
-                    { action: "Bloom — pour 50g", duration_seconds: 45 },
+                    { action: "Bloom - pour 50g", duration_seconds: 45 },
                     { action: "Pour to 150g (1st main)", duration_seconds: 40 },
                     { action: "Pour to 200g (2nd main)", duration_seconds: 40 },
                     { action: "Pour to 250g (3rd main)", duration_seconds: 40 },
@@ -51,7 +51,7 @@ export async function seedDefaultRecipes(pool, userId) {
                 name: "Immersion / Steep & Release",
                 brew_method: "Switch / Origami",
                 steps: [
-                    { action: "Saturate grounds — pour 50g", duration_seconds: 10 },
+                    { action: "Saturate grounds - pour 50g", duration_seconds: 10 },
                     { action: "Pour to full target weight", duration_seconds: 20 },
                     { action: "Steep with lid on", duration_seconds: 240 },
                     { action: "Open valve and draw down", duration_seconds: 90 },

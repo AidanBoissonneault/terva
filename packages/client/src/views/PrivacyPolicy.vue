@@ -17,7 +17,7 @@
 			<li>Download and use our mobile application (Terva), or any other application of ours that links to this Privacy
 				Notice</li>
 			<li>Use Terva. Terva is a specialty coffee brew tracking app that helps you log, refine, and revisit your brewing
-				recipes. Track your beans, gear, and brew steps — and discover what makes each cup great.</li>
+				recipes. Track your beans, gear, and brew steps - and discover what makes each cup great.</li>
 			<li>Engage with us in other related ways, including any sales, marketing, or events</li>
 		</ul>
 
@@ -156,8 +156,8 @@
 			any changes to such personal information.</p>
 
 		<h3>Information automatically collected</h3>
-		<p><em><strong>In Short:</strong> Some information — such as your Internet Protocol (IP) address and/or browser and
-				device characteristics — is collected automatically when you visit our Services.</em></p>
+		<p><em><strong>In Short:</strong> Some information - such as your Internet Protocol (IP) address and/or browser and
+				device characteristics - is collected automatically when you visit our Services.</em></p>
 		<p>
 			We automatically collect certain information when you visit, use, or navigate the Services. This information does
 			not
@@ -504,7 +504,7 @@
 			contacting
 			us using the details provided in the section <a href="#contact">How Can You Contact Us About This Notice?</a>
 			below.
-			You will then be removed from the marketing lists. However, we may still communicate with you — for example, to
+			You will then be removed from the marketing lists. However, we may still communicate with you - for example, to
 			send you
 			service-related messages that are necessary for the administration and use of your account, to respond to service
 			requests,

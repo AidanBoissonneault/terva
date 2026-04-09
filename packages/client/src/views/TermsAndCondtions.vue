@@ -20,7 +20,7 @@
 		</p>
 		<p>
 			Terva is a specialty coffee brew tracking app that helps you log, refine, and revisit your brewing recipes.
-			Track your beans, gear, and brew steps — and discover what makes each cup great.
+			Track your beans, gear, and brew steps - and discover what makes each cup great.
 		</p>
 		<p>
 			You can contact us by email at <a href="mailto:tervabrewed@gmail.com">tervabrewed@gmail.com</a>

@@ -23,7 +23,7 @@ const form = defineModel<Brew>({
 	}
 })
 
-// Ratio is the source of truth — not derived from yieldG/doseG
+// Ratio is the source of truth - not derived from yieldG/doseG
 const ratio = ref(
 	form.value.doseG && form.value.yieldG
 		? Math.round(form.value.yieldG / form.value.doseG)
