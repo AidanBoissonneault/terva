@@ -4,7 +4,13 @@ const activeMenuId = ref<string | null>(null)
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect } from 'vue'
+import type { Bean } from '@terva/shared';
+import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect, inject } from 'vue'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps<{
+	bean: Bean
+}>()
 
 const id = crypto.randomUUID()
 
@@ -16,11 +22,6 @@ const buttonRef = ref<HTMLButtonElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 
 const dropdownStyle = ref<Record<string, string>>({})
-
-const emit = defineEmits<{
-	edit: [void]
-	delete: [void]
-}>()
 
 function updatePosition() {
 	if (!buttonRef.value) return
@@ -115,15 +116,8 @@ onBeforeUnmount(() => {
 	window.removeEventListener('resize', handleScroll)
 })
 
-function onEdit() {
-	emit('edit')
-	close()
-}
-
-function onDelete() {
-	emit('delete')
-	close()
-}
+const beanEditClicked = inject<(bean: Bean) => void>('beanEditClicked')
+const beanDeleteClicked = inject<(bean: Bean) => void>('beanDeleteClicked')
 </script>
 
 <template>
@@ -148,14 +142,14 @@ function onDelete() {
 					tabindex="-1"
 					role="menu"
 				>
-					<button class="dropdown-item" @click="onEdit">
+					<button class="dropdown-item" @click="beanEditClicked?.(bean)">
 						<FontAwesomeIcon class="dropdown-icon" :icon="['fas', 'pen']" />
 						<span>Edit</span>
 					</button>
 
 					<div class="divider"></div>
 
-					<button class="dropdown-item danger" @click="onDelete">
+					<button class="dropdown-item danger" @click="beanDeleteClicked?.(bean)">
 						<FontAwesomeIcon class="dropdown-icon" :icon="['fas', 'trash']" />
 						<span>Delete</span>
 					</button>

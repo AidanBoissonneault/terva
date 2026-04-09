@@ -9,6 +9,7 @@ import { auth } from './lib/auth.js'
 import getBeans from './bean/getBeans.js'
 import addBean from './bean/addBean.js'
 import editBean from './bean/editBean.js'
+import removeBean from './bean/removeBean.js'
 import getGear from './gear/getGear.js'
 import getProfile from './profile/getProfile.js'
 import removeProfile from './profile/removeProfile.js'
@@ -76,7 +77,7 @@ app.all('/api/auth/*splat', toNodeHandler(auth))
 
 app.use(express.json())
 
-app.use('/api/bean', addBean, editBean, getBeans)
+app.use('/api/bean', addBean, editBean, getBeans, removeBean)
 app.use('/api/gear', addGear, getGear, removeGear)
 app.use('/api/profile', getProfile, removeProfile)
 app.use('/api/recipe', getRecipes)

@@ -3,15 +3,46 @@ import AppBar from './components/AppBar/AppBar.vue'
 import PourOverLoader from './components/Utils/PourOverLoader.vue'
 import TabBar from './components/TabBar/TabBar.vue'
 import { useLoadingStore } from '@/stores/loading'
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { computed, provide, ref } from 'vue'
+import type { Bean } from '@terva/shared'
+import { useCurrentBeanStore } from './stores/currentShowcasedBean'
+import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
+import { removeBean } from './api/removeBean'
+
 const loading = useLoadingStore()
 const route = useRoute()
+const router = useRouter()
 
 const ignoredAppBarPages = ['startbrew', 'endbrew']
 const ignoreNavBarPages = ['endbrew', 'login', 'register', 'cookies', 'terms', 'privacy']
 const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name as string))
+
+// routes when bean card's edit button is pressed to the Bean Edit screen.
+
+provide('beanEditClicked', (bean: Bean) => {
+	const currentBean = useCurrentBeanStore()
+	currentBean.set(bean)
+	router.push({ name: 'editbean' })
+})
+
+// stores if the Delete Bean warning is being shown.
+const isWarnDeleteBean = ref<boolean>(false)
+
+// stores the bean the user is attempting to delete
+const deletedBean = ref<Bean>()
+
+provide('beanDeleteClicked', (bean: Bean) => {
+	deletedBean.value = bean
+	isWarnDeleteBean.value = true
+})
+
+async function deleteSelectedBean() {
+	isWarnDeleteBean.value = false
+	await removeBean(deletedBean.value?.id ?? -1)
+	router.push({ name: 'dashboard' })
+}
 </script>
 
 <template>
@@ -34,6 +65,17 @@ const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name
 			<PourOverLoader />
 		</div>
 	</div>
+
+	<FullscreenOverlay :is-visible="isWarnDeleteBean" @outside-clicked="isWarnDeleteBean = false; deletedBean = undefined">
+				<div class="confirm-content">
+				<p><strong>Delete {{ deletedBean?.name }}?</strong></p>
+				<small>This permanently removes your bean and all brew data. This cannot be undone.</small>
+				<div class="confirm-actions">
+					<button class="glass" @click="isWarnDeleteBean = false">Cancel</button>
+					<button class="glass danger-btn" @click="deleteSelectedBean">Delete</button>
+				</div>
+			</div>
+			</FullscreenOverlay>
 </template>
 
 <style scoped>
@@ -68,6 +110,26 @@ const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name
 
 .content.shift_down {
 	top: 96px;
+}
+
+.confirm-content, strong {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	color: var(--pico-primary-inverse);
+}
+
+.confirm-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	margin-top: 8px;
+}
+
+.danger-btn {
+	border-color: oklch(from var(--red-500) l c h / 0.5) !important;
+	color: var(--red-400) !important;
 }
 
 .steam-enter-active,

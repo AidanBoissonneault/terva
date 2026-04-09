@@ -9,11 +9,6 @@ import MoreButton from './MoreButton.vue';
 const props = defineProps<{
 	bean: Bean
 }>()
-
-const emits = defineEmits<{
-	edit: [void]
-	delete: [void]
-}>()
 </script>
 
 <template>
@@ -21,7 +16,7 @@ const emits = defineEmits<{
 		<span class="apart">
 			<h2>{{ bean.name }}</h2>
 			<div class = icons>
-				<MoreButton @edit="emits('edit')" @delete="emits('delete')"/>
+				<MoreButton :bean />
 				<StatusBadge :state="bean.state" />
 			</div>
 		</span>
