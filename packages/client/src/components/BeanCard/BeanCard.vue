@@ -19,15 +19,15 @@ const props = defineProps<{
 
 const emits = defineEmits<{
 	clicked: [Bean]
+	edit: [Bean]
+	delete: [Bean]
 }>()
 
 </script>
 
 <template>
-	<BeanCardWrapper :bean="bean"  @clicked="emits('clicked', bean)">
-		<BeanCardInfo
-			:bean="bean"
-		/>
+	<BeanCardWrapper :bean="bean" @clicked="emits('clicked', bean)">
+		<BeanCardInfo :bean="bean" @edit="emits('edit', bean)" @delete="emits('delete', bean)"/>
 	</BeanCardWrapper>
 </template>
 

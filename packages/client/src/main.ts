@@ -24,6 +24,9 @@ import {
 	faArrowRotateRight,
 	faFileLines,
 	faScroll,
+	faPen,
+	faCopy,
+	faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 import {
 	faHouse as faHouseRegular,
@@ -49,6 +52,9 @@ library.add(
 	faArrowRotateRight,
 	faFileLines,
 	faScroll,
+	faPen,
+	faCopy,
+	faTrash,
 )
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 

@@ -5,7 +5,7 @@ import { authClient } from '@/lib/auth-client'
 import { getProfile, deleteAccount } from '@/api/getProfile'
 import { useLoadingStore } from '@/stores/loading'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
-import FullscreenOverlay from '@/components/Overlay/FullscreenOverlay.vue'
+import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import type { UserProfile } from '@terva/shared'
 
 const router = useRouter()
@@ -418,10 +418,6 @@ a.danger.muted {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-}
-
-.confirm-content p {
-	margin: 0;
 }
 
 .confirm-actions {

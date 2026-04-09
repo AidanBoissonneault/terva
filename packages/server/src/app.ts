@@ -78,7 +78,7 @@ app.use(express.json())
 
 app.use('/api/test', testRoute)
 app.use('/api/getbeans', getBeans)
-app.use('/api/addbean', addBean)
+app.use('/api/bean', addBean)
 app.use('/api/editbean', editBean)
 app.use('/api/getgear', getGear)
 app.use('/api/addgear', addGear)

@@ -5,7 +5,7 @@ import { removeGear } from '@/api/removeGear';
 import GearForm from '@/components/Gear/GearForm.vue';
 import GearList from '@/components/Gear/GearList.vue';
 import GearRemovalForm from '@/components/Gear/GearRemovalForm.vue';
-import FullscreenOverlay from '@/components/Overlay/FullscreenOverlay.vue';
+import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue';
 import { useLoadingStore } from '@/stores/loading';
 import type { Gear, GearCategory } from '@terva/shared';
 import { computed, onMounted, ref } from 'vue';

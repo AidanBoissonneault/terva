@@ -26,7 +26,7 @@ const chroma = ref(chromaCalculator.getChroma(props.bean.state))
 
 // calculate colors
 const priColor = computed(() =>
-	`oklch(${lightness.value} ${chroma.value} ${props.bean.pri_hue})`
+	`oklch(${lightness.value - 0.02} ${chroma.value} ${props.bean.pri_hue})`
 )
 const secColor = computed(() =>
 	`oklch(${lightness.value + 0.04} ${chroma.value} ${props.bean.sec_hue})`
