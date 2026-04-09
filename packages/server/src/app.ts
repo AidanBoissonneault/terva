@@ -24,11 +24,25 @@ import seedDemo from './seedDemo/seedDemo.js'
 import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import fs from 'fs';
+import dotenv from 'dotenv';
 
 const { CLIENT_PORT } = process.env
 
 if (!CLIENT_PORT) {
 	throw new Error('Missing required client port variable')
+}
+
+// Absolute path to the config
+const configPath = path.resolve(
+  '../public_html/.builds/config'
+);
+
+// Read and parse it
+const envConfig = dotenv.parse(fs.readFileSync(configPath));
+
+for (const k in envConfig) {
+  process.env[k] = envConfig[k];
 }
 
 const app = express()
@@ -37,7 +51,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const clientDist = path.resolve(process.cwd(), 'packages/client/dist')
-/*
+
 app.use(express.static(clientDist))
 
 app.use((req, res, next) => {
@@ -97,9 +111,5 @@ app.use('/api/recipe', getRecipes)
 app.use('/api/brew', addBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)
 app.use('/api/seeddemo', seedDemo)
-*/
 
-app.get('/', (req, res) => {
-  res.send('alive')
-})
 export default app
