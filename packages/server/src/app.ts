@@ -36,13 +36,13 @@ const app = express()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const clientDist = path.resolve(process.cwd(), '../client/dist')
+const clientDist = path.resolve(process.cwd(), 'packages/client/dist')
 
 app.use(express.static(clientDist))
 
 app.use((req, res, next) => {
   if (req.path.startsWith('/api')) return next()
-  res.sendFile(path.join(clientDist, 'index.html'))
+  res.sendFile(path.resolve(clientDist, 'index.html'))
 })
 
 app.use(
