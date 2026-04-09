@@ -24,25 +24,11 @@ import seedDemo from './seedDemo/seedDemo.js'
 import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import fs from 'fs';
-import dotenv from 'dotenv';
 
 const { CLIENT_PORT } = process.env
 
 if (!CLIENT_PORT) {
 	throw new Error('Missing required client port variable')
-}
-
-// Absolute path to the config
-const configPath = path.resolve(
-  '../public_html/.builds/config'
-);
-
-// Read and parse it
-const envConfig = dotenv.parse(fs.readFileSync(configPath));
-
-for (const k in envConfig) {
-  process.env[k] = envConfig[k];
 }
 
 const app = express()
