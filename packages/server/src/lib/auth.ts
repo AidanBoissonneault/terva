@@ -9,7 +9,13 @@ export const auth = betterAuth({
 		requireEmailVerification: false, //change later
 	},
 
-	trustedOrigins: ['http://localhost:5173', 'http://localhost:4173', 'https://www.tervabrewed.com', 'https://tervabrewed.com', "http://localhost:3000"],
+	trustedOrigins: [
+		'http://localhost:5173',
+		'http://localhost:4173',
+		'https://www.tervabrewed.com',
+		'https://tervabrewed.com',
+		'http://localhost:3000',
+	],
 
 	session: {
 		cookieCache: {
