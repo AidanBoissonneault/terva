@@ -22,6 +22,7 @@ import seedDemo from './seedDemo/seedDemo.js';
 import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
 const { CLIENT_PORT } = process.env;
 if (!CLIENT_PORT) {
     throw new Error('Missing required client port variable');
@@ -38,12 +39,31 @@ app.use((req, res, next) => {
 });
 app.use(cors({
     origin: [
-        process.env.CLIENT_URL ?? 'http://tervabrewed.com',
+        process.env.CLIENT_URL ?? 'http://localhost:5173',
         'https://www.tervabrewed.com',
         'https://tervabrewed.com',
     ],
     credentials: true,
 }));
+// rate limiters on authorization / api routes.
+// Strict limiter for auth routes — 10 attempts per 15 minutes
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { error: 'Too many attempts, please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+// General limiter for all other API routes — 200 requests per 15 minutes
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    message: { error: 'Too many requests, please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+app.use('/api/auth', authLimiter);
+app.use('/api', apiLimiter);
 app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
     try {
         const { name, email, password } = req.body;

@@ -5,13 +5,13 @@ export const auth = betterAuth({
 	database: connection,
 
 	advanced: {
-    cookiePrefix: 'terva',
-    defaultCookieAttributes: {
-      domain: '.tervabrewed.com',  // leading dot covers both www and non-www
-      sameSite: 'lax',
-      secure: true,
-    }
-  },
+		cookiePrefix: 'terva',
+		defaultCookieAttributes: {
+			domain: process.env.NODE_ENV === 'production' ? '.tervabrewed.com' : 'localhost',
+			sameSite: 'lax',
+			secure: process.env.NODE_ENV === 'production',
+		},
+	},
 
 	emailAndPassword: {
 		enabled: true,
