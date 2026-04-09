@@ -7,7 +7,7 @@
 
 import { Router } from 'express'
 import connection from "../db/connection.js"
-import { requireAuth } from 'src/middleware/requireAuth.js'
+import { requireAuth } from '../middleware/requireAuth.js'
 
 const router = Router()
 

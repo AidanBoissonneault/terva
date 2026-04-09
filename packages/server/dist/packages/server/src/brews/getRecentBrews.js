@@ -1,20 +1,16 @@
-import { Router } from 'express'
-import connection from '../db/connection.js'
-import { requireAuth } from '../middleware/requireAuth.js'
-
-const router = Router()
-
+import { Router } from 'express';
+import connection from '../db/connection.js';
+import { requireAuth } from '../middleware/requireAuth.js';
+const router = Router();
 router.get('/', requireAuth, async (req, res) => {
-	try {
-		const { beanId } = req.query
-		const userId = res.locals.user.id
-
-		if (!userId) {
-			res.status(400).json({ error: 'userId is required' })
-			return
-		}
-
-		const query = `
+    try {
+        const { beanId } = req.query;
+        const userId = res.locals.user.id;
+        if (!userId) {
+            res.status(400).json({ error: 'userId is required' });
+            return;
+        }
+        const query = `
     SELECT
 			b.id,
 			b.recipe_id AS recipeId,
@@ -46,14 +42,15 @@ router.get('/', requireAuth, async (req, res) => {
 		)
 		ORDER BY b.brewed_at DESC
 		LIMIT 2;
-  `
-		const [rows] = await connection.query(query, [userId, beanId])
-		res.json(rows)
-	} catch (err) {
-		const error = err as Error
-		console.log(error)
-		res.status(500).json({ error: error.message })
-	}
-})
-
-export default router
+  `;
+        const [rows] = await connection.query(query, [userId, beanId]);
+        res.json(rows);
+    }
+    catch (err) {
+        const error = err;
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+export default router;
+//# sourceMappingURL=getRecentBrews.js.map
