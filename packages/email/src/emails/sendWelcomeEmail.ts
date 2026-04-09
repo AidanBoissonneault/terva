@@ -5,7 +5,7 @@
 // CREATED ON: 05APR2026
 // By: Aidan Boissonneault
 
-import { resend } from '../client'
+import { resend } from '../client.js'
 
 export async function sendWelcomeEmail(to: string) {
 	try {

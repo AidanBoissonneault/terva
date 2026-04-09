@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-			'@terva/shared': resolve(__dirname, '../shared/src/index.ts'),
+			'@terva/shared': resolve(__dirname, '../shared/src/index.js'),
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },

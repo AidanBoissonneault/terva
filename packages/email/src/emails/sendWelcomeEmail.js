@@ -174,4 +174,3 @@ export async function sendWelcomeEmail(to) {
         throw err;
     }
 }
-//# sourceMappingURL=sendWelcomeEmail.js.map

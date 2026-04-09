@@ -31,7 +31,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 <template>
 	<TransitionGroup name="swap" tag="header" :class="{ hidden: isHidden }">
-		<h1 :key="2" @click="navigate('dashboard')">Terva Alpha</h1>
+		<h1 :key="2" @click="navigate('dashboard')">Terva Pre-Alpha</h1>
 		<PlusButton v-if="isDisplayPage" :key="1" @navigate="navigate" route="addbeans" :active-route="activePage" />
 		<img v-else :key="3" src="@/assets/images/title-image.PNG" alt="" @click="navigate('dashboard')" />
 	</TransitionGroup>

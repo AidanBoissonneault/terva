@@ -1,6 +1,5 @@
 import { betterAuth } from 'better-auth';
-import connection from '../db/connection';
-import { sendPasswordResetEmail, sendWelcomeEmail } from '@terva/email';
+import connection from '../db/connection.js';
 export const auth = betterAuth({
     database: connection,
     emailAndPassword: {

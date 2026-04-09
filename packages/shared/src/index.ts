@@ -1,3 +1,3 @@
-export * from './flavourHues'
-export * from './types'
-export * from './auth'
+export * from './flavourHues.js'
+export * from './types.js'
+export * from './auth.js'

@@ -1,2 +1,2 @@
-export * from "./emails/sendWelcomeEmail"
-export * from "./emails/sendPasswordResetEmail"
+export * from "./emails/sendWelcomeEmail.js"
+export * from "./emails/sendPasswordResetEmail.js"

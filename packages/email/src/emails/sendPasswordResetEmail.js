@@ -1,18 +1,15 @@
 // Send Password Reset Email
 // used from the server when a user forgets their email.
 // currently uses a temp HTML page made by Claude, will change later.
-
 // CREATED ON: 05APR2026
 // By: Aidan Boissonneault
-
-import { resend } from '../client.js'
-
-export async function sendPasswordResetEmail(email: string, url: string) {
-	return resend.emails.send({
-		from: 'Terva <noreply@tervabrewed.com>',
-		to: email,
-		subject: 'Reset your password',
-		html: `
+import { resend } from '../client.js';
+export async function sendPasswordResetEmail(email, url) {
+    return resend.emails.send({
+        from: 'Terva <noreply@tervabrewed.com>',
+        to: email,
+        subject: 'Reset your password',
+        html: `
       <div style="font-family: sans-serif; line-height: 1.5;">
         <h2>Reset your password</h2>
         <p>Click below to reset your password:</p>
@@ -30,5 +27,5 @@ export async function sendPasswordResetEmail(email: string, url: string) {
         <p>If you didn’t request this, you can ignore this email.</p>
       </div>
     `,
-	})
+    });
 }

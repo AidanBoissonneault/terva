@@ -94,7 +94,7 @@ app.use('/api/seeddemo', seedDemo)
 
 // Catch-all — send index.html for any non-API route
 // This is what makes Vue Router's history mode work
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
 })
 
