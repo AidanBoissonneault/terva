@@ -2,6 +2,14 @@ import { betterAuth } from 'better-auth';
 import connection from '../db/connection.js';
 export const auth = betterAuth({
     database: connection,
+    advanced: {
+        cookiePrefix: 'terva',
+        defaultCookieAttributes: {
+            domain: '.tervabrewed.com', // leading dot covers both www and non-www
+            sameSite: 'lax',
+            secure: true,
+        }
+    },
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: false, //change later
