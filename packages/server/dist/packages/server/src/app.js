@@ -37,7 +37,11 @@ app.use((req, res, next) => {
     res.sendFile(path.resolve(clientDist, 'index.html'));
 });
 app.use(cors({
-    origin: process.env.CLIENT_URL ?? 'https://tervabrewed.com',
+    origin: [
+        process.env.CLIENT_URL ?? 'http://tervabrewed.com',
+        'https://www.tervabrewed.com',
+        'https://tervabrewed.com',
+    ],
     credentials: true,
 }));
 app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {

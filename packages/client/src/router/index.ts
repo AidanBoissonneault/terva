@@ -16,6 +16,7 @@ const router = createRouter({
 		{ path: '/bean/edit', name: 'editbean', component: () => import('@/views/UserEditBean.vue'), meta: { requiresAuth: true } },
 		{ path: '/gear', name: 'gear', component: () => import('@/views/UserGear.vue'), meta: { requiresAuth: true } },
 		{ path: '/profile', name: 'profile', component: () => import('@/views/UserProfile.vue'), meta: { requiresAuth: true } },
+		{ path: '/profile/password', name: 'changepassword', component: () => import('@/views/ChangePassword.vue'), meta: { requiresAuth: true } },
 		{ path: '/about', name: 'about', component: () => import('@/views/UserAbout.vue'), meta: { requiresAuth: true } },
 		{ path: '/more', name: 'more', component: () => import('@/views/UserMore.vue'), meta: { requiresAuth: true } },
 		{ path: '/recipes', name: 'recipes', component: () => import('@/views/UserRecipes.vue'), meta: { requiresAuth: true } },

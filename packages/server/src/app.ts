@@ -47,7 +47,11 @@ app.use((req, res, next) => {
 
 app.use(
 	cors({
-		origin: process.env.CLIENT_URL ?? 'https://tervabrewed.com',
+		origin: [
+			process.env.CLIENT_URL ?? 'http://tervabrewed.com',
+      'https://www.tervabrewed.com',
+      'https://tervabrewed.com',
+    ],
 		credentials: true,
 	}),
 )

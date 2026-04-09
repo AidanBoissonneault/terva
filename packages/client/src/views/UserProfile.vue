@@ -166,7 +166,7 @@ async function handleDeleteAccount() {
 				</div>
 				<hr />
 				<div class="account-row">
-					<a href="#">Change password</a>
+					<RouterLink :to="{ name: 'changepassword' }">Change password</RouterLink>
 				</div>
 				<hr />
 				<div class="account-row">
