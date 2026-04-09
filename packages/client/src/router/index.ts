@@ -13,7 +13,7 @@ const router = createRouter({
 
 		{ path: '/', name: 'dashboard', component: UserDashboard, meta: { requiresAuth: true } },
 		{ path: '/addbeans', name: 'addbeans', component: () => import('@/views/UserAddBeans.vue'), meta: { requiresAuth: true } },
-		{ path: '/bean/edit', name: 'editbean', component: () => import('@/views/UserEditBean.vue'), meta: { requireAuth: true } },
+		{ path: '/bean/edit', name: 'editbean', component: () => import('@/views/UserEditBean.vue'), meta: { requiresAuth: true } },
 		{ path: '/gear', name: 'gear', component: () => import('@/views/UserGear.vue'), meta: { requiresAuth: true } },
 		{ path: '/profile', name: 'profile', component: () => import('@/views/UserProfile.vue'), meta: { requiresAuth: true } },
 		{ path: '/about', name: 'about', component: () => import('@/views/UserAbout.vue'), meta: { requiresAuth: true } },

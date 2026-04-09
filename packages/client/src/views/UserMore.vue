@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import TabLink from '@/components/MoreView/TabLink.vue';
-import router from '@/router';
-import { type TabLinkType } from '@/types';
-import { authClient } from '@/lib/auth-client';
-import { seedDemo } from '@/api/seedDemo';
+import TabLink from '@/components/MoreView/TabLink.vue'
+import router from '@/router'
+import { type TabLinkType } from '@/types'
+import { authClient } from '@/lib/auth-client'
 
 // tabs clickable in the more menu
 // to add additional tabs, place the relevant info in here.
 const tabs = <TabLinkType[]>[
-	{ icon: "circle-user", name: "Profile", route: "profile" },
-	{ icon: "scroll", name: "Recipes", route: "recipes" },
-	{ icon: "file-lines", name: "Terms and Condtions", route: "terms" },
-	{ icon: "file-lines", name: "Privacy Policy", route: "privacy" },
-	{ icon: "file-lines", name: "Cookie Policy", route: "cookies" },
+	{ icon: 'circle-user', name: 'Profile', route: 'profile' },
+	{ icon: 'scroll', name: 'Recipes', route: 'recipes' },
+	{ icon: 'file-lines', name: 'Terms and Condtions', route: 'terms' },
+	{ icon: 'file-lines', name: 'Privacy Policy', route: 'privacy' },
+	{ icon: 'file-lines', name: 'Cookie Policy', route: 'cookies' },
 ]
 
 // enters the link supplied in the "route" section of the tab above
@@ -29,9 +28,14 @@ async function logOut() {
 <template>
 	<div class="dashboard">
 		<div class="stack">
-			<TabLink v-for="tab in tabs" :icon="tab.icon" :name="tab.name" :route="tab.route" :key="tab.name"
-			@go-to-link="goToLink" />
-			<a @click="seedDemo">Seed demo data (for testing)</a>
+			<TabLink
+				v-for="tab in tabs"
+				:icon="tab.icon"
+				:name="tab.name"
+				:route="tab.route"
+				:key="tab.name"
+				@go-to-link="goToLink"
+			/>
 			<a @click="logOut">Logout</a>
 		</div>
 	</div>

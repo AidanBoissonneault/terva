@@ -5,7 +5,6 @@ import cors from 'cors'
 import { toNodeHandler } from 'better-auth/node'
 import { auth } from './lib/auth.js'
 
-
 import getBeans from './bean/getBeans.js'
 import addBean from './bean/addBean.js'
 import editBean from './bean/editBean.js'
@@ -23,6 +22,8 @@ import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js'
 import connection from './db/connection.js'
 import seedDemo from './seedDemo/seedDemo.js'
 import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const { CLIENT_PORT } = process.env
 
@@ -32,9 +33,15 @@ if (!CLIENT_PORT) {
 
 const app = express()
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Serve static files from the built client
+app.use(express.static(path.join(__dirname, '../../client/dist')))
+
 app.use(
 	cors({
-		origin: process.env.CLIENT_URL ?? 'http://localhost:5173',
+		origin: process.env.CLIENT_URL ?? 'https://tervabrewed.com',
 		credentials: true,
 	}),
 )
@@ -52,7 +59,7 @@ app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
 				console.error('Seed error:', err),
 			)
 			await sendWelcomeEmail(result.user.email).catch((err) =>
-				console.error("Welcome email error:", err)
+				console.error('Welcome email error:', err),
 			)
 		}
 
@@ -84,5 +91,11 @@ app.use('/api/recipe', getRecipes)
 app.use('/api/brew', addBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)
 app.use('/api/seeddemo', seedDemo)
+
+// Catch-all — send index.html for any non-API route
+// This is what makes Vue Router's history mode work
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
+})
 
 export default app
