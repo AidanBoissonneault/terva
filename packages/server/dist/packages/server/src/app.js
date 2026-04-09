@@ -29,50 +29,70 @@ if (!CLIENT_PORT) {
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const clientDist = path.resolve(process.cwd(), '../client/dist');
-app.use(express.static(clientDist));
+const clientDist = path.resolve(process.cwd(), 'packages/client/dist');
+/*
+app.use(express.static(clientDist))
+
 app.use((req, res, next) => {
-    if (req.path.startsWith('/api'))
-        return next();
-    res.sendFile(path.join(clientDist, 'index.html'));
-});
-app.use(cors({
-    origin: process.env.CLIENT_URL ?? 'https://tervabrewed.com',
-    credentials: true,
-}));
+  if (req.path.startsWith('/api')) return next()
+  res.sendFile(path.resolve(clientDist, 'index.html'))
+})
+
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL ?? 'https://tervabrewed.com',
+        credentials: true,
+    }),
+)
+
 app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password } = req.body
+
         const result = await auth.api.signUpEmail({
             body: { name, email, password },
-        });
+        })
+
         if (result?.user?.id) {
-            await seedDefaultRecipes(connection, result.user.id).catch((err) => console.error('Seed error:', err));
-            await sendWelcomeEmail(result.user.email).catch((err) => console.error('Welcome email error:', err));
+            await seedDefaultRecipes(connection, result.user.id).catch((err) =>
+                console.error('Seed error:', err),
+            )
+            await sendWelcomeEmail(result.user.email).catch((err) =>
+                console.error('Welcome email error:', err),
+            )
         }
+
         // Sign in immediately so the session cookie gets set on the response
         const signInResult = await auth.api.signInEmail({
             body: { email, password },
             asResponse: true,
-        });
+        })
+
         // Forward BetterAuth's response headers (including Set-Cookie) to the client
         signInResult.headers.forEach((value, key) => {
-            res.setHeader(key, value);
-        });
-        res.json(result);
+            res.setHeader(key, value)
+        })
+
+        res.json(result)
+    } catch (err: any) {
+        res.status(400).json({ error: err.message })
     }
-    catch (err) {
-        res.status(400).json({ error: err.message });
-    }
+})
+
+app.all('/api/auth/*splat', toNodeHandler(auth))
+
+app.use(express.json())
+
+app.use('/api/bean', addBean, editBean, getBeans, removeBean)
+app.use('/api/gear', addGear, getGear, removeGear)
+app.use('/api/profile', getProfile, removeProfile)
+app.use('/api/recipe', getRecipes)
+app.use('/api/brew', addBrew, getBrews)
+app.use('/api/getrecentbrews', getRecentBrews)
+app.use('/api/seeddemo', seedDemo)
+*/
+app.get('/', (req, res) => {
+    res.send('alive');
 });
-app.all('/api/auth/*splat', toNodeHandler(auth));
-app.use(express.json());
-app.use('/api/bean', addBean, editBean, getBeans, removeBean);
-app.use('/api/gear', addGear, getGear, removeGear);
-app.use('/api/profile', getProfile, removeProfile);
-app.use('/api/recipe', getRecipes);
-app.use('/api/brew', addBrew, getBrews);
-app.use('/api/getrecentbrews', getRecentBrews);
-app.use('/api/seeddemo', seedDemo);
 export default app;
 //# sourceMappingURL=app.js.map

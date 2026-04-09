@@ -37,7 +37,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const clientDist = path.resolve(process.cwd(), 'packages/client/dist')
-
+/*
 app.use(express.static(clientDist))
 
 app.use((req, res, next) => {
@@ -97,5 +97,9 @@ app.use('/api/recipe', getRecipes)
 app.use('/api/brew', addBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)
 app.use('/api/seeddemo', seedDemo)
+*/
 
+app.get('/', (req, res) => {
+  res.send('alive')
+})
 export default app
