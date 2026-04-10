@@ -235,20 +235,6 @@ article {
 		0 12px 24px oklch(from var(--brand-900) l c h / 0.22);
 }
 
-.hero-card::before {
-	content: '';
-	position: absolute;
-	inset: -10%;
-	background: inherit;
-	filter: blur(30px);
-	opacity: 0.6;
-	z-index: -1;
-	background-clip: padding-box;
-
-	border-radius: inherit;
-  overflow: hidden;
-}
-
 .avatar-row {
 	display: flex;
 	align-items: center;

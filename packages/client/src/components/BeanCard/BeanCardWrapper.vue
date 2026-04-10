@@ -74,7 +74,6 @@ button {
 }
 
 .bean-card {
-	/* to avoid ios clipping */
 	transform: translateZ(0);
   will-change: transform;
 
@@ -129,20 +128,5 @@ button {
 		background-color: oklch(from v-bind(priColor) calc(l - 0.05) c h / 0.6);
 
 	z-index: 0;
-}
-
-.bean-card::before {
-	content: "";
-	position: absolute;
-	inset: -10%;
-	background: inherit;
-	filter: blur(30px);
-	opacity: 0.6;
-	z-index: -1;
-
-	background-clip: padding-box;
-
-	border-radius: inherit;
-  overflow: hidden;
 }
 </style>
