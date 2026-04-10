@@ -9,6 +9,7 @@ import '@/tokens/colors.css'
 import '@/tokens/lightness.css'
 import '@/styles/main.css'
 import '@/styles/components.css'
+import '@/styles/global.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -27,6 +28,7 @@ import {
 	faPen,
 	faCopy,
 	faTrash,
+	faUser,
 } from '@fortawesome/free-solid-svg-icons'
 import {
 	faHouse as faHouseRegular,
@@ -55,6 +57,7 @@ library.add(
 	faPen,
 	faCopy,
 	faTrash,
+	faUser,
 )
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 

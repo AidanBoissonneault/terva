@@ -109,7 +109,7 @@ async function deleteSelectedBean() {
 }
 
 .content.shift_down {
-	top: 96px;
+	top: 92px;
 }
 
 .confirm-content, strong {

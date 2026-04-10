@@ -79,6 +79,7 @@ button {
 
 	grid-column: 1 / 5;
 	border-radius: var(--pico-border-radius);
+	corner-shape: squircle;
 
 	box-sizing: border-box;
 

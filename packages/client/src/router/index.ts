@@ -12,7 +12,8 @@ const router = createRouter({
 		{ path: '/register', name: 'register', component: () => import('@/views/RegisterView.vue') },
 
 		{ path: '/', name: 'dashboard', component: UserDashboard, meta: { requiresAuth: true } },
-		{ path: '/addbeans', name: 'addbeans', component: () => import('@/views/UserAddBeans.vue'), meta: { requiresAuth: true } },
+		{ path: '/bean', name: 'beaninfo', component: () => import('@/views/UserBeanInfo.vue'), meta: { requiresAuth: true }},
+		{ path: '/bean/add', name: 'addbeans', component: () => import('@/views/UserAddBeans.vue'), meta: { requiresAuth: true } },
 		{ path: '/bean/edit', name: 'editbean', component: () => import('@/views/UserEditBean.vue'), meta: { requiresAuth: true } },
 		{ path: '/gear', name: 'gear', component: () => import('@/views/UserGear.vue'), meta: { requiresAuth: true } },
 		{ path: '/profile', name: 'profile', component: () => import('@/views/UserProfile.vue'), meta: { requiresAuth: true } },
@@ -22,7 +23,6 @@ const router = createRouter({
 		{ path: '/recipes', name: 'recipes', component: () => import('@/views/UserRecipes.vue'), meta: { requiresAuth: true } },
 		{ path: '/brew/start', name: 'startbrew', component: () => import('@/views/StartBrew.vue'), meta: { requiresAuth: true } },
 		{ path: '/brew/end', name: 'endbrew', component: () => import('@/views/EndBrew.vue'), meta: { requiresAuth: true } },
-		{ path: '/beaninfo', name: 'beaninfo', component: () => import('@/views/UserBeanInfo.vue'), meta: { requiresAuth: true }},
 
 		{ path: '/cookies', name: 'cookies', component: () => import('@/views/CookiePolicy.vue') },
 		{ path: '/privacy', name: 'privacy', component: () => import('@/views/PrivacyPolicy.vue') },

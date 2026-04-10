@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { TabButton } from '@/types'
 import TabIcon from './TabIcon.vue'
@@ -7,6 +7,7 @@ import TabIcon from './TabIcon.vue'
 const tabs = <TabButton[]>[
 	{ icon: 'house', route: 'dashboard' },
 	{ icon: 'screwdriver-wrench', route: 'gear' },
+	{ icon: 'user', route: 'profile' },
 	{ icon: 'bars', route: 'more' },
 ]
 
@@ -14,8 +15,16 @@ const tabLength = tabs.length
 const route = useRoute()
 const router = useRouter()
 
-function navigate(route: string) {
-	router.push({ name: route })
+const direction = ref()
+
+function navigate(routeName: string) {
+	if (route.name === routeName) return
+
+	const currentIndex = tabs.findIndex((t) => t.route === route.name)
+	const nextIndex = tabs.findIndex((t) => t.route === routeName)
+	direction.value = nextIndex > currentIndex ? 'right' : 'left'
+
+	router.push({ name: routeName })
 }
 
 const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
@@ -24,8 +33,14 @@ const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
 <template>
 	<footer>
 		<div class="active-pill" aria-hidden="true" />
-		<TabIcon v-for="(tab, i) in tabs" :key="i" :icon="tab.icon" :route="tab.route"
-			:activePage="activePage" @navigate="navigate" />
+		<TabIcon
+			v-for="(tab, i) in tabs"
+			:key="i"
+			:icon="tab.icon"
+			:route="tab.route"
+			:activePage="activePage"
+			@navigate="navigate"
+		/>
 	</footer>
 </template>
 
@@ -38,9 +53,11 @@ footer {
 
 	padding: 8px;
 
-	background: linear-gradient(to bottom,
-			oklch(from var(--husk-tab-bar-accent) l c h / 0.25),
-			oklch(from var(--husk-tab-bar-accent) l c h / 0.2));
+	background: linear-gradient(
+		to bottom,
+		oklch(from var(--husk-tab-bar-accent) l c h / 0.25),
+		oklch(from var(--husk-tab-bar-accent) l c h / 0.2)
+	);
 	background-color: oklch(from var(--husk-tab-bar) l c h / 0.6);
 	border: 1px solid oklch(from var(--husk-tab-bar-border) l c h / 0.25);
 
@@ -50,7 +67,8 @@ footer {
 	display: grid;
 	grid-template-columns: repeat(v-bind(tabLength), 1fr);
 
-	border-radius: 14px;
+	border-radius: var(--pico-border-radius);
+	corner-shape: squircle;
 
 	box-shadow:
 		0 8px 32px oklch(from var(--husk-shadow) l c h / 0.35),
@@ -66,11 +84,13 @@ footer {
 	position: absolute;
 	position-anchor: --active-tab;
 
-	inset:
-		anchor(top) anchor(right) anchor(bottom) anchor(left);
+	inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
 
-	border-radius: 10px;
+	border-radius: var(--pico-border-radius);
+	border: 1px solid oklch(from var(--husk-highlight) l c h / 0.3);
+	corner-shape: squircle;
 	background-color: oklch(from var(--brand-200) l c h / 0.25);
+
 	box-shadow:
 		inset 0 1px 0 oklch(from var(--husk-highlight) l c h / 0.3),
 		0 2px 8px oklch(from var(--husk-shadow) l c h / 0.15);
@@ -78,8 +98,43 @@ footer {
 	pointer-events: none;
 	z-index: 0;
 
-	transition-property: top, bottom, left, right;
-	transition-duration: 0.3s;
-	transition-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1);
+	transition:
+		left 0.2s cubic-bezier(0.34, 1.4, 0.64, 1),
+		right 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		top 0.2s ease,
+		bottom 0.2s ease;
+}
+
+.active-pill.right {
+	animation: squish 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+	transition:
+		left 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		right 0.2s cubic-bezier(0.34, 1.4, 0.64, 1),
+		top 0.15s cubic-bezier(0.34, 2.2, 0.64, 1),
+		bottom 0.15s cubic-bezier(0.34, 2.2, 0.64, 1);
+}
+
+.active-pill.left {
+	animation: squish 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+	transition:
+		left 0.2s cubic-bezier(0.34, 1.4, 0.64, 1),
+		right 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		top 0.15s cubic-bezier(0.34, 2.2, 0.64, 1),
+		bottom 0.15s cubic-bezier(0.34, 2.2, 0.64, 1);
+}
+
+@keyframes squish {
+	0% {
+		transform: scaleY(1) translateY(0);
+	}
+	30% {
+		transform: scaleY(0.85) translateY(2px);
+	}
+	65% {
+		transform: scaleY(1.08) translateY(-1px);
+	}
+	100% {
+		transform: scaleY(1) translateY(0);
+	}
 }
 </style>

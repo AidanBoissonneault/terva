@@ -37,6 +37,8 @@ div {
 	height: 1rem;
 
 	border-radius: 50%;
+	corner-shape: round;
+
 	background-color: v-bind(colour);
 
 	box-shadow: 0 4px 6px oklch(from var(--husk-shadow) l c h / 0.6),

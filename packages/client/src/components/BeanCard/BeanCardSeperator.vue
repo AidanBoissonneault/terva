@@ -12,6 +12,8 @@ div {
 	margin-bottom: 4px;
 
 	border-radius: var(--pico-border-radius);
+	corner-shape: round;
+
 	background: linear-gradient(to right,
 			oklch(from var(--husk-highlight) l c h / 0.2),
 			oklch(from var(--husk-highlight) l c h / 0.05));

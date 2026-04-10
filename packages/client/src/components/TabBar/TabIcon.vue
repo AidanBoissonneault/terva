@@ -35,7 +35,7 @@ button {
 	box-shadow: none;
 	background-color: transparent;
 	border-radius: 10px;
-	padding: 14px 0;
+	padding: 20px 0;
 	cursor: pointer;
 
 	color: oklch(from var(--husk-shadow) l c h / 0.65);
@@ -73,6 +73,6 @@ button:active {
 }
 
 .active_tab .tab-icon {
-	transform: scale(1.15);
+	transform: scale(1.3);
 }
 </style>
