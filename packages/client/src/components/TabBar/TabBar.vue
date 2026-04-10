@@ -67,8 +67,7 @@ footer {
 	display: grid;
 	grid-template-columns: repeat(v-bind(tabLength), 1fr);
 
-	border-radius: var(--pico-border-radius);
-	corner-shape: squircle;
+	border-radius: var(--husk-large-corner-radius);
 
 	box-shadow:
 		0 8px 32px oklch(from var(--husk-shadow) l c h / 0.35),
@@ -86,9 +85,8 @@ footer {
 
 	inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
 
-	border-radius: var(--pico-border-radius);
+	border-radius: var(--husk-large-corner-radius);
 	border: 1px solid oklch(from var(--husk-highlight) l c h / 0.3);
-	corner-shape: squircle;
 	background-color: oklch(from var(--brand-200) l c h / 0.25);
 
 	box-shadow:
