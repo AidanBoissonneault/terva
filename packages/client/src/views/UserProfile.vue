@@ -209,6 +209,10 @@ article {
 }
 
 .hero-card {
+	/* to avoid ios clipping */
+	transform: translateZ(0);
+  will-change: transform;
+
 	grid-column: 1 / 5;
 	border-radius: var(--pico-border-radius);
 	padding: 20px;

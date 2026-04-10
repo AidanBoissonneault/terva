@@ -74,6 +74,10 @@ button {
 }
 
 .bean-card {
+	/* to avoid ios clipping */
+	transform: translateZ(0);
+  will-change: transform;
+
 	position: relative;
   isolation: isolate;
 

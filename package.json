@@ -11,6 +11,9 @@
     "lint": "npm run lint --prefix packages/client",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
+    "build:client": "npm run build --prefix packages/client",
+    "build:server": "tsc --project packages/server",
+    "build": "npm run build:client && npm run build:server",
     "format": "prettier --write ."
   },
   "devDependencies": {
