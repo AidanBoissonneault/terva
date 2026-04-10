@@ -33,17 +33,27 @@ const router = createRouter({
 })
 
 // starts a loading screen when a new page is loading
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let cachedSession: any = null
+let cacheTime = 0
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
 router.beforeEach(async (to) => {
-	const loading = useLoadingStore()
-	loading.start()
+  const loading = useLoadingStore()
+  loading.start()
 
-	if (!to.meta.requiresAuth) return true
+  if (!to.meta.requiresAuth) return true
 
-	const session = await authClient.getSession()
+  const now = Date.now()
+  if (!cachedSession || now - cacheTime > CACHE_TTL) {
+    cachedSession = await authClient.getSession()
+    cacheTime = now
+  }
 
-	if (!session?.data?.user) {
-		return { path: '/login' }
-	}
+  if (!cachedSession?.data?.user) {
+    cachedSession = null
+    return { path: '/login' }
+  }
 })
 
 // ends the loading screen when the new page is loaded

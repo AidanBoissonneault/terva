@@ -72,8 +72,8 @@ const authLimiter = rateLimit({
 
 // General API limiter
 const apiLimiter = rateLimit({
-	windowMs: 1 * 60 * 1000,
-	max: 500000,
+	windowMs: 15 * 60 * 1000,
+	max: 5000,
 	message: { error: 'Too many requests, please try again later.' },
 	standardHeaders: true,
 	legacyHeaders: false,
@@ -81,12 +81,12 @@ const apiLimiter = rateLimit({
 
 // Auth limiter applied first, then general limiter skips auth routes
 // so requests never hit both limiters
-/*
+
 app.use('/api/auth', authLimiter)
 app.use('/api', (req, res, next) => {
 	if (req.path.startsWith('/auth')) return next()
 	apiLimiter(req, res, next)
-}) */
+})
 
 // Auth routes
 
