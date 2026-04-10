@@ -79,7 +79,6 @@ button {
 
 	grid-column: 1 / 5;
 	border-radius: var(--pico-border-radius);
-	corner-shape: squircle;
 
 	box-sizing: border-box;
 
@@ -138,5 +137,8 @@ button {
 	z-index: -1;
 
 	background-clip: padding-box;
+
+	border-radius: inherit;
+  overflow: hidden;
 }
 </style>

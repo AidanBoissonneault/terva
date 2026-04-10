@@ -240,6 +240,9 @@ article {
 	opacity: 0.6;
 	z-index: -1;
 	background-clip: padding-box;
+
+	border-radius: inherit;
+  overflow: hidden;
 }
 
 .avatar-row {
