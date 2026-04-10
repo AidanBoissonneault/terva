@@ -105,7 +105,7 @@ function onRatioChange(val: number) {
 
 	background: var(--pico-form-element-background-color);
 
-	box-shadow: 0 2px 4px oklch(from var(--husk-shadow) calc(l - 1) c h / 0.6);
+	box-shadow: 0 2px 4px oklch(from var(--treva-shadow) calc(l - 1) c h / 0.6);
 
 	align-items: flex-end;
 
@@ -132,8 +132,8 @@ function onRatioChange(val: number) {
 	border-radius: 0.4rem;
 	border: none;
 
-	background: var(--husk-tab-bar);
-	color: var(--husk-shadow);
+	background: var(--treva-tab-bar);
+	color: var(--treva-shadow);
 
 	font-size: 0.85rem;
 	max-width: 4.5rem;

@@ -328,12 +328,12 @@ details summary[role=button]:not(.outline)::after {
 
 	/* custom properties */
 
-	--husk-tab-bar: var(--brand-200);
-	--husk-tab-bar-border: var(--brand-100);
-	--husk-tab-bar-accent: var(--pico-primary);
-	--husk-app-bar: var(--neutral-900);
-	--husk-app-bar-border: var(--husk-tab-bar-border);
-	--husk-app-bar-accent: var(--neutral-800);
+	--treva-tab-bar: var(--brand-200);
+	--treva-tab-bar-border: var(--brand-100);
+	--treva-tab-bar-accent: var(--pico-primary);
+	--treva-app-bar: var(--neutral-900);
+	--treva-app-bar-border: var(--treva-tab-bar-border);
+	--treva-app-bar-accent: var(--neutral-800);
 }
 [data-theme=light] input:is([type=submit],
 [type=button],
@@ -462,15 +462,15 @@ details summary[role=button]:not(.outline)::after {
 
 	/* custom properties */
 
-	--husk-tab-bar: var(--brand-200);
-	--husk-tab-bar-border: var(--brand-100);
-	--husk-tab-bar-accent: var(--pico-primary);
-	--husk-app-bar: var(--neutral-900);
-	--husk-app-bar-border: var(--husk-tab-bar-border);
-	--husk-app-bar-accent: var(--neutral-800);
-	--husk-shadow: var(--neutral-900);
-	--husk-highlight: var(--neutral-100);
-	--husk-overlay-container: var(--brand-300);
+	--treva-tab-bar: var(--brand-200);
+	--treva-tab-bar-border: var(--brand-100);
+	--treva-tab-bar-accent: var(--pico-primary);
+	--treva-app-bar: var(--neutral-900);
+	--treva-app-bar-border: var(--treva-tab-bar-border);
+	--treva-app-bar-accent: var(--neutral-800);
+	--treva-shadow: var(--neutral-900);
+	--treva-highlight: var(--neutral-100);
+	--treva-overlay-container: var(--brand-300);
 }
 [data-theme=dark] input:is([type=submit],
 [type=button],

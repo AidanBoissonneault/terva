@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS husk;
-CREATE DATABASE husk;
-USE husk;
+DROP DATABASE IF EXISTS treva;
+CREATE DATABASE treva;
+USE treva;
 
 -- -----------------------------------------
 --  BEANS

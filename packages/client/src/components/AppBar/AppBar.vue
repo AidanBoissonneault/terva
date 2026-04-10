@@ -43,10 +43,10 @@ header {
 	width: calc(100% - (2 * var(--bar-margin)));
 
 	background: linear-gradient(to bottom,
-			oklch(from var(--husk-app-bar-accent) l c h / 0.25),
-			oklch(from var(--husk-app-bar-accent) l c h / 0.20));
-	background-color: oklch(from var(--husk-app-bar) l c h / 0.6);
-	border: 1px solid oklch(from var(--husk-app-bar-border) l c h / 0.25);
+			oklch(from var(--treva-app-bar-accent) l c h / 0.25),
+			oklch(from var(--treva-app-bar-accent) l c h / 0.20));
+	background-color: oklch(from var(--treva-app-bar) l c h / 0.6);
+	border: 1px solid oklch(from var(--treva-app-bar-border) l c h / 0.25);
 
 	backdrop-filter: blur(8px) saturate(1.4);
 	-webkit-backdrop-filter: blur(8px) saturate(1.4);
@@ -62,10 +62,10 @@ header {
 	justify-content: space-between;
 
 	box-shadow:
-		0 8px 24px oklch(from var(--husk-shadow) l c h / 0.4),
-		inset 0 1px 0 oklch(from var(--husk-highlight) l c h / 0.4);
+		0 8px 24px oklch(from var(--treva-shadow) l c h / 0.4),
+		inset 0 1px 0 oklch(from var(--treva-highlight) l c h / 0.4);
 
-	border-radius: var(--husk-large-corner-radius);
+	border-radius: var(--treva-large-corner-radius);
 	z-index: 99999;
 
 	transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);

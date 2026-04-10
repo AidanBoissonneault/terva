@@ -38,7 +38,7 @@ button {
 	padding: 20px 0;
 	cursor: pointer;
 
-	color: oklch(from var(--husk-shadow) l c h / 0.65);
+	color: oklch(from var(--treva-shadow) l c h / 0.65);
 
 	transition:
 		color 0.2s ease,

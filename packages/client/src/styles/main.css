@@ -367,15 +367,15 @@ details summary[role='button']:not(.outline)::after {
 	--pico-icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23c44242' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
 
 	/* custom properties */
-	--husk-tab-bar: var(--brand-200);
-	--husk-tab-bar-border: var(--brand-100);
-	--husk-tab-bar-accent: var(--pico-primary);
-	--husk-app-bar: var(--neutral-900);
-	--husk-app-bar-border: var(--husk-tab-bar-border);
-	--husk-app-bar-accent: var(--neutral-800);
-	--husk-shadow: color-mix(in oklch, var(--neutral-400) 18%, transparent);
-	--husk-highlight: var(--neutral-100);
-	--husk-overlay-container: var(--brand-500);
+	--treva-tab-bar: var(--brand-200);
+	--treva-tab-bar-border: var(--brand-100);
+	--treva-tab-bar-accent: var(--pico-primary);
+	--treva-app-bar: var(--neutral-900);
+	--treva-app-bar-border: var(--treva-tab-bar-border);
+	--treva-app-bar-accent: var(--neutral-800);
+	--treva-shadow: color-mix(in oklch, var(--neutral-400) 18%, transparent);
+	--treva-highlight: var(--neutral-100);
+	--treva-overlay-container: var(--brand-500);
 }
 
 [data-theme='light']
@@ -529,15 +529,15 @@ details summary[role='button']:not(.outline)::after {
 	--pico-icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238c4040' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
 
 	/* custom properties */
-	--husk-tab-bar: var(--brand-200);
-	--husk-tab-bar-border: var(--brand-100);
-	--husk-tab-bar-accent: var(--pico-primary);
-	--husk-app-bar: var(--neutral-900);
-	--husk-app-bar-border: var(--husk-tab-bar-border);
-	--husk-app-bar-accent: var(--neutral-800);
-	--husk-shadow: var(--neutral-900);
-	--husk-highlight: var(--neutral-100);
-	--husk-overlay-container: var(--brand-300);
+	--treva-tab-bar: var(--brand-200);
+	--treva-tab-bar-border: var(--brand-100);
+	--treva-tab-bar-accent: var(--pico-primary);
+	--treva-app-bar: var(--neutral-900);
+	--treva-app-bar-border: var(--treva-tab-bar-border);
+	--treva-app-bar-accent: var(--neutral-800);
+	--treva-shadow: var(--neutral-900);
+	--treva-highlight: var(--neutral-100);
+	--treva-overlay-container: var(--brand-300);
 }
 
 [data-theme='dark']
@@ -690,15 +690,15 @@ details summary[role='button']:not(.outline)::after {
 		--pico-icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238c4040' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
 
 		/* custom properties */
-		--husk-tab-bar: var(--brand-200);
-		--husk-tab-bar-border: var(--brand-100);
-		--husk-tab-bar-accent: var(--pico-primary);
-		--husk-app-bar: var(--neutral-900);
-		--husk-app-bar-border: var(--husk-tab-bar-border);
-		--husk-app-bar-accent: var(--neutral-800);
-		--husk-shadow: var(--neutral-900);
-		--husk-highlight: var(--neutral-100);
-		--husk-overlay-container: var(--brand-300);
+		--treva-tab-bar: var(--brand-200);
+		--treva-tab-bar-border: var(--brand-100);
+		--treva-tab-bar-accent: var(--pico-primary);
+		--treva-app-bar: var(--neutral-900);
+		--treva-app-bar-border: var(--treva-tab-bar-border);
+		--treva-app-bar-accent: var(--neutral-800);
+		--treva-shadow: var(--neutral-900);
+		--treva-highlight: var(--neutral-100);
+		--treva-overlay-container: var(--brand-300);
 	}
 
 	:root:not([data-theme='light'])
@@ -736,5 +736,5 @@ progress,
 
 :root {
 	--bar-margin: 32px;
-	--husk-large-corner-radius: 38px;
+	--treva-large-corner-radius: 38px;
 }

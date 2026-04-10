@@ -80,7 +80,7 @@ button {
 
 .header {
 	align-items: flex-end;
-	border-bottom: 1px solid var(--husk-shadow);
+	border-bottom: 1px solid var(--treva-shadow);
 }
 
 .gear-section {

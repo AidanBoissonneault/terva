@@ -55,11 +55,11 @@ footer {
 
 	background: linear-gradient(
 		to bottom,
-		oklch(from var(--husk-tab-bar-accent) l c h / 0.25),
-		oklch(from var(--husk-tab-bar-accent) l c h / 0.2)
+		oklch(from var(--treva-tab-bar-accent) l c h / 0.25),
+		oklch(from var(--treva-tab-bar-accent) l c h / 0.2)
 	);
-	background-color: oklch(from var(--husk-tab-bar) l c h / 0.6);
-	border: 1px solid oklch(from var(--husk-tab-bar-border) l c h / 0.25);
+	background-color: oklch(from var(--treva-tab-bar) l c h / 0.6);
+	border: 1px solid oklch(from var(--treva-tab-bar-border) l c h / 0.25);
 
 	backdrop-filter: blur(12px) saturate(1.6);
 	-webkit-backdrop-filter: blur(12px) saturate(1.6);
@@ -67,11 +67,11 @@ footer {
 	display: grid;
 	grid-template-columns: repeat(v-bind(tabLength), 1fr);
 
-	border-radius: var(--husk-large-corner-radius);
+	border-radius: var(--treva-large-corner-radius);
 
 	box-shadow:
-		0 8px 32px oklch(from var(--husk-shadow) l c h / 0.35),
-		inset 0 1px 0 oklch(from var(--husk-highlight) l c h / 0.35);
+		0 8px 32px oklch(from var(--treva-shadow) l c h / 0.35),
+		inset 0 1px 0 oklch(from var(--treva-highlight) l c h / 0.35);
 
 	z-index: 999;
 
@@ -85,13 +85,13 @@ footer {
 
 	inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
 
-	border-radius: var(--husk-large-corner-radius);
-	border: 1px solid oklch(from var(--husk-highlight) l c h / 0.3);
+	border-radius: var(--treva-large-corner-radius);
+	border: 1px solid oklch(from var(--treva-highlight) l c h / 0.3);
 	background-color: oklch(from var(--brand-200) l c h / 0.25);
 
 	box-shadow:
-		inset 0 1px 0 oklch(from var(--husk-highlight) l c h / 0.3),
-		0 2px 8px oklch(from var(--husk-shadow) l c h / 0.15);
+		inset 0 1px 0 oklch(from var(--treva-highlight) l c h / 0.3),
+		0 2px 8px oklch(from var(--treva-shadow) l c h / 0.15);
 
 	pointer-events: none;
 	z-index: 0;

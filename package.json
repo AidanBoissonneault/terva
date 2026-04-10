@@ -1,5 +1,5 @@
 {
-  "name": "husk",
+  "name": "treva",
   "private": true,
   "workspaces": [
     "packages/*"

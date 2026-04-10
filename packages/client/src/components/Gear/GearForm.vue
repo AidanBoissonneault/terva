@@ -79,7 +79,7 @@ form {
 
 label {
 	grid-column: span 2;
-	color: var(--husk-shadow);
+	color: var(--treva-shadow);
 }
 
 label.centered {

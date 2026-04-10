@@ -4,7 +4,7 @@ const activeMenuId = ref<string | null>(null)
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import type { Bean } from '@terva/shared';
+import type { Bean } from '@terva/shared'
 import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect, inject } from 'vue'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,7 +29,7 @@ function updatePosition() {
 	const rect = buttonRef.value.getBoundingClientRect()
 
 	const menuWidth = 160
-	const menuHeight = (140 / 3 * 2)
+	const menuHeight = (140 / 3) * 2
 	const PADDING = 8
 
 	let top = rect.bottom + 6
