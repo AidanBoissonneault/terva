@@ -174,17 +174,6 @@ function navigateToStartBrew() {
 	z-index: 0;
 }
 
-.brew-card::before {
-	content: '';
-	position: absolute;
-	inset: -10%;
-	background: inherit;
-	filter: blur(30px);
-	opacity: 0.6;
-	z-index: -1;
-	background-clip: padding-box;
-}
-
 h2 {
 	--pico-h2-color: #fff;
 	--pico-color: #fff;

@@ -414,7 +414,7 @@ details summary[role='button']:not(.outline)::after {
 
 [data-theme='dark'] {
 	color-scheme: dark;
-	--pico-background-color: var(--neutral-700);
+	--pico-background-color: var(--neutral-800);
 	--pico-color: var(--neutral-100);
 	--pico-text-selection-color: var(--neutral-800);
 	--pico-muted-color: var(--neutral-500);

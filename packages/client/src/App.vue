@@ -41,6 +41,7 @@ provide('beanDeleteClicked', (bean: Bean) => {
 async function deleteSelectedBean() {
 	isWarnDeleteBean.value = false
 	await removeBean(deletedBean.value?.id ?? -1)
+
 	router.push({ name: 'dashboard' })
 }
 </script>

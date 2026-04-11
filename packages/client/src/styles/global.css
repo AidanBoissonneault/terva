@@ -1,3 +1,21 @@
 * {
 	corner-shape: round;
 }
+
+html {
+    position: relative;
+    background-color: var(--pico-background-color);
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><path d='M 20 0 L 0 0 0 20' fill='none' stroke='rgba(255,255,255,0.045)' stroke-width='0.4'/><path d='M 5 0 L 5 20 M 10 0 L 10 20 M 15 0 L 15 20' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='0.3'/><path d='M 0 5 L 20 5 M 0 10 L 20 10 M 0 15 L 20 15' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='0.3'/></svg>");
+    background-repeat: repeat;
+    background-size: 20px 20px;
+    background-attachment: fixed;
+}
+
+html::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, oklch(from var(--treva-highlight) l c h / 0.02), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}

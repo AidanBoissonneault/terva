@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { TabButton } from '@/types'
 import TabIcon from './TabIcon.vue'
+import { useOptimisticRouterStore } from '@/stores/optimisticRouter'
+import { storeToRefs } from 'pinia'
+import { watch } from 'vue'
+
+const optimisticRouter = useOptimisticRouterStore()
 
 const tabs = <TabButton[]>[
 	{ icon: 'house', route: 'dashboard' },
@@ -15,19 +19,18 @@ const tabLength = tabs.length
 const route = useRoute()
 const router = useRouter()
 
-const direction = ref()
-
 function navigate(routeName: string) {
 	if (route.name === routeName) return
 
-	const currentIndex = tabs.findIndex((t) => t.route === route.name)
-	const nextIndex = tabs.findIndex((t) => t.route === routeName)
-	direction.value = nextIndex > currentIndex ? 'right' : 'left'
-
+	optimisticRouter.setRoute(routeName)
 	router.push({ name: routeName })
 }
 
-const activePage = computed(() => route.name?.toString().toLowerCase() ?? '')
+const { currentRoute: activePage } = storeToRefs(optimisticRouter)
+
+watch(() => route.name, (name) => {
+	if(name) optimisticRouter.setRoute(name as string)
+}, { immediate: true })
 </script>
 
 <template>
