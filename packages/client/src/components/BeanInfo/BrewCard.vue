@@ -24,11 +24,6 @@ onMounted(() => {
 	)
 })
 
-//   Closeness to colour hues
-//   success → green  (hue 135)
-//   close   → orange (hue  55)
-//   miss    → red    (hue  25)
-
 const hue = computed(() => {
 	switch (props.brew.closeness) {
 		case 'success': return 135
@@ -38,23 +33,17 @@ const hue = computed(() => {
 })
 
 const chroma = computed(() => {
-	// miss is slightly more saturated to read as clearly wrong
 	switch (props.brew.closeness) {
 		case 'success': return 0.18
 		case 'close': return 0.16
-		default: return 0.20
+		default: return 0.12
 	}
 })
 
-// Three colour stops - same offset logic as BeanCardWrapper
+// Colours
 const priColor = computed(() => `oklch(${lightness.value} ${chroma.value} ${hue.value})`)
 const secColor = computed(() => `oklch(${lightness.value + 0.04} ${chroma.value} ${hue.value})`)
 const accColor = computed(() => `oklch(${lightness.value + 0.08} ${chroma.value} ${hue.value})`)
-
-// Gradient anchors - fixed positions (no elevation data on a brew)
-const g1x = 15, g1y = 40
-const g2x = 50, g2y = 55
-const g3x = 80, g3y = 30
 
 // Gear lookups
 const brewerName = computed(() => props.gear.find(g => g.id === props.brew.brewerId)?.name ?? '-')
@@ -137,38 +126,25 @@ function navigateToStartBrew() {
 	border-radius: var(--pico-border-radius);
 	box-sizing: border-box;
 
-	border: 2px inset oklch(from v-bind(priColor) l c h / 0.2);
-
 	box-shadow:
-		0 0 0 1px oklch(from v-bind(priColor) l c h / 0.15),
+		inset 0 1px 0 oklch(1 0 0 / 0.35),
+		inset 0 -1px 0 oklch(0 0 0 / 0.15),
+		0 0 0 1px oklch(from v-bind(priColor) l c h / 0.2),
 		0 4px 6px oklch(from var(--treva-shadow) l c h / 0.6),
-		0 2px 4px oklch(from v-bind(priColor) l c h / 0.35),
-		0 6px 12px oklch(from v-bind(secColor) l c h / 0.28),
-		0 12px 24px oklch(from v-bind(accColor) l c h / 0.22);
+		0 2px 4px oklch(from v-bind(priColor) l c h / 0.20),
+		0 6px 12px oklch(from v-bind(secColor) l c h / 0.05),
+		0 12px 24px oklch(from v-bind(accColor) l c h / 0.10);
 
 	padding: 12px;
 	overflow: hidden;
 
 	background:
-		linear-gradient(rgba(255, 255, 255, 0.25),
-			rgba(255, 255, 255, 0.1)) border-box,
+		linear-gradient(rgba(255,255,255,0.12), rgba(255,255,255,0.04)) border-box,
+		radial-gradient(ellipse 70% 120% at 15% 40%, oklch(from v-bind(secColor) l c h / 0.55) 0%, transparent 100%) padding-box,
+		radial-gradient(ellipse 70% 120% at 85% 30%, oklch(from v-bind(accColor) l c h / 0.45) 0%, transparent 100%) padding-box,
+		v-bind(priColor) padding-box;
 
-		radial-gradient(ellipse 80% 100% at v-bind(g1x + '%') v-bind(g1y + '%'),
-			v-bind(priColor) 0%,
-			v-bind(priColor) 30%,
-			transparent 80%) padding-box,
-
-		radial-gradient(ellipse 75% 110% at v-bind(g2x + '%') v-bind(g2y + '%'),
-			v-bind(secColor) 0%,
-			v-bind(secColor) 30%,
-			transparent 80%) padding-box,
-
-		radial-gradient(ellipse 85% 100% at v-bind(g3x + '%') v-bind(g3y + '%'),
-			v-bind(accColor) 0%,
-			v-bind(accColor) 30%,
-			transparent 80%) padding-box;
-
-	background-color: oklch(from v-bind(priColor) calc(l - 0.05) c h / 0.6);
+	background-color: v-bind(priColor);
 
 	color: #fff;
 	z-index: 0;

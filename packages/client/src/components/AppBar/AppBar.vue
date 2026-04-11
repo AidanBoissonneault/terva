@@ -68,11 +68,13 @@ header {
 	border-radius: var(--treva-large-corner-radius);
 	z-index: 99999;
 
-	transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+							opacity 0.15s ease-in;
 }
 
 header.hidden {
-	transform: translateY(calc(-100% - 32px));
+	transform: translateY(-30%);
+	opacity: 0;
 }
 
 img {

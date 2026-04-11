@@ -101,7 +101,7 @@ async function deleteSelectedBean() {
 	position: relative;
 	overflow-y: visible;
 	top: 24px;
-	padding-bottom: 96px;
+	padding-bottom: 108px;
 
 	z-index: 1;
 
