@@ -20,7 +20,8 @@ const router = createRouter({
 		{ path: '/profile/password', name: 'changepassword', component: () => import('@/views/ChangePassword.vue'), meta: { requiresAuth: true } },
 		{ path: '/about', name: 'about', component: () => import('@/views/UserAbout.vue'), meta: { requiresAuth: true } },
 		{ path: '/more', name: 'more', component: () => import('@/views/UserMore.vue'), meta: { requiresAuth: true } },
-		{ path: '/recipes', name: 'recipes', component: () => import('@/views/UserRecipes.vue'), meta: { requiresAuth: true } },
+		{ path: '/recipe', name: 'recipe', component: () => import('@/views/UserRecipes.vue'), meta: { requiresAuth: true } },
+		{ path: '/recipe/add', name: 'addrecipe', component: () => import('@/views/UserAddRecipe.vue'), meta: { requiresAuth: true } },
 		{ path: '/brew/start', name: 'startbrew', component: () => import('@/views/StartBrew.vue'), meta: { requiresAuth: true } },
 		{ path: '/brew/end', name: 'endbrew', component: () => import('@/views/EndBrew.vue'), meta: { requiresAuth: true } },
 

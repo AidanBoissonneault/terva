@@ -14,6 +14,8 @@ import getProfile from './profile/getProfile.js'
 import removeProfile from './profile/removeProfile.js'
 import addRecipe from './recipe/addRecipe.js'
 import getRecipes from './recipe/getRecipes.js'
+import editRecipe from './recipe/editRecipe.js'
+import removeRecipe from './recipe/removeRecipe.js'
 import addGear from './gear/addGear.js'
 import removeGear from './gear/removeGear.js'
 import getBrews from './brews/getBrews.js'
@@ -60,7 +62,7 @@ app.use(
 	}),
 )
 
-// ── Rate limiters ──────────────────────────────────────────────────────────────
+//  Rate limiters
 
 // Auth limiter — 20 attempts per 15 minutes
 const authLimiter = rateLimit({
@@ -134,10 +136,9 @@ app.use(express.json())
 app.use('/api/bean', addBean, editBean, getBeans, removeBean)
 app.use('/api/gear', addGear, getGear, removeGear)
 app.use('/api/profile', getProfile, removeProfile)
-app.use('/api/recipe', getRecipes)
 app.use('/api/brew', addBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)
 app.use('/api/seeddemo', seedDemo)
-app.use('/api/recipe', addRecipe, getRecipes)
+app.use('/api/recipe', addRecipe, editRecipe, getRecipes, removeRecipe)
 
 export default app

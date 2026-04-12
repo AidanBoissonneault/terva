@@ -17,7 +17,7 @@ const emits = defineEmits<{
 		height: 100%;
 		inset: 0;
 		z-index: 9999999999;
-		padding: 0;
+		padding: 24px 0;
 		margin: 0;
 
 		border: none;
@@ -31,5 +31,7 @@ const emits = defineEmits<{
 		align-items: center;
 
 		cursor: default;
+		box-sizing: border-box;
+		overflow-y: auto;
 	}
 </style>

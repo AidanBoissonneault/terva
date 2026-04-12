@@ -1,7 +1,242 @@
-<script lang="ts" setup></script>
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { getRecipes } from '@/api/addRecipe'
+import { removeRecipe } from '@/api/removeRecipe'
+import { editRecipe } from '@/api/editRecipe'
+import RecipeCard from '@/components/Recipe/RecipeCard.vue'
+import RecipeForm from '@/components/Recipe/RecipeForm.vue'
+import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
+import { useLoadingStore } from '@/stores/loading'
+import type { Recipe } from '@terva/shared'
+import type { AddRecipeForm } from '@/api/addRecipe'
+
+const router = useRouter()
+
+const recipes = ref<Recipe[]>([])
+const error = ref<string | null>(null)
+const searchBar = ref('')
+const search = computed(() => searchBar.value.trim().toLowerCase())
+
+//  Delete
+const showDeleteOverlay = ref(false)
+const deleteTargetId = ref(0)
+const deleteTargetName = ref('')
+
+//  Edit
+const showEditOverlay = ref(false)
+const editForm = ref<AddRecipeForm & { id: number }>({
+	id: 0,
+	name: '',
+	brewMethod: 'V60',
+	steps: [{ action: '', duration: 30 }],
+})
+const editError = ref<string | null>(null)
+
+//  Filtered list
+const filteredRecipes = computed(() => {
+	if (!search.value) return recipes.value
+	return recipes.value.filter(
+		(r) =>
+			r.name.toLowerCase().includes(search.value) ||
+			r.brewMethod.toLowerCase().includes(search.value),
+	)
+})
+
+onMounted(async () => {
+	const loading = useLoadingStore()
+	loading.start()
+	try {
+		const result = await getRecipes()
+		if (!result.success) throw new Error(result.error)
+		recipes.value = result.payload
+	} catch (err) {
+		if (err instanceof Error) error.value = err.message
+		else error.value = 'An unknown error occurred'
+	} finally {
+		loading.stop()
+	}
+})
+
+//  Delete handlers
+function requestDelete(id: number, name: string) {
+	deleteTargetId.value = id
+	deleteTargetName.value = name
+	showDeleteOverlay.value = true
+}
+
+function cancelDelete() {
+	showDeleteOverlay.value = false
+	deleteTargetId.value = 0
+	deleteTargetName.value = ''
+}
+
+async function confirmDelete() {
+	const id = deleteTargetId.value
+	cancelDelete()
+	const result = await removeRecipe(id)
+	if (result.success) {
+		recipes.value = recipes.value.filter((r) => r.id !== id)
+	} else {
+		error.value = result.error
+	}
+}
+
+//  Edit handlers
+function requestEdit(recipe: Recipe) {
+	editError.value = null
+	editForm.value = {
+		id: recipe.id,
+		name: recipe.name,
+		brewMethod: recipe.brewMethod,
+		steps: recipe.steps.map((s) => ({ action: s.action, duration: s.duration })),
+	}
+	showEditOverlay.value = true
+}
+
+async function handleEditSubmit() {
+	editError.value = null
+	const result = await editRecipe(editForm.value)
+	if (result.success) {
+		// Update in-place so the list reflects the change immediately
+		const idx = recipes.value.findIndex((r) => r.id === editForm.value.id)
+		if (idx !== -1) {
+			recipes.value[idx] = {
+				id: editForm.value.id,
+				name: editForm.value.name,
+				brewMethod: editForm.value.brewMethod,
+				steps: editForm.value.steps.map((s, i) => ({
+					id: i,
+					stepOrder: i + 1,
+					action: s.action,
+					duration: s.duration,
+				})),
+			}
+		}
+		showEditOverlay.value = false
+	} else {
+		editError.value = result.error
+	}
+}
+
+</script>
 
 <template>
-	<div></div>
+	<div class="dashboard">
+		<!-- Header row -->
+		<div class="top-bar">
+			<input type="search" v-model="searchBar" placeholder="Search recipes…" />
+			<button class="glass" @click="router.push({ name: 'addrecipe' })">+ New Recipe</button>
+		</div>
+
+		<!-- Error -->
+		<p v-if="error" class="error">{{ error }}</p>
+
+		<!-- Empty state -->
+		<div v-if="!error && filteredRecipes.length === 0" class="empty-state">
+			<p v-if="search">No recipes match "{{ search }}".</p>
+			<p v-else>No recipes yet. Add your first one!</p>
+		</div>
+
+		<!-- Recipe cards -->
+		<RecipeCard
+			v-for="recipe in filteredRecipes"
+			:key="recipe.id"
+			:recipe="recipe"
+			@delete-requested="requestDelete"
+			@edit-requested="requestEdit"
+		/>
+	</div>
+
+	<!-- Delete confirmation overlay -->
+	<FullscreenOverlay :is-visible="showDeleteOverlay" @outside-clicked="cancelDelete">
+		<span>Delete "{{ deleteTargetName }}"?</span>
+		<p class="delete-warning">This will permanently remove the recipe and all its steps.</p>
+		<div class="delete-actions">
+			<button class="glass" @click="confirmDelete">Delete</button>
+			<button class="glass contrast" @click="cancelDelete">Cancel</button>
+		</div>
+	</FullscreenOverlay>
+
+	<!-- Edit overlay -->
+	<FullscreenOverlay :is-visible="showEditOverlay" @outside-clicked="showEditOverlay = false">
+		<div class="edit-overlay-inner dashboard">
+			<p v-if="editError" class="error">{{ editError }}</p>
+			<RecipeForm v-model="editForm" @form-submitted="handleEditSubmit" />
+		</div>
+	</FullscreenOverlay>
 </template>
 
-<style scoped></style>
+<style scoped>
+.dashboard {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(4, 1fr);
+	margin-left: 24px;
+	margin-right: 24px;
+	overflow: visible;
+}
+
+.top-bar {
+	grid-column: span 4;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.top-bar input {
+	flex: 1;
+	margin: 0;
+}
+
+.top-bar button {
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+
+.error {
+	grid-column: span 4;
+	color: var(--red-500);
+	font-size: 0.85rem;
+}
+
+.empty-state {
+	grid-column: span 4;
+	text-align: center;
+	opacity: 0.5;
+	padding: 32px 0;
+}
+
+/* Delete overlay */
+span {
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+.delete-warning {
+	font-size: 0.85rem;
+	opacity: 0.6;
+	margin: 6px 0 16px;
+}
+
+.delete-actions {
+	display: flex;
+	gap: 10px;
+}
+
+.delete-actions button {
+	flex: 1;
+}
+
+.delete-actions button:first-child {
+	background-color: oklch(from var(--red-600) l c h / 0.85);
+	border-color: oklch(from var(--red-400) l c h / 0.5);
+	color: #fff;
+}
+
+/* Edit overlay */
+.edit-overlay-inner {
+	margin: 0;
+	width: 100%;
+}
+</style>

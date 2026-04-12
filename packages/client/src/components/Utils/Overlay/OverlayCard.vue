@@ -24,5 +24,8 @@ div {
 
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
+
+	max-height: 85dvh;
+	overflow-y: auto;
 }
 </style>

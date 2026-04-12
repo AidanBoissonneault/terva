@@ -5,7 +5,7 @@ It outputs a form via v-model, and is submitted when a form-submmited event
 is received.
 
 CREATED: 27MAR2026
-LAST EDITED: 28MAR2026
+LAST EDITED: 12APR2026
 By: Aidan Boissonneault
 -->
 
@@ -116,8 +116,11 @@ watch(() => form.value.grinderId, (newVal) => {
 		<label>
 			<div @click.stop class="space-between">
 				<span>Recipe</span>
-				<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }}
-					Steps</a>
+				<div class="recipe-links">
+					<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }} Steps</a>
+					<span class="link-sep">·</span>
+					<RouterLink :to="{ name: 'recipes' }">Manage</RouterLink>
+				</div>
 			</div>
 			<select v-model="form.recipeId" required>
 				<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">{{ recipe.name }}</option>
@@ -185,6 +188,17 @@ label.small {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.recipe-links {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.875em;
+}
+
+.link-sep {
+	opacity: 0.35;
 }
 
 .card {
