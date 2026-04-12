@@ -66,3 +66,8 @@ router.afterEach(() => {
 })
 
 export default router
+
+export function invalidateSessionCache() {
+  cachedSession = null
+  cacheTime = 0
+}

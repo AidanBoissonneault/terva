@@ -8,15 +8,13 @@
 import { defineStore } from 'pinia'
 import { type Brew } from '@terva/shared'
 
-const defaultBrew = <Brew>{
-
-}
+const defaultBrew = <Brew>{}
 
 const localStorageName = 'currentBrew'
 
 export const useBrewTransferStore = defineStore('currentBrew', {
 	state: () => ({
-		currentBrew: defaultBrew
+		currentBrew: defaultBrew,
 	}),
 
 	actions: {
@@ -26,9 +24,19 @@ export const useBrewTransferStore = defineStore('currentBrew', {
 		},
 
 		get() {
-			const storedBrewString = localStorage.getItem(localStorageName)
-			if (storedBrewString) {
-				this.currentBrew = JSON.parse(storedBrewString)
+			try {
+				const storedBrewString = localStorage.getItem(localStorageName)
+				if (storedBrewString) {
+					const parsed = JSON.parse(storedBrewString)
+					// basic shape check
+					if (parsed && typeof parsed === 'object' && 'recipeId' in parsed) {
+						this.currentBrew = parsed
+					} else {
+						localStorage.removeItem(localStorageName)
+					}
+				}
+			} catch {
+				localStorage.removeItem(localStorageName)
 			}
 			return this.currentBrew
 		},
@@ -36,6 +44,6 @@ export const useBrewTransferStore = defineStore('currentBrew', {
 		clear() {
 			localStorage.removeItem(localStorageName)
 			this.currentBrew = defaultBrew
-		}
-	}
+		},
+	},
 })

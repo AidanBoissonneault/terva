@@ -68,7 +68,7 @@ header {
 	border-radius: var(--terva-large-corner-radius);
 	z-index: 99999;
 
-	transition: transform 0.2ns cubic-bezier(0.4, 0, 0.2, 1),
+	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
 							opacity 0.15s ease-in;
 }
 

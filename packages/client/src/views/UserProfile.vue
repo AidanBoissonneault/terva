@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
 import { getProfile, deleteAccount } from '@/api/getProfile'
 import { useLoadingStore } from '@/stores/loading'
+import { invalidateSessionCache } from '@/router'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import type { UserProfile } from '@terva/shared'
@@ -13,6 +14,9 @@ const router = useRouter()
 const profile = ref<UserProfile | null>(null)
 const error = ref<string | null>(null)
 const showDeleteConfirm = ref(false)
+const deletePassword = ref('')
+const deleteError = ref('')
+const deleteLoading = ref(false)
 
 const initials = computed(() => {
 	if (!profile.value?.name) return '?'
@@ -58,16 +62,47 @@ onMounted(async () => {
 })
 
 async function handleSignOut() {
+	invalidateSessionCache()
 	await authClient.signOut()
 	router.push({ name: 'login' })
 }
 
+function openDeleteConfirm() {
+	deletePassword.value = ''
+	deleteError.value = ''
+	showDeleteConfirm.value = true
+}
+
+function cancelDelete() {
+	showDeleteConfirm.value = false
+	deletePassword.value = ''
+	deleteError.value = ''
+}
+
 async function handleDeleteAccount() {
+	deleteError.value = ''
+	deleteLoading.value = true
+
+	const { error: authError } = await authClient.signIn.email({
+		email: profile.value!.email,
+		password: deletePassword.value,
+	})
+
+	if (authError) {
+		deleteError.value = 'Incorrect password.'
+		deleteLoading.value = false
+		return
+	}
+
 	const res = await deleteAccount()
+	deleteLoading.value = false
+
 	if (res.success) {
+		invalidateSessionCache()
 		await authClient.signOut()
 		router.push({ name: 'login' })
 	}
+
 	showDeleteConfirm.value = false
 }
 </script>
@@ -174,19 +209,40 @@ async function handleDeleteAccount() {
 				</div>
 				<hr class="danger-hr" />
 				<div class="account-row">
-					<a @click.prevent="showDeleteConfirm = true" class="danger muted">Delete account</a>
+					<a @click.prevent="openDeleteConfirm" class="danger muted">Delete account</a>
 				</div>
 			</article>
 
 		</template>
 
-		<FullscreenOverlay :is-visible="showDeleteConfirm" @outside-clicked="showDeleteConfirm = false">
+		<FullscreenOverlay :is-visible="showDeleteConfirm" @outside-clicked="cancelDelete">
 			<div class="confirm-content">
 				<p><strong>Delete account?</strong></p>
 				<small>This permanently removes your account and all brew data. This cannot be undone.</small>
+
+				<p v-if="deleteError" class="error-msg">{{ deleteError }}</p>
+
+				<label for="delete-password">
+					confirm your password
+					<input
+						id="delete-password"
+						v-model="deletePassword"
+						type="password"
+						placeholder="••••••••"
+						autocomplete="current-password"
+					/>
+				</label>
+
 				<div class="confirm-actions">
-					<button class="glass" @click="showDeleteConfirm = false">Cancel</button>
-					<button class="glass danger-btn" @click="handleDeleteAccount">Delete</button>
+					<button class="glass" @click="cancelDelete">Cancel</button>
+					<button
+						class="glass danger-btn"
+						:aria-busy="deleteLoading"
+						:disabled="deleteLoading || !deletePassword"
+						@click="handleDeleteAccount"
+					>
+						{{ deleteLoading ? '' : 'Delete' }}
+					</button>
 				</div>
 			</div>
 		</FullscreenOverlay>
@@ -413,6 +469,15 @@ a.danger.muted {
 	gap: 8px;
 }
 
+.confirm-content strong {
+	color: var(--pico-primary-inverse);
+}
+
+.confirm-content label {
+	color: var(--pico-primary-inverse);
+	font-size: 0.875rem;
+}
+
 .confirm-actions {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -423,5 +488,15 @@ a.danger.muted {
 .danger-btn {
 	border-color: oklch(from var(--red-500) l c h / 0.5) !important;
 	color: var(--red-400) !important;
+}
+
+.error-msg {
+	color: var(--pico-del-color);
+	background: color-mix(in srgb, var(--pico-del-color) 10%, transparent);
+	border: 1px solid color-mix(in srgb, var(--pico-del-color) 30%, transparent);
+	padding: 0.5rem 0.75rem;
+	border-radius: var(--pico-border-radius);
+	font-size: 0.875rem;
+	margin: 0;
 }
 </style>
