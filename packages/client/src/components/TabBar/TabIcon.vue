@@ -43,6 +43,9 @@ button {
 	transition:
 		color 0.2s ease,
 		transform 0.15s ease;
+
+	transform: translateZ((0));
+	will-change: transform;
 }
 
 button:focus {

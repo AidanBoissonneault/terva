@@ -1,5 +1,6 @@
 * {
 	corner-shape: round;
+  touch-action: manipulation;
 }
 
 html {
