@@ -19,6 +19,10 @@ function goToLink(route: string) {
 	router.push({ name: route })
 }
 
+function openBugReport() {
+  window.open('https://docs.google.com/forms/d/e/1FAIpQLSd0uz4nGo7I1Sqkdk3qoS6d6NMo1UJcHALxOaReXSMTEm99Ow/viewform?usp=dialog', '_blank', 'noopener,noreferrer')
+}
+
 async function logOut() {
 	await authClient.signOut()
 	router.push({ name: 'login' })
@@ -36,7 +40,8 @@ async function logOut() {
 				:key="tab.name"
 				@go-to-link="goToLink"
 			/>
-			<a @click="logOut">Logout</a>
+			<a @click.prevent="openBugReport">Report a bug</a>
+			<a @click.prevent="logOut">Logout</a>
 		</div>
 	</div>
 </template>
@@ -59,5 +64,9 @@ async function logOut() {
 	justify-content: flex-start;
 	align-items: flex-start;
 	flex-direction: column;
+}
+
+a {
+	cursor: pointer;
 }
 </style>

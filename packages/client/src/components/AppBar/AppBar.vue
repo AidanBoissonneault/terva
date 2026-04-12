@@ -94,6 +94,10 @@ h1 {
 	--pico-typography-spacing-top: 3rem;
 }
 
+h1, img {
+	cursor: pointer;
+}
+
 .swap-enter-active,
 .swap-leave-active {
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
