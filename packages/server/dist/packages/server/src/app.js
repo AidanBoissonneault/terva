@@ -10,6 +10,7 @@ import removeBean from './bean/removeBean.js';
 import getGear from './gear/getGear.js';
 import getProfile from './profile/getProfile.js';
 import removeProfile from './profile/removeProfile.js';
+import addRecipe from './recipe/addRecipe.js';
 import getRecipes from './recipe/getRecipes.js';
 import addGear from './gear/addGear.js';
 import removeGear from './gear/removeGear.js';
@@ -108,5 +109,6 @@ app.use('/api/recipe', getRecipes);
 app.use('/api/brew', addBrew, getBrews);
 app.use('/api/getrecentbrews', getRecentBrews);
 app.use('/api/seeddemo', seedDemo);
+app.use('/api/recipe', addRecipe, getRecipes);
 export default app;
 //# sourceMappingURL=app.js.map

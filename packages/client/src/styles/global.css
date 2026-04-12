@@ -16,7 +16,7 @@ html::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: radial-gradient(ellipse at 50% 30%, oklch(from var(--treva-highlight) l c h / 0.02), transparent 70%);
+    background: radial-gradient(ellipse at 50% 30%, oklch(from var(--terva-highlight) l c h / 0.02), transparent 70%);
     pointer-events: none;
     z-index: 0;
 }

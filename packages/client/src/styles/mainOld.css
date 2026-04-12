@@ -328,12 +328,12 @@ details summary[role=button]:not(.outline)::after {
 
 	/* custom properties */
 
-	--treva-tab-bar: var(--brand-200);
-	--treva-tab-bar-border: var(--brand-100);
-	--treva-tab-bar-accent: var(--pico-primary);
-	--treva-app-bar: var(--neutral-900);
-	--treva-app-bar-border: var(--treva-tab-bar-border);
-	--treva-app-bar-accent: var(--neutral-800);
+	--terva-tab-bar: var(--brand-200);
+	--terva-tab-bar-border: var(--brand-100);
+	--terva-tab-bar-accent: var(--pico-primary);
+	--terva-app-bar: var(--neutral-900);
+	--terva-app-bar-border: var(--terva-tab-bar-border);
+	--terva-app-bar-accent: var(--neutral-800);
 }
 [data-theme=light] input:is([type=submit],
 [type=button],
@@ -462,15 +462,15 @@ details summary[role=button]:not(.outline)::after {
 
 	/* custom properties */
 
-	--treva-tab-bar: var(--brand-200);
-	--treva-tab-bar-border: var(--brand-100);
-	--treva-tab-bar-accent: var(--pico-primary);
-	--treva-app-bar: var(--neutral-900);
-	--treva-app-bar-border: var(--treva-tab-bar-border);
-	--treva-app-bar-accent: var(--neutral-800);
-	--treva-shadow: var(--neutral-900);
-	--treva-highlight: var(--neutral-100);
-	--treva-overlay-container: var(--brand-300);
+	--terva-tab-bar: var(--brand-200);
+	--terva-tab-bar-border: var(--brand-100);
+	--terva-tab-bar-accent: var(--pico-primary);
+	--terva-app-bar: var(--neutral-900);
+	--terva-app-bar-border: var(--terva-tab-bar-border);
+	--terva-app-bar-accent: var(--neutral-800);
+	--terva-shadow: var(--neutral-900);
+	--terva-highlight: var(--neutral-100);
+	--terva-overlay-container: var(--brand-300);
 }
 [data-theme=dark] input:is([type=submit],
 [type=button],

@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS treva;
-CREATE DATABASE treva;
-USE treva;
+DROP DATABASE IF EXISTS terva;
+CREATE DATABASE terva;
+USE terva;
 
 -- -----------------------------------------
 --  BEANS

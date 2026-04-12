@@ -85,7 +85,7 @@ box-shadow:
   inset 0 1px 0 oklch(1 0 0 / 0.35),      /* top highlight — glass rim */
   inset 0 -1px 0 oklch(0 0 0 / 0.15),     /* bottom inner shadow */
   0 0 0 1px oklch(from v-bind(priColor) l c h / 0.2),
-  0 4px 6px oklch(from var(--treva-shadow) l c h / 0.6),
+  0 4px 6px oklch(from var(--terva-shadow) l c h / 0.6),
   0 2px 4px oklch(from v-bind(priColor) l c h / 0.20),
   0 6px 12px oklch(from v-bind(secColor) l c h / 0.05),
   0 12px 24px oklch(from v-bind(accColor) l c h / 0.10);

@@ -22,7 +22,7 @@ const emits = defineEmits<{
 
 <style scoped>
 span {
-	color: var(--treva-shadow);
+	color: var(--terva-shadow);
 }
 button {
 	width: 50%;

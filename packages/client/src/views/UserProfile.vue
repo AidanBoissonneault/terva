@@ -230,7 +230,7 @@ article {
 
 	border: 2px inset oklch(from var(--brand-700) l c h / 0.2);
 	box-shadow:
-		0 4px 6px oklch(from var(--treva-shadow) l c h / 0.6),
+		0 4px 6px oklch(from var(--terva-shadow) l c h / 0.6),
 		0 6px 12px oklch(from var(--brand-700) l c h / 0.28),
 		0 12px 24px oklch(from var(--brand-900) l c h / 0.22);
 }
@@ -264,7 +264,7 @@ article {
 }
 
 .hero-card hr {
-	border-color: oklch(from var(--treva-highlight) l c h / 0.15);
+	border-color: oklch(from var(--terva-highlight) l c h / 0.15);
 	margin: 14px 0;
 }
 
@@ -317,7 +317,7 @@ article {
 	flex: 1;
 	height: 7px;
 	border-radius: 99px;
-	background: oklch(from var(--treva-shadow) l c h / 0.15);
+	background: oklch(from var(--terva-shadow) l c h / 0.15);
 	overflow: hidden;
 }
 

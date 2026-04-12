@@ -1,5 +1,5 @@
 {
-    "name": "treva-api",
+    "name": "terva-api",
     "type": "module",
     "scripts": {
         "dev": "tsx watch src/server.ts",
