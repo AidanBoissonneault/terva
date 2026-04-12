@@ -61,11 +61,11 @@ footer {
 		oklch(from var(--terva-tab-bar-accent) l c h / 0.25),
 		oklch(from var(--terva-tab-bar-accent) l c h / 0.2)
 	);
-	background-color: oklch(from var(--terva-tab-bar) l c h / 0.6);
+	background-color: oklch(from var(--terva-tab-bar) l c h / 0.4);
 	border: 1px solid oklch(from var(--terva-tab-bar-border) l c h / 0.25);
 
-	backdrop-filter: blur(12px) saturate(1.6);
-	-webkit-backdrop-filter: blur(12px) saturate(1.6);
+	backdrop-filter: blur(6px) saturate(1.6);
+	-webkit-backdrop-filter: blur(6px) saturate(1.6);
 
 	display: grid;
 	grid-template-columns: repeat(v-bind(tabLength), 1fr);

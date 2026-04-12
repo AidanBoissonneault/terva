@@ -18,7 +18,7 @@ div {
 			oklch(from var(--terva-overlay-container) calc(l + 0.3) c h / 0.25),
 			oklch(from var(--terva-overlay-container) calc(l + 0.3) c h / 0.20));
 	background-color: oklch(from var(--terva-overlay-container) l c h / 0.6);
-	width: 60%;
+	width: 80%;
 
 	border: 1px solid oklch(from var(--pico-primary) l c h / 0.8);
 
