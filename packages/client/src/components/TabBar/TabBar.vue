@@ -11,7 +11,7 @@ const optimisticRouter = useOptimisticRouterStore()
 const tabs = <TabButton[]>[
 	{ icon: 'house', route: 'dashboard' },
 	{ icon: 'screwdriver-wrench', route: 'gear' },
-	{ icon: 'user', route: 'profile' },
+	{ icon: 'scroll', route: 'recipe' },
 	{ icon: 'bars', route: 'more' },
 ]
 

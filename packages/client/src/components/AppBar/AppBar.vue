@@ -66,7 +66,7 @@ header {
 		inset 0 1px 0 oklch(from var(--terva-highlight) l c h / 0.4);
 
 	border-radius: var(--terva-large-corner-radius);
-	z-index: 99999;
+	z-index: 999;
 
 	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
 							opacity 0.15s ease-in;

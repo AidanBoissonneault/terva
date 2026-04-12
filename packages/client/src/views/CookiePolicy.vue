@@ -3,7 +3,7 @@
 <template>
 	<div class="legal-doc">
 		<h1>COOKIE POLICY</h1>
-		<p class="subtitle"><strong>Last updated</strong> April 05, 2026</p>
+		<p class="subtitle"><strong>Last updated</strong> April 12, 2026</p>
 
 		<p>
 			This Cookie Policy explains how <strong>Aidan Boissonneault</strong> ("Company," "we," "us,"
