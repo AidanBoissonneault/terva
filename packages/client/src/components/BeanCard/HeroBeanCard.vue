@@ -24,7 +24,7 @@ const hasBrews = computed(() => brewCount.value > 0)
 	<BeanCardWrapper :bean="bean" @clicked="emits('clicked', bean)">
 		<BeanCardInfo :bean="bean" />
 		<div class="button-wrapper" @click.stop v-if="hasBrews">
-			<QuickAccessButton v-for="(brew, i) in brews" :text="brew.brewMethod" :key="i" @brew-selected="emits('brewSelected', brew)"/>
+			<QuickAccessButton v-for="(brew, i) in brews" :text="brew.name" :key="i" @brew-selected="emits('brewSelected', brew)"/>
 		</div>
 	</BeanCardWrapper>
 </template>

@@ -118,8 +118,6 @@ watch(() => form.value.grinderId, (newVal) => {
 				<span>Recipe</span>
 				<div class="recipe-links">
 					<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }} Steps</a>
-					<span class="link-sep">·</span>
-					<RouterLink :to="{ name: 'recipes' }">Manage</RouterLink>
 				</div>
 			</div>
 			<select v-model="form.recipeId" required>
@@ -195,10 +193,6 @@ label.small {
 	align-items: center;
 	gap: 6px;
 	font-size: 0.875em;
-}
-
-.link-sep {
-	opacity: 0.35;
 }
 
 .card {

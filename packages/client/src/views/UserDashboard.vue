@@ -110,6 +110,10 @@ function routeToBeanInfo(bean: Bean) {
 function quickAccessBrew(brew: Brew) {
 	const brewTransfer = useBrewTransferStore()
 	brewTransfer.set(brew)
+
+	const currentBean = useCurrentBeanStore()
+	currentBean.set(heroBean.value)
+
 	router.push({ name: 'startbrew' })
 }
 </script>
