@@ -21,10 +21,10 @@ const emits = defineEmits<{
 		margin: 0;
 
 		border: none;
-		background-color: oklch(from var(--terva-shadow) l c h / 0.2);
+		background-color: oklch(from var(--terva-shadow) l c h / 0.05);
 
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(2px);
+		-webkit-backdrop-filter: blur(2px);
 
 		display: flex;
 		justify-content: center;

@@ -10,12 +10,14 @@ import BrewDataForm from '@/components/StartBrew/BrewDataForm.vue';
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
 import { useRouter } from 'vue-router';
 import { addBrew } from '@/api/addBrew';
+import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue';
 
 const router = useRouter()
 
 const currentBean = ref<Bean>()
 const error = ref<string | null>(null)
 const data = ref()
+const showOverlay = ref(false)
 
 const newBrew = ref<Brew>()
 
@@ -100,8 +102,7 @@ async function formSubmitted() {
 
 	transferBrew.set(newBrew.value)
 
-	// change screens
-	router.push({ name: 'endbrew' })
+	showOverlay.value = true
 }
 </script>
 
@@ -114,6 +115,17 @@ async function formSubmitted() {
 		<BrewDataForm :recipes="recipes" :grinders="grinders" :brewers="brewers" v-model="newBrew"
 			@form-submitted="formSubmitted" />
 	</div>
+
+	<FullscreenOverlay :is-visible="showOverlay" @outside-clicked="showOverlay = !showOverlay">
+		<div class="confirm-content">
+				<p><strong>Finish brew now?</strong></p>
+				<small>You can always finish brews later.</small>
+				<div class="confirm-actions">
+					<button class="glass" @click="router.push({ name: 'dashboard' })">Finish later</button>
+					<button class="glass" @click="router.push({ name: 'endbrew' })">Finish now</button>
+				</div>
+			</div>
+	</FullscreenOverlay>
 </template>
 
 <style scoped>
@@ -134,5 +146,20 @@ async function formSubmitted() {
 	margin-right: 24px;
 
 	overflow-y: visible;
+}
+
+.confirm-content, strong {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	color: var(--pico-primary-inverse);
+}
+
+.confirm-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	margin-top: 8px;
 }
 </style>

@@ -29,7 +29,6 @@ const router = createRouter({
 		{ path: '/cookies', name: 'cookies', component: () => import('@/views/CookiePolicy.vue') },
 		{ path: '/privacy', name: 'privacy', component: () => import('@/views/PrivacyPolicy.vue') },
 		{ path: '/terms', name: 'terms', component: () => import('@/views/TermsAndCondtions.vue') },
-		{ path: '/recipe', name: 'addrecipe', component: () => import('@/views/UserAddRecipe.vue'), meta: { requiresAuth: true } },
 
 
 		{ path: '/:pathMatch(.*)*', redirect: '/' },

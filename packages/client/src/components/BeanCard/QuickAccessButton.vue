@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const props = defineProps<{
 	text: string
 }>()
@@ -8,12 +9,18 @@ const props = defineProps<{
 const emits = defineEmits<{
 	brewSelected: [void]
 }>()
+
+const shortenedText = ref()
+onMounted(() => {
+	const texts = props.text.split(' ')
+	shortenedText.value = texts[0]?.trim()
+})
 </script>
 
 <template>
   <button @click="emits('brewSelected')" class="glass big-text">
     <FontAwesomeIcon :icon="['fas', 'arrow-rotate-right']" class="recents-icon" />
-    {{ text }}
+    {{ shortenedText }}
   </button>
 </template>
 
