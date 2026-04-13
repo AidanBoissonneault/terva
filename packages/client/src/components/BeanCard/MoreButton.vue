@@ -2,9 +2,9 @@
 import { inject } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import type { Bean } from '@terva/shared'
-import DropdownMenu from '@/components/Utils/DropdownMenu.vue'
-import DropdownItem from '@/components/Utils/DropdownItem.vue'
-import DropdownDivider from '@/components/Utils/DropdownDivider.vue'
+import DropdownMenu from '@/components/Utils/Dropdown/DropdownMenu.vue'
+import DropdownItem from '@/components/Utils/Dropdown/DropdownItem.vue'
+import DropdownDivider from '@/components/Utils/Dropdown/DropdownDivider.vue'
 
 const props = defineProps<{
 	bean: Bean

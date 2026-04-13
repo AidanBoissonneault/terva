@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useRouter } from 'vue-router'
-import DropdownMenu from '@/components/Utils/DropdownMenu.vue'
-import DropdownItem from '@/components/Utils/DropdownItem.vue'
-import DropdownDivider from '@/components/Utils/DropdownDivider.vue'
+import DropdownMenu from '@/components/Utils/Dropdown/DropdownMenu.vue'
+import DropdownItem from '@/components/Utils/Dropdown/DropdownItem.vue'
+import DropdownDivider from '@/components/Utils/Dropdown/DropdownDivider.vue'
 
 const router = useRouter()
 

@@ -7,12 +7,20 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, provide, ref } from 'vue'
 import type { Bean } from '@terva/shared'
 import { useCurrentBeanStore } from './stores/currentShowcasedBean'
+import { useAppStore } from './stores/app'
 import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
 import { removeBean } from './api/removeBean'
+import { storeToRefs } from 'pinia'
 
 const loading = useLoadingStore()
 const route = useRoute()
 const router = useRouter()
+
+// used to access refresh from anywhere
+const appStore = useAppStore()
+
+// used to manually refresh the router view
+const { refreshKey } = storeToRefs(appStore)
 
 const ignoredAppBarPages = ['startbrew', 'endbrew']
 const ignoreNavBarPages = ['endbrew', 'login', 'register', 'cookies', 'terms', 'privacy']
@@ -42,6 +50,9 @@ async function deleteSelectedBean() {
 	isWarnDeleteBean.value = false
 	await removeBean(deletedBean.value?.id ?? -1)
 
+	if (route.name === 'dashboard')
+		appStore.refreshView()
+
 	router.push({ name: 'dashboard' })
 }
 </script>
@@ -54,7 +65,7 @@ async function deleteSelectedBean() {
 
 		<Transition name="steam" mode="out-in">
 			<main class="content" :class="{ shift_down: isActiveAppBarPage }" :key="route.fullPath">
-				<router-view />
+				<router-view :key="refreshKey"/>
 			</main>
 		</Transition>
 
@@ -72,8 +83,8 @@ async function deleteSelectedBean() {
 				<p><strong>Delete {{ deletedBean?.name }}?</strong></p>
 				<small>This permanently removes your bean and all brew data. This cannot be undone.</small>
 				<div class="confirm-actions">
-					<button class="glass" @click="isWarnDeleteBean = false">Cancel</button>
 					<button class="glass danger-btn" @click="deleteSelectedBean">Delete</button>
+					<button class="glass" @click="isWarnDeleteBean = false">Cancel</button>
 				</div>
 			</div>
 			</FullscreenOverlay>
@@ -131,6 +142,7 @@ async function deleteSelectedBean() {
 .danger-btn {
 	border-color: oklch(from var(--red-500) l c h / 0.5) !important;
 	color: var(--red-400) !important;
+	background-color: var(--red-700) !important;
 }
 
 .steam-enter-active,

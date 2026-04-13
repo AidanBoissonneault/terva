@@ -3,7 +3,7 @@ User Dashboard
 Main screen of the app after login.
 
 CREATED: 17MAR2026
-LAST EDITED: 02APR2026
+LAST EDITED: 12APR2026
 By: Aidan Boisonneault
 -->
 
@@ -37,11 +37,11 @@ const activeFilter = ref<string | null>(null)
 
 // stores all filter buttons.
 // name is displaced, type is for backend.
-const filterButtons = reactive<{ name: string, type: BeanState | null }[]>([
-	{ name: "Fresh", type: "fresh" },
-	{ name: "Frozen", type: "frozen" },
-	{ name: "Finished", type: "finished" },
-	{ name: "All", type: null },
+const filterButtons = reactive<{ name: string; type: BeanState | null }[]>([
+	{ name: 'Fresh', type: 'fresh' },
+	{ name: 'Frozen', type: 'frozen' },
+	{ name: 'Finished', type: 'finished' },
+	{ name: 'All', type: null },
 ])
 
 // calculates and maintains the filtered beans for when
@@ -51,7 +51,7 @@ const filteredBeans = computed(() => {
 
 	if (!activeFilter.value) return beans.value
 
-  return beans.value.filter((bean: Bean) => String(bean.state) === String(activeFilter.value))
+	return beans.value.filter((bean: Bean) => String(bean.state) === String(activeFilter.value))
 })
 
 // sets the current filter to a new filter.
@@ -66,7 +66,6 @@ function newFilter(type: string | null) {
 
 // ran when the component is mounted to DOM
 onMounted(async () => {
-
 	// start loading screen
 	const loading = useLoadingStore()
 	loading.start()
@@ -76,17 +75,16 @@ onMounted(async () => {
 
 		// error handling
 		if (!data.success) {
-			throw new Error(data.error);
+			throw new Error(data.error)
 		}
 		// split payload
-		heroBean.value = data.payload[0]    // most recent is hero bean
+		heroBean.value = data.payload[0] // most recent is hero bean
 		beans.value = data.payload.slice(1) // rest go to the regular beans
 
 		// get recent brew data for hero bean
 		if (heroBean.value) {
 			const recentBrews = await getRecentBrews(heroBean.value.id)
-			if (recentBrews.success)
-				recentHeroBrews.value = recentBrews.payload
+			if (recentBrews.success) recentHeroBrews.value = recentBrews.payload
 			console.log(recentBrews)
 		}
 
@@ -114,8 +112,6 @@ function quickAccessBrew(brew: Brew) {
 	brewTransfer.set(brew)
 	router.push({ name: 'startbrew' })
 }
-
-
 </script>
 
 <template>
@@ -123,18 +119,33 @@ function quickAccessBrew(brew: Brew) {
 		<div v-if="error">{{ error }}</div>
 
 		<template v-else-if="heroBean">
-			<HeroBeanCard :bean="heroBean" :brews="recentHeroBrews" @clicked="routeToBeanInfo" @brew-selected="quickAccessBrew"/>
+			<HeroBeanCard
+				:bean="heroBean"
+				:brews="recentHeroBrews"
+				@clicked="routeToBeanInfo"
+				@brew-selected="quickAccessBrew"
+			/>
 			<SectionSeperator />
 			<div class="filter-wrapper">
 				<h5>Beans</h5>
 				<div class="filter-buttons">
-					<FilterButton v-for="filter in filterButtons" @filter="newFilter" :key="filter.name"
-						:type="filter.type" :active-filter="activeFilter">
+					<FilterButton
+						v-for="filter in filterButtons"
+						@filter="newFilter"
+						:key="filter.name"
+						:type="filter.type"
+						:active-filter="activeFilter"
+					>
 						{{ filter.name }}
 					</FilterButton>
 				</div>
 			</div>
-			<BeanCard v-for="bean in filteredBeans" :key="bean.id" :bean="bean" @clicked="routeToBeanInfo"/>
+			<BeanCard
+				v-for="bean in filteredBeans"
+				:key="bean.id"
+				:bean="bean"
+				@clicked="routeToBeanInfo"
+			/>
 		</template>
 	</div>
 </template>
