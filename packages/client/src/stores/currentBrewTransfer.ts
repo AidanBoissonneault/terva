@@ -8,7 +8,9 @@
 import { defineStore } from 'pinia'
 import { type Brew } from '@terva/shared'
 
-const defaultBrew = <Brew>{}
+const defaultBrew = <Brew>{
+	status: "in_progress"
+}
 
 const localStorageName = 'currentBrew'
 
@@ -21,6 +23,10 @@ export const useBrewTransferStore = defineStore('currentBrew', {
 		set(brew: Brew) {
 			this.currentBrew = brew
 			localStorage.setItem(localStorageName, JSON.stringify(brew))
+		},
+
+		setId(id: number) {
+			this.currentBrew.id = id
 		},
 
 		get() {

@@ -13,7 +13,7 @@ import EndBrewDataForm from '@/components/EndBrew/EndBrewDataForm.vue';
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
 import { onMounted, ref } from 'vue';
 import { type Brew } from '@terva/shared'
-import { addBrew } from '@/api/addBrew';
+import { editBrew } from '@/api/editBrew';
 import { useRouter } from 'vue-router';
 
 const currentBrew = ref<Brew>()
@@ -30,8 +30,10 @@ function formSubmitted() {
 	if (!endingBrew.value)
 		return
 
+	endingBrew.value.status = 'finished'
+
 	console.log(endingBrew.value)
-	addBrew(endingBrew.value)
+	editBrew(endingBrew.value.id, endingBrew.value)
 
 	// clear cached brew
 	const brewTransfer = useBrewTransferStore()

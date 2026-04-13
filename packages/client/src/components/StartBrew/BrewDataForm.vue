@@ -24,7 +24,8 @@ const modelValue = defineModel<Brew>({
 		yieldG: 0,
 		recipeId: 0,
 		brewerId: 0,
-		closeness: "success"
+		closeness: 'success',
+		status: 'in_progress',
 	}
 })
 

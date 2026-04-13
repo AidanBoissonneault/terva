@@ -24,7 +24,8 @@ router.get('/', requireAuth, async (req, res) => {
 			dose_g AS doseG,
 			yield_g AS yieldG,
 			time_seconds,
-			notes
+			notes,
+			status
 		FROM brews
 		WHERE user = ?
 		AND bean_id = ?

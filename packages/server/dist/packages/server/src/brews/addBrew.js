@@ -9,7 +9,7 @@ import { requireAuth } from '../middleware/requireAuth.js';
 const router = Router();
 router.post('/', requireAuth, async (req, res) => {
     try {
-        const { grindSize, grinderId, brewerId, beanId, doseG, yieldG, recipeId, time_seconds, closeness, profile, body, notes, } = req.body;
+        const { grindSize, grinderId, brewerId, beanId, doseG, yieldG, recipeId, time_seconds, closeness, profile, body, notes, status, } = req.body;
         const userId = res.locals.user.id;
         const query = `
       INSERT INTO brews (
@@ -25,9 +25,10 @@ router.post('/', requireAuth, async (req, res) => {
         dose_g,
         yield_g,
         time_seconds,
-        notes
+        notes,
+				status
         )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
         const [result] = await connection.query(query, [
             beanId,
@@ -43,6 +44,7 @@ router.post('/', requireAuth, async (req, res) => {
             yieldG,
             time_seconds,
             notes,
+            status,
         ]);
         await connection.query('UPDATE beans SET last_used = CURRENT_TIMESTAMP WHERE id = ?', [beanId]);
         res.json({ id: result.insertId });

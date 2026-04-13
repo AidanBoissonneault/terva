@@ -25,6 +25,8 @@ onMounted(() => {
 })
 
 const hue = computed(() => {
+	if (props.brew.status === 'in_progress')
+		return 350;
 	switch (props.brew.closeness) {
 		case 'success': return 135
 		case 'close': return 55
@@ -33,6 +35,8 @@ const hue = computed(() => {
 })
 
 const chroma = computed(() => {
+	if (props.brew.status === 'in_progress')
+		return 0.05
 	switch (props.brew.closeness) {
 		case 'success': return 0.18
 		case 'close': return 0.16
@@ -72,7 +76,11 @@ function navigateToStartBrew() {
 	const currentBrew = useBrewTransferStore()
 
 	currentBrew.set(props.brew)
-	router.push({ name: 'startbrew' })
+
+	if(props.brew.status === 'finished')
+		router.push({ name: 'startbrew' })
+	else
+		router.push({ name: 'endbrew' })
 }
 </script>
 

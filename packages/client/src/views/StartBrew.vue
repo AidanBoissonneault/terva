@@ -9,6 +9,7 @@ import { getBrewStartData } from '@/api/getStartBrewData';
 import BrewDataForm from '@/components/StartBrew/BrewDataForm.vue';
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
 import { useRouter } from 'vue-router';
+import { addBrew } from '@/api/addBrew';
 
 const router = useRouter()
 
@@ -69,6 +70,7 @@ onMounted(async () => {
 	} finally {
 		const currentBrewStore = useBrewTransferStore()
 		const stored = currentBrewStore.get()
+		stored.status = 'in_progress'
 
 		if (stored) {
 			newBrew.value = stored
@@ -78,7 +80,7 @@ onMounted(async () => {
 	}
 })
 
-function formSubmitted() {
+async function formSubmitted() {
 
 	//ensure brew exists
 	if (!newBrew.value)
@@ -86,6 +88,12 @@ function formSubmitted() {
 
 	// get the bean id and upload it in
 	newBrew.value.beanId = currentBean.value?.id ? currentBean.value.id : -1
+
+	// save partial brew to db
+	const data = await addBrew(newBrew.value)
+
+	if (data.success)
+		newBrew.value.id = data.payload.id
 
 	// set up the transfer brew
 	const transferBrew = useBrewTransferStore()

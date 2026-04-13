@@ -44,6 +44,7 @@ export interface Brew {
     profile?: number;
     body?: number;
     notes?: string;
+    status: "in_progress" | "finished";
 }
 /**
 CREATE TABLE brews (

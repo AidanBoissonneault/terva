@@ -26,6 +26,7 @@ router.post('/', requireAuth, async (req, res) => {
 			profile,
 			body,
 			notes,
+			status,
 		} = req.body
 
 		const userId = res.locals.user.id
@@ -44,9 +45,10 @@ router.post('/', requireAuth, async (req, res) => {
         dose_g,
         yield_g,
         time_seconds,
-        notes
+        notes,
+				status
         )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
 
 		const [result] = await connection.query<ResultSetHeader>(query, [
@@ -63,6 +65,7 @@ router.post('/', requireAuth, async (req, res) => {
 			yieldG,
 			time_seconds,
 			notes,
+			status,
 		])
 
 		await connection.query('UPDATE beans SET last_used = CURRENT_TIMESTAMP WHERE id = ?', [beanId])

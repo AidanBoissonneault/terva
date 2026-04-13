@@ -21,6 +21,7 @@ import removeGear from './gear/removeGear.js'
 import editGear from './gear/editGear.js'
 import getBrews from './brews/getBrews.js'
 import getRecentBrews from './brews/getRecentBrews.js'
+import editBrew from './brews/editBrew.js'
 import addBrew from './brews/addBrew.js'
 import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js'
 import connection from './db/connection.js'
@@ -137,7 +138,7 @@ app.use(express.json())
 app.use('/api/bean', addBean, editBean, getBeans, removeBean)
 app.use('/api/gear', addGear, editGear, getGear, removeGear)
 app.use('/api/profile', getProfile, removeProfile)
-app.use('/api/brew', addBrew, getBrews)
+app.use('/api/brew', addBrew, editBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)
 app.use('/api/seeddemo', seedDemo)
 app.use('/api/recipe', addRecipe, editRecipe, getRecipes, removeRecipe)
