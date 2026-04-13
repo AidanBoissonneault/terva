@@ -1,56 +1,48 @@
 <script setup lang="ts">
-import { addGear } from '@/api/addGear';
-import { getGear } from '@/api/getGear';
-import { removeGear } from '@/api/removeGear';
-import GearForm from '@/components/Gear/GearForm.vue';
-import GearList from '@/components/Gear/GearList.vue';
-import GearRemovalForm from '@/components/Gear/GearRemovalForm.vue';
-import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue';
-import { useLoadingStore } from '@/stores/loading';
-import type { Gear, GearCategory } from '@terva/shared';
-import { computed, onMounted, ref } from 'vue';
+import { addGear } from '@/api/addGear'
+import { editGear } from '@/api/editGear'
+import { getGear } from '@/api/getGear'
+import { removeGear } from '@/api/removeGear'
+import GearForm from '@/components/Gear/GearForm.vue'
+import GearList from '@/components/Gear/GearList.vue'
+import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
+import { useLoadingStore } from '@/stores/loading'
+import type { Gear, GearCategory } from '@terva/shared'
+import { computed, onMounted, ref } from 'vue'
 
 const gears = ref<Gear[]>([])
-
 const uniqueGearTypes = <GearCategory[]>['grinder', 'kettle', 'scale', 'brewer', 'espresso_machine']
 
-const searchBar = ref<string>("")
+const searchBar = ref<string>('')
 const search = computed(() => searchBar.value.trim().toLowerCase())
 const error = ref<string | null>(null)
-const openGear = ref<string | null>(null)
-const showOverlay = ref<boolean>(false)
-const showRemovalOverlay = ref<boolean>(false)
-const removalId = ref<number>(0)
-const gearCategory = ref<GearCategory>("grinder")
-const removalName = ref<string>("")
+
+// Add overlay
+const showAddOverlay = ref(false)
+const gearCategory = ref<GearCategory>('grinder')
 const newGear = ref<Gear>()
 
+// Edit overlay
+const showEditOverlay = ref(false)
+const editForm = ref<Gear>({ id: 0, name: '', type: 'grinder', notes: '' })
+const editError = ref<string | null>(null)
+
+// Delete overlay
+const showDeleteOverlay = ref(false)
+const deleteTargetId = ref(0)
+const deleteTargetName = ref('')
+
 function getRelevantGear(gearType: GearCategory) {
-	if (!gears.value) return []
-
-	if (!gearType) return gears.value
-
-	return gears.value.filter((gear: Gear) => gear.type === gearType)
+	return gears.value.filter((g: Gear) => g.type === gearType)
 }
 
 onMounted(async () => {
-
-	// start loading screen
 	const loading = useLoadingStore()
 	loading.start()
 	try {
-		// get data
 		const data = await getGear()
-
-		// error handling
-		if (!data.success) {
-			throw new Error(data.error);
-		}
-		// get payload
+		if (!data.success) throw new Error(data.error)
 		gears.value = data.payload
-
-		// log data (for testing)
-		console.log(data)
 	} catch (err) {
 		if (err instanceof Error) error.value = err.message
 		else error.value = 'An unknown error occurred'
@@ -59,83 +51,120 @@ onMounted(async () => {
 	}
 })
 
-function changeOpenGear(name: string | null) {
-	if (openGear.value === name) {
-		openGear.value = null
-		return
-	}
-	openGear.value = name
-}
-
-function toggleOverlay(gearType: GearCategory) {
+//  Add handlers
+function openAddOverlay(gearType: GearCategory) {
 	gearCategory.value = gearType
-	console.log(gearCategory.value)
-	showOverlay.value = !showOverlay.value
+	showAddOverlay.value = true
 }
 
-async function formSubmitted() {
-	console.log(newGear.value)
-	if (newGear.value) {
-		const result = await addGear(newGear.value)
-		if (result.success) {
-			newGear.value.id = result.payload.id
-			gears.value.push(newGear.value)
-			toggleOverlay("grinder")
-		}
+async function handleAddSubmit() {
+	if (!newGear.value) return
+	const result = await addGear(newGear.value)
+	if (result.success) {
+		newGear.value.id = result.payload.id
+		gears.value.push({ ...newGear.value })
+		showAddOverlay.value = false
 	}
 }
 
-// toggles the screen for when the removal overlay is seen
-function toggleRemovalOverlay(id: number) {
-	removalId.value = id
-	showRemovalOverlay.value = !showRemovalOverlay.value
+//  Edit handlers
+function openEditOverlay(gear: Gear) {
+	editError.value = null
+	editForm.value = { ...gear }
+	showEditOverlay.value = true
 }
 
-// sets up removal overlay screen
-function getRemovalMenu(id: number, name: string) {
-	removalName.value = name
-	toggleRemovalOverlay(id)
-}
-
-// receives when the overlay screen is submitted
-async function submitRemovalMenu(isRemoving: boolean, id: number) {
-	if (isRemoving) {
-		await removeSelectedGear(id)
+async function handleEditSubmit() {
+	editError.value = null
+	const result = await editGear(editForm.value)
+	if (result.success) {
+		const idx = gears.value.findIndex((g) => g.id === editForm.value.id)
+		if (idx !== -1) gears.value[idx] = { ...editForm.value }
+		showEditOverlay.value = false
+	} else {
+		editError.value = result.error
 	}
-	toggleRemovalOverlay(0)
 }
 
-// ran when the overlay screen is submitted
-// removes matching id
-async function removeSelectedGear(id: number) {
-	if (id > -1) {
-		const result = await removeGear(id)
-		if (result.success) {
-			gears.value = gears.value.filter(gear => gear.id !== id)
-			console.log("Removed gear")
-		}
+//  Delete handlers
+function requestDelete(id: number, name: string) {
+	deleteTargetId.value = id
+	deleteTargetName.value = name
+	showDeleteOverlay.value = true
+}
+
+function cancelDelete() {
+	showDeleteOverlay.value = false
+	deleteTargetId.value = 0
+	deleteTargetName.value = ''
+}
+
+async function confirmDelete() {
+	const id = deleteTargetId.value
+	cancelDelete()
+	const result = await removeGear(id)
+	if (result.success) {
+		gears.value = gears.value.filter((g) => g.id !== id)
 	}
 }
 </script>
 
 <template>
 	<div class="dashboard">
-		<div>
-			<small>Search</small>
-			<input type="search" v-model="searchBar">
+		<!-- Search -->
+		<div class="search-row">
+			<input type="search" v-model="searchBar" placeholder="Search gear…" />
 		</div>
-		<GearList v-for="gearType in uniqueGearTypes" :key="gearType" :type="gearType" :gears="getRelevantGear(gearType)"
-			:open-gear="openGear" :search="search" @change-open-gear="changeOpenGear" @create-new-gear="toggleOverlay" @remove-gear="getRemovalMenu"/>
+
+		<p v-if="error" class="error">{{ error }}</p>
+
+		<!-- Gear sections -->
+		<GearList
+			v-for="gearType in uniqueGearTypes"
+			:key="gearType"
+			:type="gearType"
+			:gears="getRelevantGear(gearType)"
+			:search="search"
+			@create-new-gear="openAddOverlay"
+			@remove-gear="requestDelete"
+			@edit-gear="openEditOverlay"
+		/>
 	</div>
 
-	<!--Submit overlay screen-->
-	<FullscreenOverlay @outside-clicked="toggleOverlay('grinder')" :is-visible="showOverlay">
-		<GearForm :gear-list="uniqueGearTypes" :selected-type="gearCategory" v-model="newGear" @form-submitted="formSubmitted"/>
+	<!-- Add overlay -->
+	<FullscreenOverlay :is-visible="showAddOverlay" @outside-clicked="showAddOverlay = false">
+		<div class="overlay-form dashboard">
+			<GearForm
+				:gear-list="uniqueGearTypes"
+				:selected-type="gearCategory"
+				v-model="newGear"
+				@form-submitted="handleAddSubmit"
+			/>
+		</div>
 	</FullscreenOverlay>
 
-	<!--Removal overlay screen-->
-	<FullscreenOverlay @outside-clicked="toggleRemovalOverlay(0)" :is-visible="showRemovalOverlay">
-		<GearRemovalForm :name="removalName" :id="removalId" @button-pressed="submitRemovalMenu"/>
+	<!-- Edit overlay -->
+	<FullscreenOverlay :is-visible="showEditOverlay" @outside-clicked="showEditOverlay = false">
+		<div class="overlay-form dashboard">
+			<p v-if="editError" class="error">{{ editError }}</p>
+			<GearForm
+				:gear-list="uniqueGearTypes"
+				:selected-type="editForm.type"
+				v-model="editForm"
+				:submit-label="'Save Changes'"
+				@form-submitted="handleEditSubmit"
+			/>
+		</div>
+	</FullscreenOverlay>
+
+	<!-- Delete confirmation overlay -->
+	<FullscreenOverlay :is-visible="showDeleteOverlay" @outside-clicked="cancelDelete">
+		<span class="delete-title">Delete "{{ deleteTargetName }}"?</span>
+		<p class="delete-warning">This will permanently remove the gear item.</p>
+		<div class="delete-actions">
+			<button class="glass delete-confirm" @click="confirmDelete">Delete</button>
+			<button class="glass contrast" @click="cancelDelete">Cancel</button>
+		</div>
 	</FullscreenOverlay>
 </template>
 
@@ -146,18 +175,53 @@ async function removeSelectedGear(id: number) {
 	grid-template-columns: repeat(4, 1fr);
 	margin-left: 24px;
 	margin-right: 24px;
-
 	overflow: visible;
 }
 
-div {
+.search-row {
 	grid-column: span 4;
 }
 
-.stack {
+.search-row input {
+	margin: 0;
+}
+
+.error {
+	grid-column: span 4;
+	color: var(--red-500);
+	font-size: 0.85rem;
+}
+
+/* Overlay form */
+.overlay-form {
+	margin: 0;
+	width: 100%;
+}
+
+/* Delete overlay */
+.delete-title {
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+.delete-warning {
+	font-size: 0.85rem;
+	opacity: 0.6;
+	margin: 6px 0 16px;
+}
+
+.delete-actions {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
+	gap: 10px;
+}
+
+.delete-actions button {
+	flex: 1;
+}
+
+.delete-confirm {
+	background-color: oklch(from var(--red-600) l c h / 0.85);
+	border-color: oklch(from var(--red-400) l c h / 0.5);
+	color: #fff;
 }
 </style>

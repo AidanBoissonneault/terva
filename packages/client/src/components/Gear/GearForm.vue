@@ -5,6 +5,7 @@ import { watch, ref } from 'vue'
 const props = defineProps<{
 	gearList: GearCategory[]
 	selectedType: GearCategory
+	submitLabel?: string
 }>()
 
 const modelValue = defineModel<Gear>({
@@ -61,11 +62,11 @@ function clone(obj: Gear) {
 			Name
 			<input type="text" placeholder="Hario V60 02" v-model="form.name" maxlength="99">
 		</label>
-		<label>
+		<label class="large">
 			Notes
 			<textarea placeholder="Additional Notes" v-model="form.notes" maxlength="100"></textarea>
 		</label>
-		<button type="submit" :disabled="! !!form.name?.trim()" class="big-text glass">Add Gear</button>
+		<button type="submit" :disabled="! !!form.name?.trim()" class="big-text glass">{{ props.submitLabel ?? 'Add Gear' }}</button>
 	</form>
 </template>
 

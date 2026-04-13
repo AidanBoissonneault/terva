@@ -18,6 +18,7 @@ import editRecipe from './recipe/editRecipe.js'
 import removeRecipe from './recipe/removeRecipe.js'
 import addGear from './gear/addGear.js'
 import removeGear from './gear/removeGear.js'
+import editGear from './gear/editGear.js'
 import getBrews from './brews/getBrews.js'
 import getRecentBrews from './brews/getRecentBrews.js'
 import addBrew from './brews/addBrew.js'
@@ -62,7 +63,7 @@ app.use(
 	}),
 )
 
-//  Rate limiters
+// Rate limiters
 
 // Auth limiter — 20 attempts per 15 minutes
 const authLimiter = rateLimit({
@@ -134,7 +135,7 @@ app.use(express.json())
 // App routes
 
 app.use('/api/bean', addBean, editBean, getBeans, removeBean)
-app.use('/api/gear', addGear, getGear, removeGear)
+app.use('/api/gear', addGear, editGear, getGear, removeGear)
 app.use('/api/profile', getProfile, removeProfile)
 app.use('/api/brew', addBrew, getBrews)
 app.use('/api/getrecentbrews', getRecentBrews)

@@ -28,7 +28,7 @@ function totalDuration(recipe: Recipe): string {
 </script>
 
 <template>
-	<article class="recipe-card" :class="{ expanded }">
+	<article class="terva-card recipe-card" :class="{ expanded }">
 		<div class="recipe-header apart" @click="expanded = !expanded">
 			<div class="recipe-meta">
 				<strong class="recipe-name">{{ recipe.name }}</strong>
@@ -70,17 +70,7 @@ function totalDuration(recipe: Recipe): string {
 
 <style scoped>
 .recipe-card {
-	grid-column: span 4;
-	padding: 14px 16px;
-	border-radius: var(--pico-border-radius);
-	background-color: oklch(from var(--terva-app-bar) l c h / 0.3);
-	border: 1px solid oklch(from var(--terva-app-bar-border) l c h / 0.18);
 	cursor: pointer;
-	transition: border-color 0.15s ease;
-}
-
-.recipe-card.expanded {
-	border-color: oklch(from var(--pico-primary) l c h / 0.35);
 }
 
 .recipe-header {

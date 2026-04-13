@@ -94,3 +94,20 @@ button.big-text {
 
 	overflow: visible;
 }
+
+/* -----------------------------------------
+--  Terva Card  (shared card shell)
+-- ----------------------------------------- */
+
+.terva-card {
+	grid-column: span 4;
+	padding: 14px 16px;
+	border-radius: var(--pico-border-radius);
+	background-color: oklch(from var(--terva-app-bar) l c h / 0.3);
+	border: 1px solid oklch(from var(--terva-app-bar-border) l c h / 0.18);
+	transition: border-color 0.15s ease;
+}
+
+.terva-card.expanded {
+	border-color: oklch(from var(--pico-primary) l c h / 0.35);
+}
