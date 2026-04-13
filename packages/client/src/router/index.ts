@@ -23,6 +23,7 @@ const router = createRouter({
 		{ path: '/recipe', name: 'recipe', component: () => import('@/views/UserRecipes.vue'), meta: { requiresAuth: true } },
 		{ path: '/recipe/add', name: 'addrecipe', component: () => import('@/views/UserAddRecipe.vue'), meta: { requiresAuth: true } },
 		{ path: '/brew/start', name: 'startbrew', component: () => import('@/views/StartBrew.vue'), meta: { requiresAuth: true } },
+		{ path: '/brew/with', name: 'brewwith', component: () => import('@/views/BrewWith.vue'), meta: { requiresAuth: true } },
 		{ path: '/brew/end', name: 'endbrew', component: () => import('@/views/EndBrew.vue'), meta: { requiresAuth: true } },
 
 

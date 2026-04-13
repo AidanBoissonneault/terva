@@ -22,8 +22,8 @@ const appStore = useAppStore()
 // used to manually refresh the router view
 const { refreshKey } = storeToRefs(appStore)
 
-const ignoredAppBarPages = ['startbrew', 'endbrew']
-const ignoreNavBarPages = ['login', 'register', 'cookies', 'terms', 'privacy']
+const ignoredAppBarPages = ['startbrew', 'brewwith', 'endbrew']
+const ignoreNavBarPages = ['login', 'register', 'cookies', 'terms', 'privacy', 'brewwith']
 const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name as string))
 

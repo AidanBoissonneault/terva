@@ -10,10 +10,10 @@ const emits = defineEmits<{
 	brewSelected: [void]
 }>()
 
-const shortenedText = ref()
+const shortenedText = ref('')
 onMounted(() => {
 	const texts = props.text.split(' ')
-	shortenedText.value = texts[0]?.trim()
+	shortenedText.value = texts[0]?.trim() ?? ''
 })
 </script>
 

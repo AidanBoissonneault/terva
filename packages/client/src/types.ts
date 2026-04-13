@@ -1,5 +1,5 @@
 // -----------------------------------------
-//  Tab Bar Button
+// Tab Bar Button
 // -----------------------------------------
 export interface TabButton {
 	icon: string
@@ -8,7 +8,7 @@ export interface TabButton {
 }
 
 // -----------------------------------------
-//  Tab Link
+// Tab Link
 // -----------------------------------------
 
 export interface TabLinkType {

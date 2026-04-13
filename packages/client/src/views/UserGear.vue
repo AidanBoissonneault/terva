@@ -51,7 +51,7 @@ onMounted(async () => {
 	}
 })
 
-//  Add handlers
+// Add handlers
 function openAddOverlay(gearType: GearCategory) {
 	gearCategory.value = gearType
 	showAddOverlay.value = true
@@ -67,7 +67,7 @@ async function handleAddSubmit() {
 	}
 }
 
-//  Edit handlers
+// Edit handlers
 function openEditOverlay(gear: Gear) {
 	editError.value = null
 	editForm.value = { ...gear }
@@ -86,7 +86,7 @@ async function handleEditSubmit() {
 	}
 }
 
-//  Delete handlers
+// Delete handlers
 function requestDelete(id: number, name: string) {
 	deleteTargetId.value = id
 	deleteTargetName.value = name

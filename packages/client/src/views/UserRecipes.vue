@@ -18,12 +18,12 @@ const error = ref<string | null>(null)
 const searchBar = ref('')
 const search = computed(() => searchBar.value.trim().toLowerCase())
 
-//  Delete
+// Delete
 const showDeleteOverlay = ref(false)
 const deleteTargetId = ref(0)
 const deleteTargetName = ref('')
 
-//  Edit
+// Edit
 const showEditOverlay = ref(false)
 const editForm = ref<AddRecipeForm & { id: number }>({
 	id: 0,
@@ -33,7 +33,7 @@ const editForm = ref<AddRecipeForm & { id: number }>({
 })
 const editError = ref<string | null>(null)
 
-//  Filtered list
+// Filtered list
 const filteredRecipes = computed(() => {
 	if (!search.value) return recipes.value
 	return recipes.value.filter(
@@ -58,7 +58,7 @@ onMounted(async () => {
 	}
 })
 
-//  Delete handlers
+// Delete handlers
 function requestDelete(id: number, name: string) {
 	deleteTargetId.value = id
 	deleteTargetName.value = name
@@ -82,7 +82,7 @@ async function confirmDelete() {
 	}
 }
 
-//  Edit handlers
+// Edit handlers
 function requestEdit(recipe: Recipe) {
 	editError.value = null
 	editForm.value = {

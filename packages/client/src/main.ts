@@ -29,6 +29,8 @@ import {
 	faCopy,
 	faTrash,
 	faUser,
+	faFlagCheckered,
+	faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import {
 	faHouse as faHouseRegular,
@@ -58,6 +60,8 @@ library.add(
 	faCopy,
 	faTrash,
 	faUser,
+	faArrowLeft,
+	faFlagCheckered,
 )
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 
