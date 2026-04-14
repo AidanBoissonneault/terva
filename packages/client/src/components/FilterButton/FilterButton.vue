@@ -1,20 +1,24 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="T">
 import { computed } from 'vue';
 
 const props = defineProps<{
-	type: string | null
-	activeFilter: string | null
+	type: T | null
+	activeFilter: T | null
 }>()
 
 const emit = defineEmits<{
-	filter: [type: string | null]
+	filter: [type: T | null]
 }>()
 
 const isActiveFilter = computed(() => props.type === props.activeFilter)
 </script>
 
 <template>
-	<button @click="emit('filter', type)" class="glass" :class="{ contrast: isActiveFilter, underline: isActiveFilter }">
+	<button
+		@click="emit('filter', type)"
+		class="glass"
+		:class="{ contrast: isActiveFilter, underline: isActiveFilter }"
+	>
 		<slot />
 	</button>
 </template>

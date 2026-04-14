@@ -3,7 +3,7 @@ User Dashboard
 Main screen of the app after login.
 
 CREATED: 17MAR2026
-LAST EDITED: 12APR2026
+LAST EDITED: 14APR2026
 By: Aidan Boisonneault
 -->
 
@@ -14,7 +14,7 @@ import HeroBeanCard from '@/components/BeanCard/HeroBeanCard.vue'
 import FilterButton from '@/components/FilterButton/FilterButton.vue'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import { useLoadingStore } from '@/stores/loading'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { type Bean, type BeanState, type Brew } from '@terva/shared'
 import { useRouter } from 'vue-router'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
@@ -33,7 +33,7 @@ const error = ref<string | null>(null)
 const recentHeroBrews = ref()
 
 // stores the currently active filter for the filter buttons
-const activeFilter = ref<string | null>(null)
+const activeFilter = ref<BeanState | null>(null)
 
 // stores all filter buttons.
 // name is displaced, type is for backend.
@@ -43,25 +43,86 @@ const filterButtons = reactive<{ name: string; type: BeanState | null }[]>([
 	{ name: 'Finished', type: 'finished' },
 	{ name: 'All', type: null },
 ])
+const visibleFilters = computed(() => filterButtons.filter((b) => b.type !== activeFilter.value))
 
-// calculates and maintains the filtered beans for when
-// the filter buttons are pressed.
-const filteredBeans = computed(() => {
-	if (!beans.value) return []
+// label shown in the h5 — driven by a separate ref so we can
+// animate it independently of the computed value
+const filterLabel = computed(
+	() => (filterButtons.find((b) => b.type === activeFilter.value)?.name ?? 'All') + ' Beans',
+)
 
-	if (!activeFilter.value) return beans.value
+// displayed label with crossfade animation
+const displayedLabel = ref('All Beans')
+const labelVisible = ref(true)
 
-	return beans.value.filter((bean: Bean) => String(bean.state) === String(activeFilter.value))
+watch(filterLabel, (newVal) => {
+	// fade out → swap text → fade in
+	labelVisible.value = false
+	setTimeout(() => {
+		displayedLabel.value = newVal
+		labelVisible.value = true
+	}, 120)
+})
+
+onMounted(() => {
+	displayedLabel.value = filterLabel.value
+})
+
+// groups beans into their respective categories
+const groupedBeans = computed(() => {
+	if (!beans.value) return { fresh: [], frozen: [], finished: [] }
+
+	return {
+		fresh: beans.value.filter((b: Bean) => b.state === 'fresh'),
+		frozen: beans.value.filter((b: Bean) => b.state === 'frozen'),
+		finished: beans.value.filter((b: Bean) => b.state === 'finished'),
+	}
 })
 
 // sets the current filter to a new filter.
 // if a button that is currently active is pressed again, remove filter
-function newFilter(type: string | null) {
+function newFilter(type: BeanState | null) {
 	if (activeFilter.value === type) {
 		activeFilter.value = null
 		return
 	}
 	activeFilter.value = type
+}
+
+// for animating section height smoothly (0 → auto)
+function onBeforeEnter(el: Element) {
+	const element = el as HTMLElement
+	element.style.height = '0'
+	element.style.opacity = '0'
+}
+
+function onEnter(el: Element) {
+	const element = el as HTMLElement
+	const height = element.scrollHeight
+
+	element.style.transition = 'height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.2s ease'
+	element.style.height = height + 'px'
+	element.style.opacity = '1'
+}
+
+function onAfterEnter(el: Element) {
+	const element = el as HTMLElement
+	element.style.height = 'auto'
+}
+
+function onBeforeLeave(el: Element) {
+	const element = el as HTMLElement
+	element.style.height = element.scrollHeight + 'px'
+}
+
+function onLeave(el: Element) {
+	const element = el as HTMLElement
+
+	void element.offsetHeight
+
+	element.style.transition = 'height 0.2s ease, opacity 0.15s ease'
+	element.style.height = '0'
+	element.style.opacity = '0'
 }
 
 // ran when the component is mounted to DOM
@@ -78,8 +139,17 @@ onMounted(async () => {
 			throw new Error(data.error)
 		}
 		// split payload
-		heroBean.value = data.payload[0] // most recent is hero bean
-		beans.value = data.payload.slice(1) // rest go to the regular beans
+		const allBeans: Bean[] = data.payload
+		const hero =
+			allBeans.find((b) => b.state === 'fresh') ||
+			allBeans.find((b) => b.state === 'frozen') ||
+			allBeans.find((b) => b.state === 'finished') ||
+			null
+
+		heroBean.value = hero
+
+		// remove hero from list
+		beans.value = hero ? allBeans.filter((b) => b.id !== hero.id) : allBeans
 
 		// get recent brew data for hero bean
 		if (heroBean.value) {
@@ -122,6 +192,7 @@ function quickAccessBrew(brew: Brew) {
 	<div class="dashboard">
 		<div v-if="error">{{ error }}</div>
 
+		<!--Hero bean section-->
 		<template v-else-if="heroBean">
 			<HeroBeanCard
 				:bean="heroBean"
@@ -130,11 +201,17 @@ function quickAccessBrew(brew: Brew) {
 				@brew-selected="quickAccessBrew"
 			/>
 			<SectionSeperator />
+
+			<!--filter section-->
 			<div class="filter-wrapper">
-				<h5>Beans</h5>
-				<div class="filter-buttons">
+				<h5>
+					<span class="filter-label" :class="{ visible: labelVisible }">
+						{{ displayedLabel }}
+					</span>
+				</h5>
+				<TransitionGroup name="filter" tag="div" class="filter-buttons">
 					<FilterButton
-						v-for="filter in filterButtons"
+						v-for="filter in visibleFilters"
 						@filter="newFilter"
 						:key="filter.name"
 						:type="filter.type"
@@ -142,14 +219,89 @@ function quickAccessBrew(brew: Brew) {
 					>
 						{{ filter.name }}
 					</FilterButton>
-				</div>
+				</TransitionGroup>
 			</div>
-			<BeanCard
-				v-for="bean in filteredBeans"
-				:key="bean.id"
-				:bean="bean"
-				@clicked="routeToBeanInfo"
-			/>
+
+			<!--bean cards-->
+
+			<!--all beans (grouped)-->
+			<template v-if="!activeFilter">
+				<Transition
+					@before-enter="onBeforeEnter"
+					@enter="onEnter"
+					@after-enter="onAfterEnter"
+					@before-leave="onBeforeLeave"
+					@leave="onLeave"
+				>
+					<div class="bean-section" v-if="groupedBeans.fresh.length">
+						<h6 class="section-title">Fresh</h6>
+						<TransitionGroup name="beans" tag="div" class="bean-grid">
+							<BeanCard
+								v-for="(bean, i) in groupedBeans.fresh"
+								:key="bean.id"
+								:bean="bean"
+								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+								@clicked="routeToBeanInfo"
+							/>
+						</TransitionGroup>
+					</div>
+				</Transition>
+
+				<Transition
+					@before-enter="onBeforeEnter"
+					@enter="onEnter"
+					@after-enter="onAfterEnter"
+					@before-leave="onBeforeLeave"
+					@leave="onLeave"
+				>
+					<div class="bean-section" v-if="groupedBeans.frozen.length">
+						<h6 class="section-title">Frozen</h6>
+						<TransitionGroup name="beans" tag="div" class="bean-grid">
+							<BeanCard
+								v-for="(bean, i) in groupedBeans.frozen"
+								:key="bean.id"
+								:bean="bean"
+								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+								@clicked="routeToBeanInfo"
+							/>
+						</TransitionGroup>
+					</div>
+				</Transition>
+
+				<Transition
+					@before-enter="onBeforeEnter"
+					@enter="onEnter"
+					@after-enter="onAfterEnter"
+					@before-leave="onBeforeLeave"
+					@leave="onLeave"
+				>
+					<div class="bean-section" v-if="groupedBeans.finished.length">
+						<h6 class="section-title">Finished</h6>
+						<TransitionGroup name="beans" tag="div" class="bean-grid">
+							<BeanCard
+								v-for="(bean, i) in groupedBeans.finished"
+								:key="bean.id"
+								:bean="bean"
+								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+								@clicked="routeToBeanInfo"
+							/>
+						</TransitionGroup>
+					</div>
+				</Transition>
+			</template>
+
+			<!--filtered beans (flat, no title)-->
+			<template v-else>
+				<TransitionGroup name="beans" tag="div" class="bean-grid full-width">
+					<BeanCard
+						v-for="(bean, i) in groupedBeans[activeFilter]"
+						:key="bean.id"
+						:bean="bean"
+						:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+						@clicked="routeToBeanInfo"
+					/>
+				</TransitionGroup>
+			</template>
 		</template>
 	</div>
 </template>
@@ -186,5 +338,107 @@ h5 {
 	line-height: 1;
 
 	color: var(--brand-200);
+}
+
+.filter-label {
+	display: inline-block;
+	opacity: 0;
+	transform: translateY(4px);
+	transition:
+		opacity 0.15s ease,
+		transform 0.15s ease;
+}
+
+.filter-label.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* entering */
+.filter-enter-from {
+	opacity: 0;
+	transform: translateY(-6px);
+}
+.filter-enter-to {
+	opacity: 1;
+	transform: translateY(0);
+}
+.filter-enter-active {
+	transition: all 0.5s ease;
+}
+
+/* leaving */
+.filter-leave-from {
+	opacity: 1;
+	transform: translateY(0);
+}
+.filter-leave-to {
+	opacity: 0;
+	transform: translateY(6px);
+}
+.filter-leave-active {
+	transition: all 0.25s ease;
+	position: absolute;
+}
+
+/* moving */
+.filter-move {
+	transition: transform 0.25s ease;
+}
+
+.bean-section {
+	grid-column: 1 / 5;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	overflow: hidden;
+}
+
+.section-title {
+	margin: 0;
+	margin-left: 4px;
+	font-size: 0.85rem;
+	color: var(--brand-300);
+	opacity: 0.8;
+}
+
+.bean-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 16px;
+}
+
+.bean-grid.full-width {
+	grid-column: 1 / 5;
+}
+
+/* staggered animation */
+.beans-enter-from {
+	opacity: 0;
+	transform: translateY(12px) scale(0.96);
+}
+.beans-enter-to {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+.beans-enter-active {
+	transition: all 0.35s ease;
+}
+
+.beans-leave-from {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+.beans-leave-to {
+	opacity: 0;
+	transform: translateY(12px) scale(0.96);
+}
+.beans-leave-active {
+	transition: all 0.2s ease;
+	position: absolute;
+}
+
+.beans-move {
+	transition: transform 0.25s ease;
 }
 </style>

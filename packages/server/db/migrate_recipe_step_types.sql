@@ -1,15 +1,14 @@
 -- Migration: Recipe step types + default dose
--- Run this once against your existing terva database.
 -- Safe to run on a live DB — uses ALTER TABLE and UPDATE only.
 -- CREATED: 13APR2026
 
 USE terva;
 
--- ── 1. Add default_dose_g to recipes ──────────────────────────────────────────
+--  1. Add default_dose_g to recipes 
 ALTER TABLE recipes
   ADD COLUMN default_dose_g FLOAT NOT NULL DEFAULT 0;
 
--- ── 2. Add new columns to recipe_steps ───────────────────────────────────────
+--  2. Add new columns to recipe_steps 
 ALTER TABLE recipe_steps
   ADD COLUMN type ENUM(
     'setup','grind','preheat','bloom','pour','agitate','drawdown','wait'
@@ -18,7 +17,7 @@ ALTER TABLE recipe_steps
   MODIFY COLUMN action VARCHAR(100) NULL,
   MODIFY COLUMN duration_seconds INT NULL;
 
--- ── 3. Best-guess type from existing action text ──────────────────────────────
+--  3. Best-guess type from existing action text 
 
 UPDATE recipe_steps SET type = 'pour'
 WHERE LOWER(action) REGEXP 'pour|add water|fill|water';

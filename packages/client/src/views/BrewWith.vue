@@ -21,11 +21,11 @@ import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 
 const router = useRouter()
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// Data
 const recipe = ref<Recipe | null>(null)
 const error = ref<string | null>(null)
 
-// ── Step state ────────────────────────────────────────────────────────────────
+// Step state
 const currentStepIndex = ref(0)
 const stepElapsed = ref(0)
 const totalElapsed = ref(0)
@@ -35,10 +35,10 @@ let totalTimer: ReturnType<typeof setInterval> | null = null
 const isRunning = ref(false)
 const isComplete = ref(false)
 
-// ── Overlay ───────────────────────────────────────────────────────────────────
+// Overlay
 const showFinishOverlay = ref(false)
 
-// ── Step theme — driven by type, no keyword guessing ─────────────────────────
+// Step theme — driven by type, no keyword guessing
 interface StepTheme {
 	colour: string
 	isPour: boolean   // drives water-rise animation
@@ -68,7 +68,7 @@ const currentTheme = computed(() => themeForStep(currentStep.value))
 
 const isTapStep = computed(() => currentTheme.value.isTap)
 
-// ── Water level logic ─────────────────────────────────────────────────────────
+// Water level logic
 // Pour/bloom/preheat → rises 0→1 over step duration
 // Non-water step following a water step → drains 1→0 over step duration
 // Anything else → stays at 0
@@ -90,7 +90,7 @@ const waterColour = computed(() => {
 	return currentTheme.value.colour
 })
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 const TYPE_LABELS: Record<StepType, string> = {
 	setup: 'Setup', grind: 'Grind', preheat: 'Preheat',
 	bloom: 'Bloom', pour: 'Pour', agitate: 'Agitate',
@@ -134,7 +134,7 @@ const bgGradient = computed(() =>
 	`radial-gradient(ellipse at 50% 0%, oklch(from ${currentTheme.value.colour} l c h / 0.10), transparent 68%)`
 )
 
-// ── Timer controls ────────────────────────────────────────────────────────────
+// Timer controls
 function startTimers() {
 	// Tap steps don't run a step timer — only total elapsed keeps ticking
 	if (isRunning.value) return
@@ -180,7 +180,7 @@ function stepColour(i: number): string {
 	return step ? TYPE_THEMES[step.type].colour : 'var(--neutral-300)'
 }
 
-// ── Mount / unmount ───────────────────────────────────────────────────────────
+// Mount / unmount
 onMounted(async () => {
 	const loading = useLoadingStore()
 	loading.start()
@@ -206,7 +206,7 @@ onMounted(async () => {
 
 onBeforeUnmount(stopTimers)
 
-// ── Navigation ────────────────────────────────────────────────────────────────
+// Navigation
 function finishNow()   { showFinishOverlay.value = false; router.push({ name: 'endbrew' }) }
 function finishLater() { showFinishOverlay.value = false; router.push({ name: 'dashboard' }) }
 </script>
@@ -217,7 +217,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 	<div class="brew-layout">
 
-		<!-- ── AppBar-style header ─────────────────────────────────────────── -->
+		<!--  AppBar-style header  -->
 		<header class="brew-header">
 			<div class="header-top">
 				<div class="header-left">
@@ -248,7 +248,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 			</div>
 		</header>
 
-		<!-- ── Main content ───────────────────────────────────────────────── -->
+		<!--  Main content  -->
 		<main class="brew-main">
 
 			<!-- Error -->
@@ -377,7 +377,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 			</template>
 		</main>
 
-		<!-- ── TabBar-style footer action ─────────────────────────────────── -->
+		<!--  TabBar-style footer action  -->
 		<footer class="brew-footer" v-if="!isComplete">
 			<button class="finish-btn" @click="showFinishOverlay = true">
 				<FontAwesomeIcon :icon="['fas', 'flag-checkered']" class="finish-icon" />
@@ -406,7 +406,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 </template>
 
 <style scoped>
-/* ── Layout ──────────────────────────────────────────────────────────────────── */
+/*  Layout  */
 
 .brew-bg {
 	position: fixed;
@@ -425,7 +425,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	box-sizing: border-box;
 }
 
-/* ── Header — mirrors AppBar ─────────────────────────────────────────────────── */
+/*  Header — mirrors AppBar  */
 
 .brew-header {
 	position: fixed;
@@ -519,7 +519,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 .back-btn:hover { color: var(--pico-primary); }
 .back-btn:active { transform: scale(0.9); }
 
-/* ── Main ────────────────────────────────────────────────────────────────────── */
+/*  Main  */
 
 .brew-main {
 	margin-top: 100px;
@@ -536,7 +536,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	gap: 12px;
 }
 
-/* ── Step card ───────────────────────────────────────────────────────────────── */
+/*  Step card  */
 
 .step-card {
 	display: flex;
@@ -586,7 +586,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	color: var(--pico-primary);
 }
 
-/* ── Ring — centred ──────────────────────────────────────────────────────────── */
+/*  Ring — centred  */
 
 .ring-outer {
 	width: 100%;
@@ -632,7 +632,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	justify-content: center;
 }
 
-/* ── Water fill ──────────────────────────────────────────────────────────────── */
+/*  Water fill  */
 
 .water-body {
 	position: absolute;
@@ -681,7 +681,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	text-shadow: 0 1px 6px oklch(from var(--pico-background-color) l c h / 0.7);
 }
 
-/* ── Tap-to-advance ──────────────────────────────────────────────────────────── */
+/*  Tap-to-advance  */
 
 .tap-ring {
 	position: absolute;
@@ -712,7 +712,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 .tap-label { font-size: 1.1rem; font-weight: 600; }
 .tap-arrow { font-size: 1.4rem; line-height: 1; }
 
-/* ── Step controls ───────────────────────────────────────────────────────────── */
+/*  Step controls  */
 
 .step-controls {
 	display: grid;
@@ -721,7 +721,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	width: 100%;
 }
 
-/* ── Complete ────────────────────────────────────────────────────────────────── */
+/*  Complete  */
 
 .complete-message {
 	display: flex;
@@ -731,7 +731,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	padding: 8px 0;
 }
 
-/* ── Steps list ──────────────────────────────────────────────────────────────── */
+/*  Steps list  */
 
 .steps-list {
 	display: flex;
@@ -769,7 +769,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 .step-row-dur { font-size: 0.8rem; }
 .muted { color: var(--pico-muted-color); }
 
-/* ── Footer — mirrors TabBar exactly ─────────────────────────────────────────── */
+/*  Footer — mirrors TabBar exactly  */
 
 .brew-footer {
 	position: fixed;
@@ -823,7 +823,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── Overlay confirm ─────────────────────────────────────────────────────────── */
+/*  Overlay confirm  */
 
 .confirm-content, strong {
 	display: flex;
