@@ -2,6 +2,7 @@
 Brew With View
 Shown during an active brew — displays recipe steps with a live timer,
 step-by-step progression, and a background that reacts to the current step.
+Setup and Grind steps are tap-to-advance (no timer).
 The header mirrors AppBar styling; the footer action mirrors TabBar styling.
 
 CREATED: 13APR2026
@@ -13,18 +14,18 @@ By: Aidan Boissonneault
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import { useLoadingStore } from '@/stores/loading'
 import { getBrewStartData } from '@/api/getStartBrewData'
-import { type Recipe, type RecipeStep } from '@terva/shared'
+import { type Recipe, type RecipeStep, type StepType } from '@terva/shared'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 
 const router = useRouter()
 
-// Data
+// ── Data ──────────────────────────────────────────────────────────────────────
 const recipe = ref<Recipe | null>(null)
 const error = ref<string | null>(null)
 
-// Step state
+// ── Step state ────────────────────────────────────────────────────────────────
 const currentStepIndex = ref(0)
 const stepElapsed = ref(0)
 const totalElapsed = ref(0)
@@ -34,75 +35,72 @@ let totalTimer: ReturnType<typeof setInterval> | null = null
 const isRunning = ref(false)
 const isComplete = ref(false)
 
-// Overlay
+// ── Overlay ───────────────────────────────────────────────────────────────────
 const showFinishOverlay = ref(false)
 
-// Step theme — keyed on action keywords
+// ── Step theme — driven by type, no keyword guessing ─────────────────────────
 interface StepTheme {
 	colour: string
-	isPour: boolean
+	isPour: boolean   // drives water-rise animation
+	isTap: boolean    // setup / grind — no timer, tap to advance
 }
 
-function themeForStep(step: RecipeStep | null, index: number): StepTheme {
-	if (!step) return { colour: 'var(--brand-400)', isPour: false }
-	const a = step.action.toLowerCase()
-
-	if (/pour|add water|water|fill|wet|rinse|wash/.test(a))
-		return { colour: 'oklch(0.64 0.15 210)', isPour: true }   // blue
-
-	if (/wait|rest|steep|bloom|soak|sit|pause/.test(a))
-		return { colour: 'oklch(0.68 0.14 135)', isPour: false }  // green
-
-	if (/stir|swirl|agitate|mix|shake/.test(a))
-		return { colour: 'oklch(0.68 0.14 55)',  isPour: false }  // amber
-
-	if (/grind|prep|weigh|heat|warm|preheat/.test(a))
-		return { colour: 'oklch(0.66 0.15 25)',  isPour: false }  // orange-red
-
-	const fallbacks = [
-		'oklch(0.68 0.13 75)',
-		'oklch(0.64 0.15 250)',
-		'oklch(0.70 0.16 135)',
-		'oklch(0.62 0.16 55)',
-	]
-	return { colour: fallbacks[index % fallbacks.length]!, isPour: false }
+const TYPE_THEMES: Record<StepType, Omit<StepTheme, 'isTap'>> = {
+	setup:    { colour: 'var(--neutral-400)',    isPour: false },
+	grind:    { colour: 'var(--brand-400)',       isPour: false },
+	preheat:  { colour: 'oklch(0.66 0.15 25)',   isPour: true  },
+	bloom:    { colour: 'oklch(0.68 0.14 135)',  isPour: true  },
+	pour:     { colour: 'oklch(0.64 0.15 210)',  isPour: true  },
+	agitate:  { colour: 'oklch(0.68 0.14 55)',   isPour: false },
+	drawdown: { colour: 'oklch(0.64 0.12 250)',  isPour: false },
+	wait:     { colour: 'oklch(0.68 0.14 135)',  isPour: false },
 }
 
-const currentTheme = computed(() => themeForStep(currentStep.value, currentStepIndex.value))
+const TAP_TYPES: StepType[] = ['setup', 'grind']
 
-// Water level logic
-// waterLevel: 0–1, drives the fill height inside the ring.
-// - Pour step → rises from 0 to 1 over the step duration
-// - Non-pour after a pour → drains from 1 to 0 over the step duration
-// - Non-pour after non-pour (or first step) → stays at 0
+function themeForStep(step: RecipeStep | null): StepTheme {
+	if (!step) return { colour: 'var(--brand-400)', isPour: false, isTap: false }
+	const base = TYPE_THEMES[step.type]
+	return { ...base, isTap: TAP_TYPES.includes(step.type) }
+}
+
+const currentTheme = computed(() => themeForStep(currentStep.value))
+
+const isTapStep = computed(() => currentTheme.value.isTap)
+
+// ── Water level logic ─────────────────────────────────────────────────────────
+// Pour/bloom/preheat → rises 0→1 over step duration
+// Non-water step following a water step → drains 1→0 over step duration
+// Anything else → stays at 0
 const waterLevel = computed(() => {
-	if (currentTheme.value.isPour) {
-		// Rising: 0 → 1
-		return stepProgress.value
-	}
+	if (currentTheme.value.isPour) return stepProgress.value
 	const prevStep = currentStepIndex.value > 0
-		? recipe.value?.steps[currentStepIndex.value - 1] ?? null
+		? (recipe.value?.steps[currentStepIndex.value - 1] ?? null)
 		: null
-	const prevTheme = themeForStep(prevStep, currentStepIndex.value - 1)
-	if (prevTheme.isPour) {
-		// Draining: 1 → 0
-		return 1 - stepProgress.value
-	}
+	if (prevStep && TYPE_THEMES[prevStep.type].isPour) return 1 - stepProgress.value
 	return 0
 })
 
-// Colour to use for water fill — follows the previous pour step's colour while draining
 const waterColour = computed(() => {
 	if (currentTheme.value.isPour) return currentTheme.value.colour
 	const prevStep = currentStepIndex.value > 0
-		? recipe.value?.steps[currentStepIndex.value - 1] ?? null
+		? (recipe.value?.steps[currentStepIndex.value - 1] ?? null)
 		: null
-	const prevTheme = themeForStep(prevStep, currentStepIndex.value - 1)
-	if (prevTheme.isPour) return prevTheme.colour
+	if (prevStep && TYPE_THEMES[prevStep.type].isPour) return TYPE_THEMES[prevStep.type].colour
 	return currentTheme.value.colour
 })
 
-// Helpers
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const TYPE_LABELS: Record<StepType, string> = {
+	setup: 'Setup', grind: 'Grind', preheat: 'Preheat',
+	bloom: 'Bloom', pour: 'Pour', agitate: 'Agitate',
+	drawdown: 'Drawdown', wait: 'Wait',
+}
+
+function stepDisplayName(step: RecipeStep): string {
+	return step.action?.trim() || TYPE_LABELS[step.type]
+}
+
 function formatTime(s: number): string {
 	if (s <= 0) return '0:00'
 	const m = Math.floor(s / 60)
@@ -116,12 +114,12 @@ const currentStep = computed<RecipeStep | null>(() =>
 const stepCount = computed(() => recipe.value?.steps.length ?? 0)
 
 const stepProgress = computed(() => {
-	if (!currentStep.value) return 1
+	if (!currentStep.value?.duration) return 0
 	return Math.min(stepElapsed.value / currentStep.value.duration, 1)
 })
 
 const totalDuration = computed(() =>
-	recipe.value?.steps.reduce((a, s) => a + s.duration, 0) ?? 0
+	recipe.value?.steps.reduce((a, s) => a + (s.duration ?? 0), 0) ?? 0
 )
 
 const overallProgress = computed(() =>
@@ -136,16 +134,21 @@ const bgGradient = computed(() =>
 	`radial-gradient(ellipse at 50% 0%, oklch(from ${currentTheme.value.colour} l c h / 0.10), transparent 68%)`
 )
 
-// Timer controls
+// ── Timer controls ────────────────────────────────────────────────────────────
 function startTimers() {
+	// Tap steps don't run a step timer — only total elapsed keeps ticking
 	if (isRunning.value) return
 	isRunning.value = true
-	stepTimer = setInterval(() => {
-		stepElapsed.value++
-		if (currentStep.value && stepElapsed.value >= currentStep.value.duration) {
-			advanceStep()
-		}
-	}, 1000)
+
+	if (!isTapStep.value) {
+		stepTimer = setInterval(() => {
+			stepElapsed.value++
+			if (currentStep.value?.duration && stepElapsed.value >= currentStep.value.duration) {
+				advanceStep()
+			}
+		}, 1000)
+	}
+
 	totalTimer = setInterval(() => { totalElapsed.value++ }, 1000)
 }
 
@@ -173,10 +176,11 @@ function skipStep() { stopTimers(); stepElapsed.value = 0; advanceStep() }
 function restartStep() { stopTimers(); stepElapsed.value = 0; startTimers() }
 
 function stepColour(i: number): string {
-	return themeForStep(recipe.value?.steps[i] ?? null, i).colour
+	const step = recipe.value?.steps[i]
+	return step ? TYPE_THEMES[step.type].colour : 'var(--neutral-300)'
 }
 
-// Mount / unmount
+// ── Mount / unmount ───────────────────────────────────────────────────────────
 onMounted(async () => {
 	const loading = useLoadingStore()
 	loading.start()
@@ -202,8 +206,8 @@ onMounted(async () => {
 
 onBeforeUnmount(stopTimers)
 
-// Navigation
-function finishNow() { showFinishOverlay.value = false; router.push({ name: 'endbrew' }) }
+// ── Navigation ────────────────────────────────────────────────────────────────
+function finishNow()   { showFinishOverlay.value = false; router.push({ name: 'endbrew' }) }
 function finishLater() { showFinishOverlay.value = false; router.push({ name: 'dashboard' }) }
 </script>
 
@@ -213,7 +217,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 	<div class="brew-layout">
 
-		<!--  AppBar-style header  -->
+		<!-- ── AppBar-style header ─────────────────────────────────────────── -->
 		<header class="brew-header">
 			<div class="header-top">
 				<div class="header-left">
@@ -232,7 +236,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 				</div>
 			</div>
 
-			<!-- Progress bar — inset at bottom edge of header pill -->
+			<!-- Progress bar — flush at bottom edge of header pill -->
 			<div class="header-progress-track">
 				<div
 					class="header-progress-fill"
@@ -244,7 +248,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 			</div>
 		</header>
 
-		<!--  Main content  -->
+		<!-- ── Main content ───────────────────────────────────────────────── -->
 		<main class="brew-main">
 
 			<!-- Error -->
@@ -261,63 +265,85 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 					<template v-if="!isComplete">
 						<!-- Step label -->
 						<div class="step-label">
-							<span
-								class="step-badge"
-								:style="{ background: currentTheme.colour }"
-							>Step {{ currentStepIndex + 1 }}</span>
-							<span class="step-action">{{ currentStep?.action }}</span>
+							<span class="step-badge" :style="{ background: currentTheme.colour }">
+								Step {{ currentStepIndex + 1 }}
+							</span>
+							<span class="step-action">{{ currentStep ? stepDisplayName(currentStep) : '' }}</span>
 						</div>
 
-						<!-- Ring timer — centred -->
+						<!-- Water weight indicator -->
+						<div class="step-water" v-if="currentStep?.waterG">
+							<small class="muted">Target: </small>
+							<span class="water-amount">{{ currentStep.waterG }}g</span>
+						</div>
+
+						<!-- Ring area — centred -->
 						<div class="ring-outer">
 							<div class="ring-wrap">
-								<svg class="ring" viewBox="0 0 120 120">
-									<circle class="ring-track" cx="60" cy="60" r="52" />
-									<circle
-										class="ring-progress"
-										cx="60" cy="60" r="52"
-										:stroke="currentTheme.colour"
-										:stroke-dashoffset="327 - stepProgress * 327"
-									/>
-								</svg>
 
-								<!-- Water fill inside ring -->
-								<div class="ring-inner">
-									<div class="water-body">
-										<div
-											class="water-fill"
-											:style="{
-												height: (waterLevel * 100) + '%',
-												background: `oklch(from ${waterColour} l c h / 0.22)`
-											}"
+								<!-- Timed step — countdown ring -->
+								<template v-if="!isTapStep">
+									<svg class="ring" viewBox="0 0 120 120">
+										<circle class="ring-track" cx="60" cy="60" r="52" />
+										<circle
+											class="ring-progress"
+											cx="60" cy="60" r="52"
+											:stroke="currentTheme.colour"
+											:stroke-dashoffset="327 - stepProgress * 327"
 										/>
-										<!-- Wave at the waterline, only when there is water -->
-										<div
-											v-if="waterLevel > 0.02"
-											class="wave-line"
-											:style="{
-												bottom: (waterLevel * 100) + '%',
-												background: `oklch(from ${waterColour} l c h / 0.45)`
-											}"
-										/>
-									</div>
+									</svg>
 
-									<div class="ring-label">
-										<div class="ring-time">{{ formatTime(stepRemaining) }}</div>
-										<small class="muted">remaining</small>
+									<!-- Water fill inside ring -->
+									<div class="ring-inner">
+										<div class="water-body">
+											<div
+												class="water-fill"
+												:style="{
+													height: (waterLevel * 100) + '%',
+													background: `oklch(from ${waterColour} l c h / 0.22)`
+												}"
+											/>
+											<div
+												v-if="waterLevel > 0.02"
+												class="wave-line"
+												:style="{
+													bottom: (waterLevel * 100) + '%',
+													background: `oklch(from ${waterColour} l c h / 0.45)`
+												}"
+											/>
+										</div>
+										<div class="ring-label">
+											<div class="ring-time">{{ formatTime(stepRemaining) }}</div>
+											<small class="muted">remaining</small>
+										</div>
 									</div>
-								</div>
+								</template>
+
+								<!-- Tap-to-advance step -->
+								<template v-else>
+									<div class="tap-ring">
+										<button
+											class="tap-advance-btn glass"
+											:style="{ borderColor: `oklch(from ${currentTheme.colour} l c h / 0.6)` }"
+											@click="advanceStep"
+										>
+											<span class="tap-label">Done</span>
+											<span class="tap-arrow">→</span>
+										</button>
+									</div>
+								</template>
+
 							</div>
 						</div>
 
-						<!-- Controls -->
-						<div class="step-controls">
+						<!-- Controls — only for timed steps -->
+						<div class="step-controls" v-if="!isTapStep">
 							<button class="glass secondary" @click="restartStep">↺ Restart</button>
 							<button class="glass" @click="skipStep">Skip →</button>
 						</div>
 					</template>
 
-					<!-- Complete -->
+					<!-- Complete state -->
 					<div v-else class="complete-message">
 						<p><strong>Brew complete!</strong></p>
 						<small class="muted">Total time: {{ formatTime(totalElapsed) }}</small>
@@ -341,15 +367,17 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 							class="step-dot"
 							:style="i <= currentStepIndex ? { background: stepColour(i) } : {}"
 						/>
-						<span class="step-row-action">{{ step.action }}</span>
-						<span class="step-row-dur muted">{{ formatTime(step.duration) }}</span>
+						<span class="step-row-action">{{ stepDisplayName(step) }}</span>
+						<span class="step-row-dur muted">
+							{{ step.duration ? formatTime(step.duration) : 'tap' }}
+						</span>
 					</div>
 				</div>
 
 			</template>
 		</main>
 
-		<!--  TabBar-style footer action  -->
+		<!-- ── TabBar-style footer action ─────────────────────────────────── -->
 		<footer class="brew-footer" v-if="!isComplete">
 			<button class="finish-btn" @click="showFinishOverlay = true">
 				<FontAwesomeIcon :icon="['fas', 'flag-checkered']" class="finish-icon" />
@@ -378,7 +406,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 </template>
 
 <style scoped>
-/*  Layout  */
+/* ── Layout ──────────────────────────────────────────────────────────────────── */
 
 .brew-bg {
 	position: fixed;
@@ -397,7 +425,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	box-sizing: border-box;
 }
 
-/*  Header — mirrors AppBar, with progress strip at bottom  */
+/* ── Header — mirrors AppBar ─────────────────────────────────────────────────── */
 
 .brew-header {
 	position: fixed;
@@ -418,8 +446,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	box-shadow:
 		0 8px 24px oklch(from var(--terva-shadow) l c h / 0.4),
 		inset 0 1px 0 oklch(from var(--terva-highlight) l c h / 0.4);
-
-	/* Clip the progress strip to the pill's border-radius */
 	overflow: hidden;
 }
 
@@ -431,7 +457,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	padding: 8px 20px;
 }
 
-/* Progress bar flush at the bottom of the header pill */
 .header-progress-track {
 	height: 3px;
 	width: 100%;
@@ -494,10 +519,9 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 .back-btn:hover { color: var(--pico-primary); }
 .back-btn:active { transform: scale(0.9); }
 
-/*  Main  */
+/* ── Main ────────────────────────────────────────────────────────────────────── */
 
 .brew-main {
-	/* header is ~76px tall including margin + progress strip */
 	margin-top: 100px;
 	padding: 16px 24px 100px;
 	display: flex;
@@ -512,7 +536,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	gap: 12px;
 }
 
-/*  Step card  */
+/* ── Step card ───────────────────────────────────────────────────────────────── */
 
 .step-card {
 	display: flex;
@@ -547,12 +571,22 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	flex-shrink: 0;
 }
 
-.step-action {
-	font-size: 1.05rem;
-	font-weight: 500;
+.step-action { font-size: 1.05rem; font-weight: 500; }
+
+.step-water {
+	display: flex;
+	align-items: baseline;
+	gap: 4px;
+	align-self: flex-start;
 }
 
-/*  Ring — centred  */
+.water-amount {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--pico-primary);
+}
+
+/* ── Ring — centred ──────────────────────────────────────────────────────────── */
 
 .ring-outer {
 	width: 100%;
@@ -588,7 +622,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	transition: stroke-dashoffset 1s linear, stroke 1.2s ease;
 }
 
-/* Inner circle of the ring */
 .ring-inner {
 	position: absolute;
 	inset: 18px;
@@ -599,7 +632,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	justify-content: center;
 }
 
-/*  Water fill  */
+/* ── Water fill ──────────────────────────────────────────────────────────────── */
 
 .water-body {
 	position: absolute;
@@ -613,28 +646,24 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	bottom: 0;
 	left: 0;
 	right: 0;
-	/* height driven by waterLevel computed — transitions smoothly */
 	transition: height 1s linear, background 1.2s ease;
 }
 
-/* Thin wave line at the top of the water */
 .wave-line {
 	position: absolute;
 	left: 0;
 	right: 0;
 	height: 3px;
 	border-radius: 2px;
-	/* bottom driven by waterLevel — same transition */
 	transition: bottom 1s linear, background 1.2s ease;
 	animation: wave-shimmer 2.5s ease-in-out infinite;
 }
 
 @keyframes wave-shimmer {
-	0%, 100% { opacity: 1; }
-	50%       { opacity: 0.7; }
+	0%, 100% { transform: scaleX(1) translateY(0); opacity: 1; }
+	50%       { transform: scaleX(0.96) translateY(-1px); opacity: 0.7; }
 }
 
-/* Ring label sits above the water */
 .ring-label {
 	position: relative;
 	z-index: 2;
@@ -652,7 +681,38 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	text-shadow: 0 1px 6px oklch(from var(--pico-background-color) l c h / 0.7);
 }
 
-/*  Step controls  */
+/* ── Tap-to-advance ──────────────────────────────────────────────────────────── */
+
+.tap-ring {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.tap-advance-btn {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	font-size: 1rem;
+	font-weight: 600;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tap-advance-btn:active {
+	transform: scale(0.93);
+}
+
+.tap-label { font-size: 1.1rem; font-weight: 600; }
+.tap-arrow { font-size: 1.4rem; line-height: 1; }
+
+/* ── Step controls ───────────────────────────────────────────────────────────── */
 
 .step-controls {
 	display: grid;
@@ -661,7 +721,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	width: 100%;
 }
 
-/*  Complete  */
+/* ── Complete ────────────────────────────────────────────────────────────────── */
 
 .complete-message {
 	display: flex;
@@ -671,7 +731,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	padding: 8px 0;
 }
 
-/*  Steps list  */
+/* ── Steps list ──────────────────────────────────────────────────────────────── */
 
 .steps-list {
 	display: flex;
@@ -707,10 +767,9 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 .step-row-action { flex: 1; font-size: 0.9rem; }
 .step-row-dur { font-size: 0.8rem; }
-
 .muted { color: var(--pico-muted-color); }
 
-/*  Footer — mirrors TabBar exactly  */
+/* ── Footer — mirrors TabBar exactly ─────────────────────────────────────────── */
 
 .brew-footer {
 	position: fixed;
@@ -755,7 +814,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 .finish-btn:hover { color: oklch(from var(--brand-400) l c h / 0.85); }
 .finish-btn:active { transform: scale(0.97); }
-
 .finish-btn.active { color: var(--brand-400); }
 .finish-btn.active .finish-icon { transform: scale(1.3); }
 
@@ -765,7 +823,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/*  Overlay confirm  */
+/* ── Overlay confirm ─────────────────────────────────────────────────────────── */
 
 .confirm-content, strong {
 	display: flex;

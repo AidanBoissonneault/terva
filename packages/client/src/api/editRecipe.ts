@@ -1,7 +1,7 @@
 // Edit recipe API
-// Sends updated recipe name, brew method and steps to the server.
+// Sends updated recipe name, brew method, default dose and steps to the server.
 // CREATED: 12APR2026
-// LAST EDITED: 12APR2026
+// LAST EDITED: 13APR2026
 // By: Aidan Boissonneault
 
 import axios from 'axios'
@@ -15,19 +15,14 @@ export interface EditRecipeForm extends AddRecipeForm {
 export const editRecipe = async (recipe: EditRecipeForm): Promise<CheckedJSON<{ success: true }>> => {
 	try {
 		const { data } = await axios.put('/api/recipe', {
-			id: recipe.id,
-			name: recipe.name,
-			brewMethod: recipe.brewMethod,
-			steps: recipe.steps,
+			id:           recipe.id,
+			name:         recipe.name,
+			brewMethod:   recipe.brewMethod,
+			defaultDoseG: recipe.defaultDoseG,
+			steps:        recipe.steps,
 		})
-		return {
-			success: true,
-			payload: data as { success: true },
-		}
+		return { success: true, payload: data as { success: true } }
 	} catch (err) {
-		return {
-			success: false,
-			error: err instanceof Error ? err.message : 'Unknown error',
-		}
+		return { success: false, error: err instanceof Error ? err.message : 'Unknown error' }
 	}
 }

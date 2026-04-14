@@ -10,11 +10,11 @@ By: Aidan Boissonneault
 -->
 
 <script setup lang="ts">
-import type { Brew, Gear, Recipe } from '@terva/shared';
+import type { Brew, Gear, Recipe } from '@terva/shared'
 import { watch, ref } from 'vue'
-import BrewDataBar from './BrewDataBar.vue';
-import RecipeStepsChart from './RecipeStepsChart.vue';
-import SectionSeperator from '../Utils/SectionSeperator.vue';
+import BrewDataBar from './BrewDataBar.vue'
+import RecipeStepsChart from './RecipeStepsChart.vue'
+import SectionSeperator from '../Utils/SectionSeperator.vue'
 
 const modelValue = defineModel<Brew>({
 	default: {
@@ -26,7 +26,7 @@ const modelValue = defineModel<Brew>({
 		brewerId: 0,
 		closeness: 'success',
 		status: 'in_progress',
-	}
+	},
 })
 
 const emits = defineEmits<{
@@ -52,56 +52,100 @@ function handleSubmit() {
 }
 
 // reset form when prop changes
-watch(modelValue, (newVal) => {
-	if (JSON.stringify(newVal) !== JSON.stringify(form.value)) {
-		form.value = clone(newVal)
-	}
-}, { deep: true })
+watch(
+	modelValue,
+	(newVal) => {
+		if (JSON.stringify(newVal) !== JSON.stringify(form.value)) {
+			form.value = clone(newVal)
+		}
+	},
+	{ deep: true },
+)
 
 function clone(obj: Brew) {
 	return JSON.parse(JSON.stringify(obj))
 }
 
-watch(() => props.grinders, (newVal) => {
-	if (newVal?.length && form.value.grinderId === 0) {
-		form.value.grinderId = newVal[0]?.id
-	}
-}, { immediate: true })
+watch(
+	() => props.grinders,
+	(newVal) => {
+		if (newVal?.length && form.value.grinderId === 0) {
+			form.value.grinderId = newVal[0]?.id
+		}
+	},
+	{ immediate: true },
+)
 
-watch(() => props.recipes, (newVal) => {
-	if (newVal?.length && form.value.recipeId === 0) {
-		form.value.recipeId = newVal[0]?.id
-	}
-}, { immediate: true })
+watch(
+	() => props.recipes,
+	(newVal) => {
+		if (newVal?.length && form.value.recipeId === 0) {
+			form.value.recipeId = newVal[0]?.id
+		}
+	},
+	{ immediate: true },
+)
 
-watch(() => props.brewers, (newVal) => {
-	if (newVal?.length && form.value.brewerId === 0) {
-		form.value.brewerId = newVal[0]?.id
-	}
-}, { immediate: true })
+// Pre-populate dose from the selected recipe's defaultDoseG.
+// Updates whenever the recipe selection changes so switching recipes
+// always reflects the new recipe's default dose.
+watch(
+	() => form.value.recipeId,
+	(newId) => {
+		if (!newId) return
+		const recipe = props.recipes.find((r) => r.id === newId)
+		if (recipe?.defaultDoseG) {
+			form.value.doseG = recipe.defaultDoseG
+		}
+		if (recipe?.steps) {
+			form.value.yieldG = recipe.steps.reduce((acc, s) => acc + (s.waterG ?? 0), 0)
+		}
+	},
+	{ immediate: true },
+)
 
-watch(() => form.value.grinderId, (newVal) => {
-	if (newVal === -1) {
-		form.value.grindSize = 0
-	}
-})
+watch(
+	() => props.brewers,
+	(newVal) => {
+		if (newVal?.length && form.value.brewerId === 0) {
+			form.value.brewerId = newVal[0]?.id
+		}
+	},
+	{ immediate: true },
+)
+
+watch(
+	() => form.value.grinderId,
+	(newVal) => {
+		if (newVal === -1) {
+			form.value.grindSize = 0
+		}
+	},
+)
 </script>
 
 <template>
 	<form @submit.prevent="handleSubmit">
-
 		<!--Grinder-->
 		<div class="row grinder">
 			<label class="large">
 				<small>Grinder</small>
 				<select v-model="form.grinderId" required>
-					<option v-for="grinder in grinders" :key="grinder.name" :value="grinder.id">{{ grinder.name }}</option>
+					<option v-for="grinder in grinders" :key="grinder.name" :value="grinder.id">
+						{{ grinder.name }}
+					</option>
 					<option :value="null">Pre-ground</option>
 				</select>
 			</label>
 			<label class="small">
 				<small>Grind Size</small>
-				<input type="number" v-model="form.grindSize" min="0" max="999" :disabled="form.grinderId === null">
+				<input
+					type="number"
+					v-model="form.grindSize"
+					min="0"
+					max="999"
+					:disabled="form.grinderId === null"
+				/>
 			</label>
 		</div>
 
@@ -109,7 +153,9 @@ watch(() => form.value.grinderId, (newVal) => {
 		<label>
 			Brewer
 			<select v-model="form.brewerId" required>
-				<option v-for="brewer in brewers" :key="brewer.name" :value="brewer.id">{{ brewer.name }}</option>
+				<option v-for="brewer in brewers" :key="brewer.name" :value="brewer.id">
+					{{ brewer.name }}
+				</option>
 			</select>
 		</label>
 
@@ -118,17 +164,21 @@ watch(() => form.value.grinderId, (newVal) => {
 			<div @click.stop class="space-between">
 				<span>Recipe</span>
 				<div class="recipe-links">
-					<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps">{{ showRecipeSteps ? "Hide" : "Show" }} Steps</a>
+					<a href="#" @click.prevent="showRecipeSteps = !showRecipeSteps"
+						>{{ showRecipeSteps ? 'Hide' : 'Show' }} Steps</a
+					>
 				</div>
 			</div>
 			<select v-model="form.recipeId" required>
-				<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">{{ recipe.name }}</option>
+				<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">
+					{{ recipe.name }}
+				</option>
 			</select>
 		</label>
 
 		<Transition name="grow" mode="out-in">
 			<div v-if="showRecipeSteps && recipes.length" class="row card">
-				<RecipeStepsChart :recipe="recipes.find(r => r.id === form.recipeId) || recipes[0]!" />
+				<RecipeStepsChart :recipe="recipes.find((r) => r.id === form.recipeId) || recipes[0]!" />
 			</div>
 		</Transition>
 

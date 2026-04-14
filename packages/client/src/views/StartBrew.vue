@@ -4,7 +4,7 @@ Collects the brew parameters, saves to DB, then asks whether the user
 wants to brew with the recipe (→ BrewWith) or skip (→ finish now / later).
 
 CREATED: 27MAR2026
-LAST EDITED: 13APR2026
+LAST EDITED: 14APR2026
 By: Aidan Boissonneault
 -->
 
@@ -64,7 +64,6 @@ onMounted(async () => {
 	} finally {
 		const currentBrewStore = useBrewTransferStore()
 		const stored = currentBrewStore.get()
-		stored.status = 'in_progress'
 		if (stored) {
 			newBrew.value = stored
 			currentBrewStore.clear()
@@ -77,6 +76,8 @@ async function formSubmitted() {
 	if (!newBrew.value) return
 
 	newBrew.value.beanId = currentBean.value?.id ?? -1
+	newBrew.value.status = 'in_progress'
+	newBrew.value.closeness = 'close'
 
 	const result = await addBrew(newBrew.value)
 	if (result.success) newBrew.value.id = result.payload.id

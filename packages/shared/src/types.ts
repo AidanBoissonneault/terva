@@ -1,5 +1,5 @@
 // -----------------------------------------
-// Bean Type
+//  Bean Type
 // -----------------------------------------
 export interface Bean extends AddBeanForm {
 	id: number
@@ -9,13 +9,13 @@ export interface Bean extends AddBeanForm {
 }
 
 // -----------------------------------------
-// Bean State
+//  Bean State
 // -----------------------------------------
 
 export type BeanState = "fresh" | "frozen" | "finished"
 
 // -----------------------------------------
-// Bean Submit Form
+//  Bean Submit Form
 // -----------------------------------------
 export interface AddBeanForm {
 	name: string
@@ -30,7 +30,7 @@ export interface AddBeanForm {
 }
 
 // -----------------------------------------
-// API sending type
+//  API sending type
 // -----------------------------------------
 
 export type CheckedJSON<T> =
@@ -43,7 +43,7 @@ export type CheckedJSON<T> =
 	}
 
 // -----------------------------------------
-// Gear
+//  Gear
 // -----------------------------------------
 
 export interface Gear {
@@ -61,7 +61,7 @@ export type GearCategory =
 	| 'espresso_machine'
 
 // -----------------------------------------
-// Brew
+//  Brew
 // -----------------------------------------
 
 export interface Brew {
@@ -106,21 +106,34 @@ CREATE TABLE brews (
 
 
 // -----------------------------------------
-// Recipe
+//  Recipe
 // -----------------------------------------
+
+export type StepType =
+	| 'setup'
+	| 'grind'
+	| 'preheat'
+	| 'bloom'
+	| 'pour'
+	| 'agitate'
+	| 'drawdown'
+	| 'wait'
 
 export interface Recipe {
 	id: number
 	name: string
 	brewMethod: string
+	defaultDoseG: number | null
 	steps: RecipeStep[]
 }
 
 export interface RecipeStep {
 	id: number
 	stepOrder: number
-	action: string
-	duration: number
+	type: StepType
+	action?: string       // optional — falls back to type name if blank
+	duration?: number | null     // undefined for setup & grind (tap-to-advance)
+	waterG?: number | null       // only for bloom, pour, preheat
 }
 
 /**
@@ -145,7 +158,7 @@ CREATE TABLE recipe_steps (
 export type BrewWithRecipeName = Brew & Recipe
 
 // -----------------------------------------
-// User Profile
+//  User Profile
 // -----------------------------------------
 
 export interface UserProfile {

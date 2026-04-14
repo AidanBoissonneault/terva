@@ -63,12 +63,14 @@ function formatTime(s: number): string {
 	return m > 0 ? `${m}:${String(sec).padStart(2, '0')}` : `${sec}s`
 }
 
-function buildChartData(steps: RecipeStep[]) {
+function buildChartData(stepsRaw: RecipeStep[]) {
+	// setup & grind steps have no duration — exclude from the timeline chart
+	const steps = stepsRaw.filter(s => s.duration != null && s.duration > 0)
 	const starts: number[] = []
 	let cum = 0
 	for (const s of steps) {
 		starts.push(cum)
-		cum += s.duration
+		cum += s.duration ?? 0
 	}
 
 	const total = cum
@@ -87,7 +89,7 @@ function buildChartData(steps: RecipeStep[]) {
 		})
 		allDatasets.push({
 			label: step.action,
-			data: steps.map((_, j): number => (j === i ? step.duration : 0)),
+			data: steps.map((_, j): number => (j === i ? (step.duration ?? 0) : 0)),
 			backgroundColor: color,
 			borderColor: 'transparent',
 			borderRadius: 4,
@@ -164,7 +166,7 @@ onBeforeUnmount(() => chart?.destroy())
 watch(() => props.recipe, buildChart, { deep: true })
 
 const totalDuration = () =>
-	props.recipe.steps.reduce((a, s) => a + s.duration, 0)
+	props.recipe.steps.reduce((a, s) => a + (s.duration ?? 0), 0)
 </script>
 
 <template>

@@ -49,11 +49,12 @@ CREATE TABLE gear (
 -- -----------------------------------------
 
 CREATE TABLE recipes (
-  id           INT AUTO_INCREMENT PRIMARY KEY,
-  name         VARCHAR(100) NOT NULL,
-  brew_method  VARCHAR(100) NOT NULL,
-  user         VARCHAR(50) NOT NULL DEFAULT "1",
-  created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id              INT AUTO_INCREMENT PRIMARY KEY,
+  name            VARCHAR(100) NOT NULL,
+  brew_method     VARCHAR(100) NOT NULL,
+  default_dose_g  FLOAT NOT NULL DEFAULT 0,
+  user            VARCHAR(50) NOT NULL DEFAULT "1",
+  created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Ordered steps within a recipe
@@ -61,8 +62,10 @@ CREATE TABLE recipe_steps (
   id               INT AUTO_INCREMENT PRIMARY KEY,
   recipe_id        INT NOT NULL,
   step_order       TINYINT NOT NULL,
-  action           VARCHAR(100) NOT NULL,
-  duration_seconds INT,
+  type             ENUM('setup','grind','preheat','bloom','pour','agitate','drawdown','wait') NOT NULL DEFAULT 'wait',
+  action           VARCHAR(100),           -- optional label; NULL means display type name
+  duration_seconds INT,                    -- NULL for setup & grind (tap-to-advance)
+  water_g          FLOAT,                  -- only for bloom, pour, preheat
   FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
 

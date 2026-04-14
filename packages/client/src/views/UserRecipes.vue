@@ -18,22 +18,23 @@ const error = ref<string | null>(null)
 const searchBar = ref('')
 const search = computed(() => searchBar.value.trim().toLowerCase())
 
-// Delete
+//  Delete
 const showDeleteOverlay = ref(false)
 const deleteTargetId = ref(0)
 const deleteTargetName = ref('')
 
-// Edit
+//  Edit
 const showEditOverlay = ref(false)
 const editForm = ref<AddRecipeForm & { id: number }>({
 	id: 0,
 	name: '',
 	brewMethod: 'V60',
-	steps: [{ action: '', duration: 30 }],
+	defaultDoseG: 15,
+	steps: [{ type: 'pour', action: '', duration: 30, waterG: null }],
 })
 const editError = ref<string | null>(null)
 
-// Filtered list
+//  Filtered list
 const filteredRecipes = computed(() => {
 	if (!search.value) return recipes.value
 	return recipes.value.filter(
@@ -58,7 +59,7 @@ onMounted(async () => {
 	}
 })
 
-// Delete handlers
+//  Delete handlers
 function requestDelete(id: number, name: string) {
 	deleteTargetId.value = id
 	deleteTargetName.value = name
@@ -82,14 +83,20 @@ async function confirmDelete() {
 	}
 }
 
-// Edit handlers
+//  Edit handlers
 function requestEdit(recipe: Recipe) {
 	editError.value = null
 	editForm.value = {
-		id: recipe.id,
-		name: recipe.name,
-		brewMethod: recipe.brewMethod,
-		steps: recipe.steps.map((s) => ({ action: s.action, duration: s.duration })),
+		id:           recipe.id,
+		name:         recipe.name,
+		brewMethod:   recipe.brewMethod,
+		defaultDoseG: recipe.defaultDoseG ?? 0,
+		steps: recipe.steps.map((s) => ({
+			type:     s.type,
+			action:   s.action ?? '',
+			duration: s.duration ?? null,
+			waterG:   s.waterG ?? null,
+		})),
 	}
 	showEditOverlay.value = true
 }
@@ -102,14 +109,17 @@ async function handleEditSubmit() {
 		const idx = recipes.value.findIndex((r) => r.id === editForm.value.id)
 		if (idx !== -1) {
 			recipes.value[idx] = {
-				id: editForm.value.id,
-				name: editForm.value.name,
-				brewMethod: editForm.value.brewMethod,
+				id:           editForm.value.id,
+				name:         editForm.value.name,
+				brewMethod:   editForm.value.brewMethod,
+				defaultDoseG: editForm.value.defaultDoseG,
 				steps: editForm.value.steps.map((s, i) => ({
-					id: i,
+					id:        i,
 					stepOrder: i + 1,
-					action: s.action,
-					duration: s.duration,
+					type:      s.type,
+					action:    s.action ?? undefined,
+					duration:  s.duration ?? undefined,
+					waterG:    s.waterG ?? undefined,
 				})),
 			}
 		}
@@ -118,7 +128,6 @@ async function handleEditSubmit() {
 		editError.value = result.error
 	}
 }
-
 </script>
 
 <template>
@@ -184,59 +193,24 @@ async function handleEditSubmit() {
 	align-items: center;
 }
 
-.top-bar input {
-	flex: 1;
-	margin: 0;
-}
+.top-bar input { flex: 1; margin: 0; }
+.top-bar button { flex-shrink: 0; white-space: nowrap; }
 
-.top-bar button {
-	flex-shrink: 0;
-	white-space: nowrap;
-}
+.error { grid-column: span 4; color: var(--red-500); font-size: 0.85rem; }
 
-.error {
-	grid-column: span 4;
-	color: var(--red-500);
-	font-size: 0.85rem;
-}
+.empty-state { grid-column: span 4; text-align: center; opacity: 0.5; padding: 32px 0; }
 
-.empty-state {
-	grid-column: span 4;
-	text-align: center;
-	opacity: 0.5;
-	padding: 32px 0;
-}
+span { font-weight: 600; font-size: 1rem; }
 
-/* Delete overlay */
-span {
-	font-weight: 600;
-	font-size: 1rem;
-}
+.delete-warning { font-size: 0.85rem; opacity: 0.6; margin: 6px 0 16px; }
 
-.delete-warning {
-	font-size: 0.85rem;
-	opacity: 0.6;
-	margin: 6px 0 16px;
-}
-
-.delete-actions {
-	display: flex;
-	gap: 10px;
-}
-
-.delete-actions button {
-	flex: 1;
-}
-
+.delete-actions { display: flex; gap: 10px; }
+.delete-actions button { flex: 1; }
 .delete-actions button:first-child {
 	background-color: oklch(from var(--red-600) l c h / 0.85);
 	border-color: oklch(from var(--red-400) l c h / 0.5);
 	color: #fff;
 }
 
-/* Edit overlay */
-.edit-overlay-inner {
-	margin: 0;
-	width: 100%;
-}
+.edit-overlay-inner { margin: 0; width: 100%; }
 </style>

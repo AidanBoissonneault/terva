@@ -1,20 +1,23 @@
 // Edit recipe API route
-// Replaces a recipe's name, brew method, and steps.
+// Replaces a recipe's name, brew method, default dose, and steps.
 // Steps are deleted and re-inserted to keep ordering clean.
 // CREATED: 12APR2026
-// LAST EDITED: 12APR2026
+// LAST EDITED: 13APR2026
 // By: Aidan Boissonneault
 
 import { Router } from 'express'
 import connection from '../db/connection.js'
 import { requireAuth } from '../middleware/requireAuth.js'
 
+const TAP_TYPES   = ['setup', 'grind']
+const WATER_TYPES = ['bloom', 'pour', 'preheat']
+
 const router = Router()
 
 router.put('/', requireAuth, async (req, res) => {
 	try {
 		const userId = res.locals.user.id
-		const { id, name, brewMethod, steps } = req.body
+		const { id, name, brewMethod, defaultDoseG, steps } = req.body
 
 		if (!id || !name || !brewMethod) {
 			res.status(400).json({ error: 'id, name and brewMethod are required' })
@@ -30,10 +33,9 @@ router.put('/', requireAuth, async (req, res) => {
 		try {
 			await conn.beginTransaction()
 
-			// Verify ownership and update recipe row
 			const [result] = await conn.execute<any>(
-				'UPDATE recipes SET name = ?, brew_method = ? WHERE id = ? AND user = ?',
-				[name, brewMethod, id, userId]
+				'UPDATE recipes SET name = ?, brew_method = ?, default_dose_g = ? WHERE id = ? AND user = ?',
+				[name, brewMethod, defaultDoseG ?? 0, id, userId]
 			)
 
 			if (result.affectedRows === 0) {
@@ -42,13 +44,21 @@ router.put('/', requireAuth, async (req, res) => {
 				return
 			}
 
-			// Replace all steps
 			await conn.execute('DELETE FROM recipe_steps WHERE recipe_id = ?', [id])
 
 			for (const [i, step] of steps.entries()) {
+				const isTap    = TAP_TYPES.includes(step.type)
+				const hasWater = WATER_TYPES.includes(step.type)
+
+				const duration = isTap ? null : (step.duration ?? 30)
+				const waterG   = hasWater ? (step.waterG ?? null) : null
+				const action   = step.action?.trim() || null
+
 				await conn.execute(
-					'INSERT INTO recipe_steps (recipe_id, step_order, action, duration_seconds) VALUES (?, ?, ?, ?)',
-					[id, i + 1, step.action, step.duration ?? 0]
+					`INSERT INTO recipe_steps
+					  (recipe_id, step_order, type, action, duration_seconds, water_g)
+					  VALUES (?, ?, ?, ?, ?, ?)`,
+					[id, i + 1, step.type ?? 'wait', action, duration, waterG]
 				)
 			}
 

@@ -68,17 +68,21 @@ CREATE TABLE brews (
   FOREIGN KEY (grinder_id) REFERENCES gear(id)
 );
  */
+export type StepType = 'setup' | 'grind' | 'preheat' | 'bloom' | 'pour' | 'agitate' | 'drawdown' | 'wait';
 export interface Recipe {
     id: number;
     name: string;
     brewMethod: string;
+    defaultDoseG: number | null;
     steps: RecipeStep[];
 }
 export interface RecipeStep {
     id: number;
     stepOrder: number;
-    action: string;
-    duration: number;
+    type: StepType;
+    action?: string;
+    duration?: number | null;
+    waterG?: number | null;
 }
 /**
  * CREATE TABLE recipes (

@@ -9,18 +9,16 @@ const router = useRouter()
 const recipe = ref<AddRecipeForm>({
 	name: '',
 	brewMethod: 'V60',
-	steps: [{ action: '', duration: 30 }],
+	defaultDoseG: 15,
+	steps: [{ type: 'pour', action: '', duration: 30, waterG: undefined }],
 })
 
 const error = ref<string | null>(null)
 
 async function handleSubmit() {
 	if (!recipe.value) return
-
 	const result = await addRecipe(recipe.value)
-
 	if (result.success) {
-		//router.push({ name: 'recipes' })
 		router.push({ name: 'dashboard' })
 	} else {
 		error.value = result.error
@@ -44,7 +42,6 @@ async function handleSubmit() {
 	margin-right: 24px;
 	overflow: visible;
 }
-
 .error {
 	grid-column: span 4;
 	color: var(--red-400);
