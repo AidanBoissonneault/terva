@@ -41,19 +41,19 @@ const showFinishOverlay = ref(false)
 // Step theme — driven by type, no keyword guessing
 interface StepTheme {
 	colour: string
-	isPour: boolean   // drives water-rise animation
-	isTap: boolean    // setup / grind — no timer, tap to advance
+	isPour: boolean // drives water-rise animation
+	isTap: boolean // setup / grind — no timer, tap to advance
 }
 
 const TYPE_THEMES: Record<StepType, Omit<StepTheme, 'isTap'>> = {
-	setup:    { colour: 'var(--neutral-400)',    isPour: false },
-	grind:    { colour: 'var(--brand-400)',       isPour: false },
-	preheat:  { colour: 'oklch(0.66 0.15 25)',   isPour: true  },
-	bloom:    { colour: 'oklch(0.68 0.14 135)',  isPour: true  },
-	pour:     { colour: 'oklch(0.64 0.15 210)',  isPour: true  },
-	agitate:  { colour: 'oklch(0.68 0.14 55)',   isPour: false },
-	drawdown: { colour: 'oklch(0.64 0.12 250)',  isPour: false },
-	wait:     { colour: 'oklch(0.68 0.14 135)',  isPour: false },
+	setup: { colour: 'var(--neutral-400)', isPour: false },
+	grind: { colour: 'var(--brand-400)', isPour: false },
+	preheat: { colour: 'oklch(0.66 0.15 25)', isPour: true },
+	bloom: { colour: 'oklch(0.68 0.14 135)', isPour: true },
+	pour: { colour: 'oklch(0.64 0.15 210)', isPour: true },
+	agitate: { colour: 'oklch(0.68 0.14 55)', isPour: false },
+	drawdown: { colour: 'oklch(0.64 0.12 250)', isPour: false },
+	wait: { colour: 'oklch(0.68 0.14 135)', isPour: false },
 }
 
 const TAP_TYPES: StepType[] = ['setup', 'grind']
@@ -74,27 +74,30 @@ const isTapStep = computed(() => currentTheme.value.isTap)
 // Anything else → stays at 0
 const waterLevel = computed(() => {
 	if (currentTheme.value.isPour) return stepProgress.value
-	const prevStep = currentStepIndex.value > 0
-		? (recipe.value?.steps[currentStepIndex.value - 1] ?? null)
-		: null
+	const prevStep =
+		currentStepIndex.value > 0 ? (recipe.value?.steps[currentStepIndex.value - 1] ?? null) : null
 	if (prevStep && TYPE_THEMES[prevStep.type].isPour) return 1 - stepProgress.value
 	return 0
 })
 
 const waterColour = computed(() => {
 	if (currentTheme.value.isPour) return currentTheme.value.colour
-	const prevStep = currentStepIndex.value > 0
-		? (recipe.value?.steps[currentStepIndex.value - 1] ?? null)
-		: null
+	const prevStep =
+		currentStepIndex.value > 0 ? (recipe.value?.steps[currentStepIndex.value - 1] ?? null) : null
 	if (prevStep && TYPE_THEMES[prevStep.type].isPour) return TYPE_THEMES[prevStep.type].colour
 	return currentTheme.value.colour
 })
 
 // Helpers
 const TYPE_LABELS: Record<StepType, string> = {
-	setup: 'Setup', grind: 'Grind', preheat: 'Preheat',
-	bloom: 'Bloom', pour: 'Pour', agitate: 'Agitate',
-	drawdown: 'Drawdown', wait: 'Wait',
+	setup: 'Setup',
+	grind: 'Grind',
+	preheat: 'Preheat',
+	bloom: 'Bloom',
+	pour: 'Pour',
+	agitate: 'Agitate',
+	drawdown: 'Drawdown',
+	wait: 'Wait',
 }
 
 function stepDisplayName(step: RecipeStep): string {
@@ -108,8 +111,8 @@ function formatTime(s: number): string {
 	return `${m}:${String(sec).padStart(2, '0')}`
 }
 
-const currentStep = computed<RecipeStep | null>(() =>
-	recipe.value?.steps[currentStepIndex.value] ?? null
+const currentStep = computed<RecipeStep | null>(
+	() => recipe.value?.steps[currentStepIndex.value] ?? null,
 )
 const stepCount = computed(() => recipe.value?.steps.length ?? 0)
 
@@ -118,20 +121,21 @@ const stepProgress = computed(() => {
 	return Math.min(stepElapsed.value / currentStep.value.duration, 1)
 })
 
-const totalDuration = computed(() =>
-	recipe.value?.steps.reduce((a, s) => a + (s.duration ?? 0), 0) ?? 0
+const totalDuration = computed(
+	() => recipe.value?.steps.reduce((a, s) => a + (s.duration ?? 0), 0) ?? 0,
 )
 
 const overallProgress = computed(() =>
-	totalDuration.value > 0 ? Math.min(totalElapsed.value / totalDuration.value, 1) : 0
+	totalDuration.value > 0 ? Math.min(totalElapsed.value / totalDuration.value, 1) : 0,
 )
 
 const stepRemaining = computed(() =>
-	Math.max(0, (currentStep.value?.duration ?? 0) - stepElapsed.value)
+	Math.max(0, (currentStep.value?.duration ?? 0) - stepElapsed.value),
 )
 
-const bgGradient = computed(() =>
-	`radial-gradient(ellipse at 50% 0%, oklch(from ${currentTheme.value.colour} l c h / 0.10), transparent 68%)`
+const bgGradient = computed(
+	() =>
+		`radial-gradient(ellipse at 50% 0%, oklch(from ${currentTheme.value.colour} l c h / 0.10), transparent 68%)`,
 )
 
 // Timer controls
@@ -149,31 +153,48 @@ function startTimers() {
 		}, 1000)
 	}
 
-	totalTimer = setInterval(() => { totalElapsed.value++ }, 1000)
+	totalTimer = setInterval(() => {
+		totalElapsed.value++
+	}, 1000)
 }
 
 function stopTimers() {
 	if (stepTimer) clearInterval(stepTimer)
 	if (totalTimer) clearInterval(totalTimer)
-	stepTimer = null; totalTimer = null
+	stepTimer = null
+	totalTimer = null
 	isRunning.value = false
 }
 
 function advanceStep() {
 	stopTimers()
+
 	const next = currentStepIndex.value + 1
+
 	if (next >= stepCount.value) {
 		isComplete.value = true
 		showFinishOverlay.value = true
 		return
 	}
+
 	currentStepIndex.value = next
+	stepElapsed.value = 0
+
+	if (!TAP_TYPES.includes(recipe.value?.steps[next]?.type ?? 'pour')) {
+		startTimers()
+	}
+}
+
+function skipStep() {
+	stopTimers()
+	stepElapsed.value = 0
+	advanceStep()
+}
+function restartStep() {
+	stopTimers()
 	stepElapsed.value = 0
 	startTimers()
 }
-
-function skipStep() { stopTimers(); stepElapsed.value = 0; advanceStep() }
-function restartStep() { stopTimers(); stepElapsed.value = 0; startTimers() }
 
 function stepColour(i: number): string {
 	const step = recipe.value?.steps[i]
@@ -193,10 +214,9 @@ onMounted(async () => {
 		}
 		const dataPayload = await getBrewStartData()
 		if (!dataPayload.success) throw new Error(dataPayload.error)
-		const found = (dataPayload.payload.recipes as Recipe[]).find(r => r.id === brew.recipeId)
+		const found = (dataPayload.payload.recipes as Recipe[]).find((r) => r.id === brew.recipeId)
 		if (!found) throw new Error('Recipe not found')
 		recipe.value = found
-		startTimers()
 	} catch (err) {
 		error.value = err instanceof Error ? err.message : 'An unknown error occurred'
 	} finally {
@@ -207,8 +227,14 @@ onMounted(async () => {
 onBeforeUnmount(stopTimers)
 
 // Navigation
-function finishNow()   { showFinishOverlay.value = false; router.push({ name: 'endbrew' }) }
-function finishLater() { showFinishOverlay.value = false; router.push({ name: 'dashboard' }) }
+function finishNow() {
+	showFinishOverlay.value = false
+	router.push({ name: 'endbrew' })
+}
+function finishLater() {
+	showFinishOverlay.value = false
+	router.push({ name: 'dashboard' })
+}
 </script>
 
 <template>
@@ -216,7 +242,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	<div class="brew-bg" :style="{ background: bgGradient }" aria-hidden="true" />
 
 	<div class="brew-layout">
-
 		<!--  AppBar-style header  -->
 		<header class="brew-header">
 			<div class="header-top">
@@ -241,8 +266,8 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 				<div
 					class="header-progress-fill"
 					:style="{
-						width: isComplete ? '100%' : (overallProgress * 100) + '%',
-						background: currentTheme.colour
+						width: isComplete ? '100%' : overallProgress * 100 + '%',
+						background: currentTheme.colour,
 					}"
 				/>
 			</div>
@@ -250,7 +275,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 		<!--  Main content  -->
 		<main class="brew-main">
-
 			<!-- Error -->
 			<div v-if="error" class="center-col">
 				<p>{{ error }}</p>
@@ -258,10 +282,8 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 			</div>
 
 			<template v-else-if="recipe">
-
 				<!-- Step card -->
 				<div class="step-card terva-card" :class="{ complete: isComplete }">
-
 					<template v-if="!isComplete">
 						<!-- Step label -->
 						<div class="step-label">
@@ -280,14 +302,15 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 						<!-- Ring area — centred -->
 						<div class="ring-outer">
 							<div class="ring-wrap">
-
 								<!-- Timed step — countdown ring -->
 								<template v-if="!isTapStep">
 									<svg class="ring" viewBox="0 0 120 120">
 										<circle class="ring-track" cx="60" cy="60" r="52" />
 										<circle
 											class="ring-progress"
-											cx="60" cy="60" r="52"
+											cx="60"
+											cy="60"
+											r="52"
 											:stroke="currentTheme.colour"
 											:stroke-dashoffset="327 - stepProgress * 327"
 										/>
@@ -299,16 +322,16 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 											<div
 												class="water-fill"
 												:style="{
-													height: (waterLevel * 100) + '%',
-													background: `oklch(from ${waterColour} l c h / 0.22)`
+													height: waterLevel * 100 + '%',
+													background: `oklch(from ${waterColour} l c h / 0.22)`,
 												}"
 											/>
 											<div
 												v-if="waterLevel > 0.02"
 												class="wave-line"
 												:style="{
-													bottom: (waterLevel * 100) + '%',
-													background: `oklch(from ${waterColour} l c h / 0.45)`
+													bottom: waterLevel * 100 + '%',
+													background: `oklch(from ${waterColour} l c h / 0.45)`,
 												}"
 											/>
 										</div>
@@ -332,7 +355,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 										</button>
 									</div>
 								</template>
-
 							</div>
 						</div>
 
@@ -360,7 +382,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 						:class="{
 							done: i < currentStepIndex,
 							active: i === currentStepIndex,
-							upcoming: i > currentStepIndex
+							upcoming: i > currentStepIndex,
 						}"
 					>
 						<span
@@ -373,7 +395,6 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 						</span>
 					</div>
 				</div>
-
 			</template>
 		</main>
 
@@ -435,9 +456,11 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	margin-top: 16px;
 	z-index: 999;
 
-	background: linear-gradient(to bottom,
+	background: linear-gradient(
+		to bottom,
 		oklch(from var(--terva-app-bar-accent) l c h / 0.25),
-		oklch(from var(--terva-app-bar-accent) l c h / 0.20));
+		oklch(from var(--terva-app-bar-accent) l c h / 0.2)
+	);
 	background-color: oklch(from var(--terva-app-bar) l c h / 0.6);
 	border: 1px solid oklch(from var(--terva-app-bar-border) l c h / 0.25);
 	backdrop-filter: blur(8px) saturate(1.4);
@@ -465,18 +488,23 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 .header-progress-fill {
 	height: 100%;
-	transition: width 1s linear, background 1.2s ease;
+	transition:
+		width 1s linear,
+		background 1.2s ease;
 	border-radius: 0 2px 2px 0;
 }
 
-.header-left, .header-right {
+.header-left,
+.header-right {
 	flex: 0 0 auto;
 	display: flex;
 	align-items: center;
 	min-width: 40px;
 }
 
-.header-right { justify-content: flex-end; }
+.header-right {
+	justify-content: flex-end;
+}
 
 .header-center {
 	flex: 1;
@@ -516,8 +544,12 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	justify-content: center;
 }
 
-.back-btn:hover { color: var(--pico-primary); }
-.back-btn:active { transform: scale(0.9); }
+.back-btn:hover {
+	color: var(--pico-primary);
+}
+.back-btn:active {
+	transform: scale(0.9);
+}
 
 /*  Main  */
 
@@ -571,7 +603,10 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	flex-shrink: 0;
 }
 
-.step-action { font-size: 1.05rem; font-weight: 500; }
+.step-action {
+	font-size: 1.05rem;
+	font-weight: 500;
+}
 
 .step-water {
 	display: flex;
@@ -619,7 +654,9 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	stroke-width: 8;
 	stroke-linecap: round;
 	stroke-dasharray: 327;
-	transition: stroke-dashoffset 1s linear, stroke 1.2s ease;
+	transition:
+		stroke-dashoffset 1s linear,
+		stroke 1.2s ease;
 }
 
 .ring-inner {
@@ -646,7 +683,9 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	bottom: 0;
 	left: 0;
 	right: 0;
-	transition: height 1s linear, background 1.2s ease;
+	transition:
+		height 1s linear,
+		background 1.2s ease;
 }
 
 .wave-line {
@@ -655,13 +694,22 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	right: 0;
 	height: 3px;
 	border-radius: 2px;
-	transition: bottom 1s linear, background 1.2s ease;
+	transition:
+		bottom 1s linear,
+		background 1.2s ease;
 	animation: wave-shimmer 2.5s ease-in-out infinite;
 }
 
 @keyframes wave-shimmer {
-	0%, 100% { transform: scaleX(1) translateY(0); opacity: 1; }
-	50%       { transform: scaleX(0.96) translateY(-1px); opacity: 0.7; }
+	0%,
+	100% {
+		transform: scaleX(1) translateY(0);
+		opacity: 1;
+	}
+	50% {
+		transform: scaleX(0.96) translateY(-1px);
+		opacity: 0.7;
+	}
 }
 
 .ring-label {
@@ -702,15 +750,23 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	gap: 4px;
 	font-size: 1rem;
 	font-weight: 600;
-	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	transition:
+		transform 0.15s ease,
+		box-shadow 0.15s ease;
 }
 
 .tap-advance-btn:active {
 	transform: scale(0.93);
 }
 
-.tap-label { font-size: 1.1rem; font-weight: 600; }
-.tap-arrow { font-size: 1.4rem; line-height: 1; }
+.tap-label {
+	font-size: 1.1rem;
+	font-weight: 600;
+}
+.tap-arrow {
+	font-size: 1.4rem;
+	line-height: 1;
+}
 
 /*  Step controls  */
 
@@ -739,7 +795,9 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	gap: 6px;
 }
 
-.steps-list-label { margin-bottom: 4px; }
+.steps-list-label {
+	margin-bottom: 4px;
+}
 
 .step-row {
 	display: flex;
@@ -754,7 +812,9 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	background: oklch(from var(--pico-primary) l c h / 0.08);
 }
 
-.step-row.done { opacity: 0.4; }
+.step-row.done {
+	opacity: 0.4;
+}
 
 .step-dot {
 	width: 10px;
@@ -765,9 +825,16 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	transition: background 0.6s ease;
 }
 
-.step-row-action { flex: 1; font-size: 0.9rem; }
-.step-row-dur { font-size: 0.8rem; }
-.muted { color: var(--pico-muted-color); }
+.step-row-action {
+	flex: 1;
+	font-size: 0.9rem;
+}
+.step-row-dur {
+	font-size: 0.8rem;
+}
+.muted {
+	color: var(--pico-muted-color);
+}
 
 /*  Footer — mirrors TabBar exactly  */
 
@@ -782,7 +849,7 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	background: linear-gradient(
 		to bottom,
 		oklch(from var(--terva-tab-bar-accent) l c h / 0.25),
-		oklch(from var(--terva-tab-bar-accent) l c h / 0.20)
+		oklch(from var(--terva-tab-bar-accent) l c h / 0.2)
 	);
 	background-color: oklch(from var(--terva-tab-bar) l c h / 0.4);
 	border: 1px solid oklch(from var(--terva-tab-bar-border) l c h / 0.25);
@@ -809,13 +876,23 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 	font-size: 1rem;
 	font-weight: 500;
 	border-radius: var(--terva-large-corner-radius);
-	transition: color 0.2s ease, transform 0.15s ease;
+	transition:
+		color 0.2s ease,
+		transform 0.15s ease;
 }
 
-.finish-btn:hover { color: oklch(from var(--brand-400) l c h / 0.85); }
-.finish-btn:active { transform: scale(0.97); }
-.finish-btn.active { color: var(--brand-400); }
-.finish-btn.active .finish-icon { transform: scale(1.3); }
+.finish-btn:hover {
+	color: oklch(from var(--brand-400) l c h / 0.85);
+}
+.finish-btn:active {
+	transform: scale(0.97);
+}
+.finish-btn.active {
+	color: var(--brand-400);
+}
+.finish-btn.active .finish-icon {
+	transform: scale(1.3);
+}
 
 .finish-icon {
 	width: 22px;
@@ -825,7 +902,8 @@ function finishLater() { showFinishOverlay.value = false; router.push({ name: 'd
 
 /*  Overlay confirm  */
 
-.confirm-content, strong {
+.confirm-content,
+strong {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
