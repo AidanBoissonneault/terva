@@ -20,7 +20,7 @@ div {
 	background-color: oklch(from var(--terva-overlay-container) l c h / 0.6);
 	width: 80%;
 
-	border: 1px solid oklch(from var(--pico-primary) l c h / 0.8);
+	border: 1px solid oklch(from var(--terva-highlight) l c h / 0.8);
 
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);

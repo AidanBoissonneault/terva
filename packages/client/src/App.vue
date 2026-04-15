@@ -83,7 +83,7 @@ async function deleteSelectedBean() {
 				<p><strong>Delete {{ deletedBean?.name }}?</strong></p>
 				<small>This permanently removes your bean and all brew data. This cannot be undone.</small>
 				<div class="confirm-actions">
-					<button class="glass danger-btn" @click="deleteSelectedBean">Delete</button>
+					<button class="glass danger" @click="deleteSelectedBean">Delete</button>
 					<button class="glass" @click="isWarnDeleteBean = false">Cancel</button>
 				</div>
 			</div>
@@ -128,8 +128,6 @@ async function deleteSelectedBean() {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-
-	color: var(--pico-primary-inverse);
 }
 
 .confirm-actions {
@@ -137,12 +135,6 @@ async function deleteSelectedBean() {
 	grid-template-columns: 1fr 1fr;
 	gap: 10px;
 	margin-top: 8px;
-}
-
-.danger-btn {
-	border-color: oklch(from var(--red-500) l c h / 0.5) !important;
-	color: var(--red-400) !important;
-	background-color: var(--red-700) !important;
 }
 
 .steam-enter-active,

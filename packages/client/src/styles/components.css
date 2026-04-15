@@ -31,54 +31,54 @@ body {
 -- ----------------------------------------- */
 
 button.glass {
-	box-shadow: 0 2px 2px var(--pico-primary-underline),
-							0 4px 3px oklch(from var(--terva-shadow) l c h / 0.4);
+	--color: var(--pico-primary-background);
+	--editColor: var(--color);
+	box-shadow:
+		0 1px oklch(from var(--editColor) calc(l - 0.2) c h),
+		0 4px 2px oklch(from var(--terva-shadow) l c h / 0.4);
 
-	background: linear-gradient(to bottom,
-			oklch(from var(--terva-tab-bar) l c h / 0.25),
-			oklch(from var(--terva-tab-bar) l c h / 0.20));
-	background-color: oklch(from var(--pico-primary-background) l c h / 0.9);
+	background: linear-gradient(
+		to bottom,
+		oklch(from var(--editColor) calc(l + 0.1) c h / 0.25),
+		oklch(from var(--editColor) calc(l + 0.1) c h / 0.2)
+	);
+	background-color: oklch(from var(--editColor) l c h / 0.9);
 
-	border: 1px solid oklch(from var(--pico-primary) l c h / 0.8);
+	border: 1px solid oklch(from var(--editColor) calc(l - 0.1) c h / 0.8);
 
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
 
 	transition: all 0.15s ease;
-}
 
-button.glass:hover {
-	background-color: oklch(from var(--pico-primary-hover-background) l c h / 0.9);
-	border: 1px solid oklch(from var(--terva-highlight) calc(l - 0.1) c h / 0.8);
-}
+	&.big-text {
+		font-size: clamp(20px, 4.5vw, 24px);
+		font-weight: 650;
+		padding: 4px;
+	}
 
-button.glass:active {
-	box-shadow: 0 1px 2px var(--brand-500),
-							0 3px 3px oklch(from var(--terva-shadow) l c h / 0.4);
+	&.secondary {
+		--color: var(--pico-secondary-background);
+	}
 
-	transform: translateY(1px);
+	&.contrast {
+		--color: var(--pico-contrast-background);
+	}
 
-	overflow: hidden;
-}
+	&:hover {
+		--editColor: oklch(from var(--color) calc(l - 0.01) c h);
+	}
 
-button.glass.secondary {
-	background: linear-gradient(to bottom,
-			oklch(from var(--terva-tab-bar-accent) l c h / 0.25),
-			oklch(from var(--terva-tab-bar-accent) l c h / 0.20));
-	background-color: oklch(from var(--pico-secondary-background) l c h / 0.9);
-}
+	&:active {
+		transform: translateY(1px);
+		--editColor: oklch(from var(--color) calc(l - 0.05) c h);
+		overflow: hidden;
+	}
 
-button.glass.contrast {
-	background: linear-gradient(to bottom,
-			oklch(from var(--terva-tab-bar-accent) l c h / 0.25),
-			oklch(from var(--terva-tab-bar-accent) l c h / 0.20));
-	background-color: oklch(from var(--pico-contrast-background) l c h / 0.9);
-}
-
-button.big-text {
-	font-size: clamp(20px, 4.5vw, 24px);
-	font-weight: 650;
-	padding: 4px;
+	&.danger {
+		color: var(--red-400) !important;
+		--editColor: var(--red-700) !important;
+	}
 }
 
 /* -----------------------------------------

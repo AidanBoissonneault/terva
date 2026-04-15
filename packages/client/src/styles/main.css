@@ -537,7 +537,7 @@ details summary[role='button']:not(.outline)::after {
 	--terva-app-bar-accent: var(--neutral-800);
 	--terva-shadow: var(--neutral-900);
 	--terva-highlight: var(--neutral-100);
-	--terva-overlay-container: var(--brand-300);
+	--terva-overlay-container: var(--neutral-900);
 }
 
 [data-theme='dark']
