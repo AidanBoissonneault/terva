@@ -20,6 +20,7 @@ import { useRouter } from 'vue-router'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
 import { getRecentBrews } from '@/api/getRecentBrews'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
+import { TextMorph } from 'torph/vue'
 
 // for routing when a bean card is pressed
 const router = useRouter()
@@ -50,23 +51,6 @@ const visibleFilters = computed(() => filterButtons.filter((b) => b.type !== act
 const filterLabel = computed(
 	() => (filterButtons.find((b) => b.type === activeFilter.value)?.name ?? 'All') + ' Beans',
 )
-
-// displayed label with crossfade animation
-const displayedLabel = ref('All Beans')
-const labelVisible = ref(true)
-
-watch(filterLabel, (newVal) => {
-	// fade out → swap text → fade in
-	labelVisible.value = false
-	setTimeout(() => {
-		displayedLabel.value = newVal
-		labelVisible.value = true
-	}, 120)
-})
-
-onMounted(() => {
-	displayedLabel.value = filterLabel.value
-})
 
 // groups beans into their respective categories
 const groupedBeans = computed(() => {
@@ -186,44 +170,62 @@ function quickAccessBrew(brew: Brew) {
 
 	router.push({ name: 'startbrew' })
 }
+
+const morphFilterLabel = ref('All beans')
+
+watch(
+	filterLabel,
+	(val) => {
+		if (!val) return
+		morphFilterLabel.value = ''
+		requestAnimationFrame(() => {
+			morphFilterLabel.value = val
+		})
+	},
+	{
+		immediate: true,
+		flush: 'post'
+	}
+)
 </script>
 
 <template>
-	<div class="dashboard">
-		<div v-if="error">{{ error }}</div>
+<div class="dashboard">
+  <div v-if="error">{{ error }}</div>
 
-		<!--Hero bean section-->
-		<template v-else-if="heroBean">
-			<HeroBeanCard
-				:bean="heroBean"
-				:brews="recentHeroBrews"
-				@clicked="routeToBeanInfo"
-				@brew-selected="quickAccessBrew"
-			/>
-			<SectionSeperator />
+  <template v-else-if="heroBean">
+    <!-- Hero -->
+    <HeroBeanCard
+      v-if="heroBean"
+      :bean="heroBean"
+      :brews="recentHeroBrews"
+      @clicked="routeToBeanInfo"
+      @brew-selected="quickAccessBrew"
+    />
+    <SectionSeperator v-if="heroBean" />
+		</template>
 
-			<!--filter section-->
-			<div class="filter-wrapper">
-				<h5>
-					<span class="filter-label" :class="{ visible: labelVisible }">
-						{{ displayedLabel }}
-					</span>
-				</h5>
-				<TransitionGroup name="filter" tag="div" class="filter-buttons">
-					<FilterButton
-						v-for="filter in visibleFilters"
-						@filter="newFilter"
-						:key="filter.name"
-						:type="filter.type"
-						:active-filter="activeFilter"
-					>
-						{{ filter.name }}
-					</FilterButton>
-				</TransitionGroup>
-			</div>
+    <!-- Filter -->
+    <div class="filter-wrapper">
+      <h5>
+        <TextMorph :text="morphFilterLabel" />
+      </h5>
+
+      <TransitionGroup name="filter" tag="div" class="filter-buttons">
+        <FilterButton
+          v-for="filter in visibleFilters"
+          :key="filter.name"
+          @filter="newFilter"
+          :type="filter.type"
+          :active-filter="activeFilter"
+        >
+          {{ filter.name }}
+        </FilterButton>
+      </TransitionGroup>
+    </div>
 
 			<!--bean cards-->
-
+			<template v-if="beans">
 			<!--all beans (grouped)-->
 			<template v-if="!activeFilter">
 				<Transition
@@ -349,32 +351,19 @@ h5 {
 		transform 0.15s ease;
 }
 
-.filter-label.visible {
-	opacity: 1;
-	transform: translateY(0);
-}
-
 /* entering */
-.filter-enter-from {
+.filter-enter-from,
+.filter-leave-to {
 	opacity: 0;
 	transform: translateY(-6px);
 }
-.filter-enter-to {
+.filter-enter-to,
+.filter-leave-from {
 	opacity: 1;
 	transform: translateY(0);
 }
 .filter-enter-active {
 	transition: all 0.5s ease;
-}
-
-/* leaving */
-.filter-leave-from {
-	opacity: 1;
-	transform: translateY(0);
-}
-.filter-leave-to {
-	opacity: 0;
-	transform: translateY(6px);
 }
 .filter-leave-active {
 	transition: all 0.25s ease;
@@ -391,7 +380,6 @@ h5 {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	overflow: hidden;
 }
 
 .section-title {

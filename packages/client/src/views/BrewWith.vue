@@ -6,7 +6,7 @@ Setup and Grind steps are tap-to-advance (no timer).
 The header mirrors AppBar styling; the footer action mirrors TabBar styling.
 
 CREATED: 13APR2026
-LAST EDITED: 13APR2026
+LAST EDITED: 15APR2026
 By: Aidan Boissonneault
 -->
 
@@ -15,11 +15,13 @@ import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import { useLoadingStore } from '@/stores/loading'
 import { getBrewStartData } from '@/api/getStartBrewData'
 import { type Recipe, type RecipeStep, type StepType } from '@terva/shared'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
+import { TextMorph } from 'torph/vue'
 
 const router = useRouter()
+const loading = useLoadingStore()
 
 // Data
 const recipe = ref<Recipe | null>(null)
@@ -133,11 +135,6 @@ const stepRemaining = computed(() =>
 	Math.max(0, (currentStep.value?.duration ?? 0) - stepElapsed.value),
 )
 
-const bgGradient = computed(
-	() =>
-		`radial-gradient(ellipse at 50% 0%, oklch(from ${currentTheme.value.colour} l c h / 0.10), transparent 68%)`,
-)
-
 // Timer controls
 function startTimers() {
 	// Tap steps don't run a step timer — only total elapsed keeps ticking
@@ -203,7 +200,6 @@ function stepColour(i: number): string {
 
 // Mount / unmount
 onMounted(async () => {
-	const loading = useLoadingStore()
 	loading.start()
 	try {
 		const brewTransferStore = useBrewTransferStore()
@@ -226,6 +222,20 @@ onMounted(async () => {
 
 onBeforeUnmount(stopTimers)
 
+const morphStepText = ref('loading...') // what TextMorph uses
+
+watch(
+	currentStep,
+	(val) => {
+		if (!val) return
+		morphStepText.value = stepDisplayName(val)
+	},
+	{
+		immediate: true,
+		flush: 'post'
+	},
+)
+
 // Navigation
 function finishNow() {
 	showFinishOverlay.value = false
@@ -238,9 +248,6 @@ function finishLater() {
 </script>
 
 <template>
-	<!-- Reactive background layer -->
-	<div class="brew-bg" :style="{ background: bgGradient }" aria-hidden="true" />
-
 	<div class="brew-layout">
 		<!--  AppBar-style header  -->
 		<header class="brew-header">
@@ -251,7 +258,7 @@ function finishLater() {
 					</button>
 				</div>
 				<div class="header-center">
-					<span class="header-recipe">{{ recipe?.name ?? 'Brewing…' }}</span>
+					<span class="header-recipe"><TextMorph :text="recipe?.name ?? 'Brewing...'" /></span>
 					<span class="header-elapsed">{{ formatTime(totalElapsed) }}</span>
 				</div>
 				<div class="header-right">
@@ -290,7 +297,7 @@ function finishLater() {
 							<span class="step-badge" :style="{ background: currentTheme.colour }">
 								Step {{ currentStepIndex + 1 }}
 							</span>
-							<span class="step-action">{{ currentStep ? stepDisplayName(currentStep) : '' }}</span>
+							<TextMorph :text="morphStepText" class="step-action" />
 						</div>
 
 						<!-- Water weight indicator -->
@@ -442,7 +449,6 @@ function finishLater() {
 	z-index: 1;
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
 	box-sizing: border-box;
 }
 
@@ -554,8 +560,8 @@ function finishLater() {
 /*  Main  */
 
 .brew-main {
-	margin-top: 100px;
-	padding: 16px 24px 100px;
+	margin-top: 50px;
+	padding: 16px 24px;
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
