@@ -182,7 +182,6 @@ strong {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	color: var(--pico-primary-inverse);
 }
 
 .confirm-actions {

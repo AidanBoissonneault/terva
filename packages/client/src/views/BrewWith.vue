@@ -700,6 +700,7 @@ function finishLater() {
 	right: 0;
 	height: 3px;
 	border-radius: 2px;
+	transform: translateY(1px);
 	transition:
 		bottom 1s linear,
 		background 1.2s ease;
@@ -709,11 +710,9 @@ function finishLater() {
 @keyframes wave-shimmer {
 	0%,
 	100% {
-		transform: scaleX(1) translateY(0);
 		opacity: 1;
 	}
 	50% {
-		transform: scaleX(0.96) translateY(-1px);
 		opacity: 0.7;
 	}
 }
@@ -885,19 +884,22 @@ function finishLater() {
 	transition:
 		color 0.2s ease,
 		transform 0.15s ease;
-}
 
-.finish-btn:hover {
-	color: oklch(from var(--brand-400) l c h / 0.85);
-}
-.finish-btn:active {
-	transform: scale(0.97);
-}
-.finish-btn.active {
-	color: var(--brand-400);
-}
-.finish-btn.active .finish-icon {
-	transform: scale(1.3);
+	&:hover {
+		color: oklch(from var(--brand-400) l c h / 0.85);
+	}
+
+	&:active {
+		transform: scale(0.97);
+	}
+
+	&.active {
+		color: var(--brand-400);
+
+		&.finish-icon {
+			transform: scale(1.3);
+		}
+	}
 }
 
 .finish-icon {
@@ -913,7 +915,6 @@ strong {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	color: var(--pico-primary-inverse);
 }
 
 .confirm-actions {
