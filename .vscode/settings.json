@@ -2,5 +2,7 @@
     "github.copilot.enable": {
         "*": false
     },
-    "js/ts.tsdk.path": "node_modules/typescript/lib"
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
+    "snyk.advanced.autoSelectOrganization": true,
+    "snyk.advanced.organization": "cf04f352-80f8-47b8-ba7e-31349392d915"
 }
