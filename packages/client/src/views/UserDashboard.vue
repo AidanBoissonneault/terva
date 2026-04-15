@@ -311,8 +311,8 @@ watch(
 	</div>
 
 	<div class="no-beans" v-if="isReady">
-		<span class="empty-label full-screen" v-if="!heroBean">No beans added yet. Hit the + button to get started!</span>
-		<span class="empty-label" v-else-if="!beans.length">No more beans. Hit the + button to add more!</span>
+		<span class="empty-label full-screen" v-if="!heroBean">No beans added yet. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to get started!</span>
+		<span class="empty-label" v-else-if="!beans.length">No more beans. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to add more!</span>
 	</div>
 </template>
 
@@ -446,7 +446,7 @@ h5 {
 
 .empty-label {
 	font-size: 0.85rem;
-	opacity: 0.4;
+	opacity: 1;
 	margin: 0;
 	padding: 4px 0;
 
