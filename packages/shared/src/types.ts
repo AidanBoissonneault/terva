@@ -131,7 +131,7 @@ export interface RecipeStep {
 	id: number
 	stepOrder: number
 	type: StepType
-	action?: string       // optional — falls back to type name if blank
+	action?: string       // optional - falls back to type name if blank
 	duration?: number | null     // undefined for setup & grind (tap-to-advance)
 	waterG?: number | null       // only for bloom, pour, preheat
 }

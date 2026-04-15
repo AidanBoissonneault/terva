@@ -1,5 +1,5 @@
 -- Migration: Recipe step types + default dose
--- Safe to run on a live DB — uses ALTER TABLE and UPDATE only.
+-- Safe to run on a live DB - uses ALTER TABLE and UPDATE only.
 -- CREATED: 13APR2026
 
 USE terva;

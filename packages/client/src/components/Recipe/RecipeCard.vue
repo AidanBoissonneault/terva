@@ -27,7 +27,7 @@ function stepLabel(step: { type: StepType; action?: string | null }): string {
 }
 
 function formatDuration(seconds?: number | null): string {
-	if (!seconds) return '—'
+	if (!seconds) return '-'
 	if (seconds < 60) return `${seconds}s`
 	const m = Math.floor(seconds / 60)
 	const s = seconds % 60

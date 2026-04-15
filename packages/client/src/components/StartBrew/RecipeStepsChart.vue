@@ -64,7 +64,7 @@ function formatTime(s: number): string {
 }
 
 function buildChartData(stepsRaw: RecipeStep[]) {
-	// setup & grind steps have no duration — exclude from the timeline chart
+	// setup & grind steps have no duration - exclude from the timeline chart
 	const steps = stepsRaw.filter(s => s.duration != null && s.duration > 0)
 	const starts: number[] = []
 	let cum = 0

@@ -29,7 +29,7 @@ const error = ref<string | null>(null)
 const data = ref()
 const newBrew = ref<Brew>()
 
-// Overlay state — 'none' | 'recipe' | 'skip'
+// Overlay state - 'none' | 'recipe' | 'skip'
 type OverlayStep = 'none' | 'recipe' | 'skip'
 const overlayStep = ref<OverlayStep>('none')
 

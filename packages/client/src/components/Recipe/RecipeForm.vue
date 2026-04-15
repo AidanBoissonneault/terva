@@ -20,7 +20,7 @@ const BREW_METHODS = [
 	'Cold Brew', 'Moka Pot', 'Switch / Origami', 'Siphon', 'Other',
 ]
 
-// Step type definitions — drives chips + conditional fields
+// Step type definitions - drives chips + conditional fields
 interface StepTypeDef {
 	type: StepType
 	label: string
@@ -190,7 +190,7 @@ const isValid = () =>
 						</label>
 					</div>
 					<div class="tap-hint" v-else>
-						<small class="muted">Tap to advance — no timer</small>
+						<small class="muted">Tap to advance - no timer</small>
 					</div>
 				</div>
 

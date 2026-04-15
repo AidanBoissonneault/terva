@@ -66,7 +66,7 @@ app.use(
 
 // Rate limiters
 
-// Auth limiter — 20 attempts per 15 minutes
+// Auth limiter - 20 attempts per 15 minutes
 const authLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
 	max: 20,

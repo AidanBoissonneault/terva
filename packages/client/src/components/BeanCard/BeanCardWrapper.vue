@@ -82,7 +82,7 @@ button {
 	box-sizing: border-box;
 
 box-shadow:
-  inset 0 1px 0 oklch(1 0 0 / 0.35),      /* top highlight — glass rim */
+  inset 0 1px 0 oklch(1 0 0 / 0.35),      /* top highlight - glass rim */
   inset 0 -1px 0 oklch(0 0 0 / 0.15),     /* bottom inner shadow */
   0 0 0 1px oklch(from v-bind(priColor) l c h / 0.2),
   0 4px 6px oklch(from var(--terva-shadow) l c h / 0.6),

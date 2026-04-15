@@ -48,7 +48,7 @@ const filterButtons = reactive<{ name: string; type: BeanState | null }[]>([
 ])
 const visibleFilters = computed(() => filterButtons.filter((b) => b.type !== activeFilter.value))
 
-// label shown in the h5 — driven by a separate ref so we can
+// label shown in the h5 - driven by a separate ref so we can
 // animate it independently of the computed value
 const filterLabel = computed(
 	() => (filterButtons.find((b) => b.type === activeFilter.value)?.name ?? 'All') + ' Beans',

@@ -1,6 +1,6 @@
 <!--
 Brew With View
-Shown during an active brew — displays recipe steps with a live timer,
+Shown during an active brew - displays recipe steps with a live timer,
 step-by-step progression, and a background that reacts to the current step.
 Setup and Grind steps are tap-to-advance (no timer).
 The header mirrors AppBar styling; the footer action mirrors TabBar styling.
@@ -40,11 +40,11 @@ const isComplete = ref(false)
 // Overlay
 const showFinishOverlay = ref(false)
 
-// Step theme — driven by type, no keyword guessing
+// Step theme - driven by type, no keyword guessing
 interface StepTheme {
 	colour: string
 	isPour: boolean // drives water-rise animation
-	isTap: boolean // setup / grind — no timer, tap to advance
+	isTap: boolean // setup / grind - no timer, tap to advance
 }
 
 const TYPE_THEMES: Record<StepType, Omit<StepTheme, 'isTap'>> = {
@@ -137,7 +137,7 @@ const stepRemaining = computed(() =>
 
 // Timer controls
 function startTimers() {
-	// Tap steps don't run a step timer — only total elapsed keeps ticking
+	// Tap steps don't run a step timer - only total elapsed keeps ticking
 	if (isRunning.value) return
 	isRunning.value = true
 
@@ -268,7 +268,7 @@ function finishLater() {
 				</div>
 			</div>
 
-			<!-- Progress bar — flush at bottom edge of header pill -->
+			<!-- Progress bar - flush at bottom edge of header pill -->
 			<div class="header-progress-track">
 				<div
 					class="header-progress-fill"
@@ -306,10 +306,10 @@ function finishLater() {
 							<span class="water-amount">{{ currentStep.waterG }}g</span>
 						</div>
 
-						<!-- Ring area — centred -->
+						<!-- Ring area - centred -->
 						<div class="ring-outer">
 							<div class="ring-wrap">
-								<!-- Timed step — countdown ring -->
+								<!-- Timed step - countdown ring -->
 								<template v-if="!isTapStep">
 									<svg class="ring" viewBox="0 0 120 120">
 										<circle class="ring-track" cx="60" cy="60" r="52" />
@@ -365,7 +365,7 @@ function finishLater() {
 							</div>
 						</div>
 
-						<!-- Controls — only for timed steps -->
+						<!-- Controls - only for timed steps -->
 						<div class="step-controls" v-if="!isTapStep">
 							<button class="glass secondary" @click="restartStep">↺ Restart</button>
 							<button class="glass" @click="skipStep">Skip →</button>
@@ -452,7 +452,7 @@ function finishLater() {
 	box-sizing: border-box;
 }
 
-/*  Header — mirrors AppBar  */
+/*  Header - mirrors AppBar  */
 
 .brew-header {
 	position: fixed;
@@ -627,7 +627,7 @@ function finishLater() {
 	color: var(--pico-primary);
 }
 
-/*  Ring — centred  */
+/*  Ring - centred  */
 
 .ring-outer {
 	width: 100%;
@@ -841,7 +841,7 @@ function finishLater() {
 	color: var(--pico-muted-color);
 }
 
-/*  Footer — mirrors TabBar exactly  */
+/*  Footer - mirrors TabBar exactly  */
 
 .brew-footer {
 	position: fixed;
