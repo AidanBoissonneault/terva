@@ -80,7 +80,6 @@ form {
 
 label {
 	grid-column: span 2;
-	color: var(--terva-shadow);
 }
 
 label.centered {

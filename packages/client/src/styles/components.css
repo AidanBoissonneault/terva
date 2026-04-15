@@ -106,8 +106,8 @@ button.glass {
 	background-color: oklch(from var(--terva-app-bar) l c h / 0.3);
 	border: 1px solid oklch(from var(--terva-app-bar-border) l c h / 0.18);
 	transition: border-color 0.15s ease;
-}
 
-.terva-card.expanded {
-	border-color: oklch(from var(--pico-primary) l c h / 0.35);
+	&.expanded {
+		border-color: oklch(from var(--pico-primary) l c h / 0.35);
+	}
 }
