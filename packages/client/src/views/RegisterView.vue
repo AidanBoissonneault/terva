@@ -42,7 +42,7 @@ async function handleRegister() {
 		return;
 	}
 
-	router.push("/")
+	router.push("/login")
 }
 </script>
 
@@ -75,7 +75,7 @@ async function handleRegister() {
 				</label>
 
 				<div>
-					<input type="checkbox" required>
+					<input type="checkbox" required class="agree-button">
 					I agree to the <a @click="showTermsAndConditions = !showTermsAndConditions">Terms and Condtions</a> and <a
 						@click="showPrivacyPolicy = !showPrivacyPolicy">Privacy Policy</a>.
 				</div>
@@ -158,5 +158,9 @@ footer {
 	text-align: center;
 	font-size: 0.875rem;
 	color: var(--pico-muted-color);
+}
+
+.agree-button {
+	border: 2px solid var(--brand-300);
 }
 </style>

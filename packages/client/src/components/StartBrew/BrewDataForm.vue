@@ -130,7 +130,7 @@ watch(
 		<div class="row grinder">
 			<label class="large">
 				<small>Grinder</small>
-				<select v-model="form.grinderId" required>
+				<select v-model="form.grinderId">
 					<option v-for="grinder in grinders" :key="grinder.name" :value="grinder.id">
 						{{ grinder.name }}
 					</option>
@@ -152,7 +152,7 @@ watch(
 		<!--Brewer-->
 		<label>
 			Brewer
-			<select v-model="form.brewerId" required>
+			<select v-model="form.brewerId">
 				<option v-for="brewer in brewers" :key="brewer.name" :value="brewer.id">
 					{{ brewer.name }}
 				</option>
@@ -169,7 +169,7 @@ watch(
 					>
 				</div>
 			</div>
-			<select v-model="form.recipeId" required>
+			<select v-model="form.recipeId">
 				<option v-for="recipe in recipes" :key="recipe.name" :value="recipe.id">
 					{{ recipe.name }}
 				</option>

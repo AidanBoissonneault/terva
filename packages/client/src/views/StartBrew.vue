@@ -86,6 +86,10 @@ async function formSubmitted() {
 	const transferBrew = useBrewTransferStore()
 	transferBrew.set(newBrew.value)
 
+	if (!newBrew.value.recipeId) {
+		finishNow()
+	}
+
 	// Ask: brew with recipe, or skip?
 	overlayStep.value = 'recipe'
 }

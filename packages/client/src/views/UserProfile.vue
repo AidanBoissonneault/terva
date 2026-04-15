@@ -234,15 +234,15 @@ async function handleDeleteAccount() {
 				</label>
 
 				<div class="confirm-actions">
-					<button class="glass" @click="cancelDelete">Cancel</button>
 					<button
-						class="glass danger-btn"
+						class="glass danger"
 						:aria-busy="deleteLoading"
 						:disabled="deleteLoading || !deletePassword"
 						@click="handleDeleteAccount"
 					>
 						{{ deleteLoading ? '' : 'Delete' }}
 					</button>
+					<button class="glass" @click="cancelDelete">Cancel</button>
 				</div>
 			</div>
 		</FullscreenOverlay>
@@ -483,11 +483,6 @@ a.danger.muted {
 	grid-template-columns: 1fr 1fr;
 	gap: 10px;
 	margin-top: 8px;
-}
-
-.danger-btn {
-	border-color: oklch(from var(--red-500) l c h / 0.5) !important;
-	color: var(--red-400) !important;
 }
 
 .error-msg {

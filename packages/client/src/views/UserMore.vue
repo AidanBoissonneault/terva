@@ -8,7 +8,6 @@ import { authClient } from '@/lib/auth-client'
 // to add additional tabs, place the relevant info in here.
 const tabs = <TabLinkType[]>[
 	{ icon: 'circle-user', name: 'Profile', route: 'profile' },
-	{ icon: 'scroll', name: 'Recipes', route: 'recipe' },
 	{ icon: 'file-lines', name: 'Terms and Condtions', route: 'terms' },
 	{ icon: 'file-lines', name: 'Privacy Policy', route: 'privacy' },
 	{ icon: 'file-lines', name: 'Cookie Policy', route: 'cookies' },

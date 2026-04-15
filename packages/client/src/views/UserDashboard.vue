@@ -30,6 +30,8 @@ const beans = ref()
 const heroBean = ref()
 const error = ref<string | null>(null)
 
+const isReady = ref(false)
+
 // for hero bean quick-access
 const recentHeroBrews = ref()
 
@@ -149,6 +151,7 @@ onMounted(async () => {
 		else error.value = 'An unknown error occurred'
 	} finally {
 		loading.stop()
+		isReady.value = true
 	}
 })
 
@@ -206,7 +209,7 @@ watch(
 		</template>
 
     <!-- Filter -->
-    <div class="filter-wrapper">
+    <div class="filter-wrapper" v-if="!isReady || beans.length > 0">
       <h5>
         <TextMorph :text="morphFilterLabel" />
       </h5>
@@ -305,6 +308,11 @@ watch(
 				</TransitionGroup>
 			</template>
 		</template>
+	</div>
+
+	<div class="no-beans" v-if="isReady">
+		<span class="empty-label full-screen" v-if="!heroBean">No beans added yet. Hit the + button to get started!</span>
+		<span class="empty-label" v-else-if="!beans.length">No more beans. Hit the + button to add more!</span>
 	</div>
 </template>
 
@@ -428,5 +436,22 @@ h5 {
 
 .beans-move {
 	transition: transform 0.25s ease;
+}
+
+.no-beans {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.empty-label {
+	font-size: 0.85rem;
+	opacity: 0.4;
+	margin: 0;
+	padding: 4px 0;
+
+	&.full-screen {
+		margin-top: 35vh;
+	}
 }
 </style>
