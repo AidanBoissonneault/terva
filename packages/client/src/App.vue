@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import AppBar from './components/AppBar/AppBar.vue'
-import PourOverLoader from './components/Utils/PourOverLoader.vue'
 import TabBar from './components/TabBar/TabBar.vue'
-import { useLoadingStore } from '@/stores/loading'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, provide, ref } from 'vue'
 import type { Bean } from '@terva/shared'
@@ -12,7 +10,6 @@ import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
 import { removeBean } from './api/removeBean'
 import { storeToRefs } from 'pinia'
 
-const loading = useLoadingStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -72,10 +69,6 @@ async function deleteSelectedBean() {
 		<Transition name="slide-out-bottom" mode="out-in">
 			<TabBar v-if="isActiveNavBarPage" />
 		</Transition>
-
-		<div v-if="loading.isRouteLoading" class="route-loading">
-			<PourOverLoader />
-		</div>
 	</div>
 
 	<FullscreenOverlay :is-visible="isWarnDeleteBean" @outside-clicked="isWarnDeleteBean = false; deletedBean = undefined">

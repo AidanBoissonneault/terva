@@ -1,0 +1,40 @@
+/* ── inline skeleton pieces (filter bar + section title) ── */
+@keyframes shimmer {
+	0%   { background-position: -200% center; }
+	100% { background-position:  200% center; }
+}
+
+.skel {
+	border-radius: 4px;
+	background: linear-gradient(
+		90deg,
+		oklch(from var(--neutral-700) l c h / 0.5) 25%,
+		oklch(from var(--neutral-600) l c h / 0.6) 50%,
+		oklch(from var(--neutral-700) l c h / 0.5) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.6s ease-in-out infinite;
+	height: 14px;
+}
+
+.skel-filter-label {
+	width: 90px;
+	height: 18px;
+}
+
+.skel-filter-btns {
+	display: flex;
+	gap: 8px;
+}
+
+.skel-filter-btn {
+	width: 68px;
+	height: 30px;
+	border-radius: 999px;
+}
+
+.skel-section-title {
+	width: 50px;
+	height: 13px;
+	margin-left: 4px;
+}

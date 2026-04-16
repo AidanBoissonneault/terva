@@ -3,24 +3,27 @@ User Dashboard
 Main screen of the app after login.
 
 CREATED: 17MAR2026
-LAST EDITED: 14APR2026
+LAST EDITED: 16APR2026
 By: Aidan Boisonneault
 -->
 
 <script setup lang="ts">
 import { getBeans } from '@/api/getBeans'
-import BeanCard from '@/components/BeanCard/BeanCard.vue'
-import HeroBeanCard from '@/components/BeanCard/HeroBeanCard.vue'
+import BeanCardSkeleton from '@/components/BeanCard/BeanCardSkeleton.vue'
 import FilterButton from '@/components/FilterButton/FilterButton.vue'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import { useLoadingStore } from '@/stores/loading'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue'
 import { type Bean, type BeanState, type Brew } from '@terva/shared'
 import { useRouter } from 'vue-router'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
 import { getRecentBrews } from '@/api/getRecentBrews'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import { TextMorph } from 'torph/vue'
+
+// Async components — required for <Suspense> to catch their setup promises
+const HeroBeanCard = defineAsyncComponent(() => import('@/components/BeanCard/HeroBeanCard.vue'))
+const BeanCard     = defineAsyncComponent(() => import('@/components/BeanCard/BeanCard.vue'))
 
 // for routing when a bean card is pressed
 const router = useRouter()
@@ -196,124 +199,163 @@ watch(
 <div class="dashboard">
   <div v-if="error">{{ error }}</div>
 
-  <template v-else-if="heroBean">
-    <!-- Hero -->
-    <HeroBeanCard
-      v-if="heroBean"
-      :bean="heroBean"
-      :brews="recentHeroBrews"
-      @clicked="routeToBeanInfo"
-      @brew-selected="quickAccessBrew"
-    />
-    <SectionSeperator v-if="heroBean" />
-		</template>
+  <!-- ── Loading skeletons (shown while isReady is false) ── -->
+  <template v-if="!isReady">
+    <!-- Hero skeleton -->
+    <BeanCardSkeleton :hero="true" style="grid-column: 1 / 5" />
+    <SectionSeperator style="grid-column: 1 / 5" />
 
-    <!-- Filter -->
-    <div class="filter-wrapper" v-if="!isReady || beans.length > 0">
-      <h5>
-        <TextMorph :text="morphFilterLabel" />
-      </h5>
-
-      <TransitionGroup name="filter" tag="div" class="filter-buttons">
-        <FilterButton
-          v-for="filter in visibleFilters"
-          :key="filter.name"
-          @filter="newFilter"
-          :type="filter.type"
-          :active-filter="activeFilter"
-        >
-          {{ filter.name }}
-        </FilterButton>
-      </TransitionGroup>
+    <!-- Filter bar skeleton -->
+    <div class="filter-wrapper" style="grid-column: 1 / 5">
+      <div class="skel skel-filter-label" />
+      <div class="skel-filter-btns">
+        <div class="skel skel-filter-btn" v-for="n in 3" :key="n" />
+      </div>
     </div>
 
-			<!--bean cards-->
-			<template v-if="beans">
-			<!--all beans (grouped)-->
-			<template v-if="!activeFilter">
-				<Transition
-					@before-enter="onBeforeEnter"
-					@enter="onEnter"
-					@after-enter="onAfterEnter"
-					@before-leave="onBeforeLeave"
-					@leave="onLeave"
-				>
-					<div class="bean-section" v-if="groupedBeans.fresh.length">
-						<h6 class="section-title">Fresh</h6>
-						<TransitionGroup name="beans" tag="div" class="bean-grid">
-							<BeanCard
-								v-for="(bean, i) in groupedBeans.fresh"
-								:key="bean.id"
-								:bean="bean"
-								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-								@clicked="routeToBeanInfo"
-							/>
-						</TransitionGroup>
-					</div>
-				</Transition>
+    <!-- Bean card skeletons (3 placeholder cards) -->
+    <div class="bean-section" style="grid-column: 1 / 5">
+      <div class="skel skel-section-title" />
+      <div class="bean-grid">
+        <BeanCardSkeleton v-for="n in 3" :key="n" />
+      </div>
+    </div>
+  </template>
 
-				<Transition
-					@before-enter="onBeforeEnter"
-					@enter="onEnter"
-					@after-enter="onAfterEnter"
-					@before-leave="onBeforeLeave"
-					@leave="onLeave"
-				>
-					<div class="bean-section" v-if="groupedBeans.frozen.length">
-						<h6 class="section-title">Frozen</h6>
-						<TransitionGroup name="beans" tag="div" class="bean-grid">
-							<BeanCard
-								v-for="(bean, i) in groupedBeans.frozen"
-								:key="bean.id"
-								:bean="bean"
-								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-								@clicked="routeToBeanInfo"
-							/>
-						</TransitionGroup>
-					</div>
-				</Transition>
+  <!-- ── Hero bean ── -->
+  <template v-else-if="heroBean">
+    <Suspense>
+      <HeroBeanCard
+        :bean="heroBean"
+        :brews="recentHeroBrews"
+        @clicked="routeToBeanInfo"
+        @brew-selected="quickAccessBrew"
+      />
+      <template #fallback>
+        <BeanCardSkeleton :hero="true" style="grid-column: 1 / 5" />
+      </template>
+    </Suspense>
+    <SectionSeperator />
+  </template>
 
-				<Transition
-					@before-enter="onBeforeEnter"
-					@enter="onEnter"
-					@after-enter="onAfterEnter"
-					@before-leave="onBeforeLeave"
-					@leave="onLeave"
-				>
-					<div class="bean-section" v-if="groupedBeans.finished.length">
-						<h6 class="section-title">Finished</h6>
-						<TransitionGroup name="beans" tag="div" class="bean-grid">
-							<BeanCard
-								v-for="(bean, i) in groupedBeans.finished"
-								:key="bean.id"
-								:bean="bean"
-								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-								@clicked="routeToBeanInfo"
-							/>
-						</TransitionGroup>
-					</div>
-				</Transition>
-			</template>
+  <!-- Filter -->
+  <div class="filter-wrapper" v-if="isReady && (!beans || beans.length > 0)">
+    <h5>
+      <TextMorph :text="morphFilterLabel" />
+    </h5>
 
-			<!--filtered beans (flat, no title)-->
-			<template v-else>
-				<TransitionGroup name="beans" tag="div" class="bean-grid full-width">
-					<BeanCard
-						v-for="(bean, i) in groupedBeans[activeFilter]"
-						:key="bean.id"
-						:bean="bean"
-						:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-						@clicked="routeToBeanInfo"
-					/>
-				</TransitionGroup>
-			</template>
-		</template>
-	</div>
+    <TransitionGroup name="filter" tag="div" class="filter-buttons">
+      <FilterButton
+        v-for="filter in visibleFilters"
+        :key="filter.name"
+        @filter="newFilter"
+        :type="filter.type"
+        :active-filter="activeFilter"
+      >
+        {{ filter.name }}
+      </FilterButton>
+    </TransitionGroup>
+  </div>
 
-	<div class="no-beans" v-if="isReady">
-		<span class="empty-label full-screen" v-if="!heroBean">No beans added yet. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to get started!</span>
-		<span class="empty-label" v-else-if="!beans.length">No more beans. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to add more!</span>
-	</div>
+  <!-- bean cards -->
+  <template v-if="isReady && beans">
+    <!-- all beans (grouped) -->
+    <template v-if="!activeFilter">
+      <Transition
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+      >
+        <div class="bean-section" v-if="groupedBeans.fresh.length">
+          <h6 class="section-title">Fresh</h6>
+          <TransitionGroup name="beans" tag="div" class="bean-grid">
+            <Suspense v-for="(bean, i) in groupedBeans.fresh" :key="bean.id">
+              <BeanCard
+                :bean="bean"
+                :style="{ transitionDelay: `${Number(i) * 60}ms` }"
+                @clicked="routeToBeanInfo"
+              />
+              <template #fallback>
+                <BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+              </template>
+            </Suspense>
+          </TransitionGroup>
+        </div>
+      </Transition>
+
+      <Transition
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+      >
+        <div class="bean-section" v-if="groupedBeans.frozen.length">
+          <h6 class="section-title">Frozen</h6>
+          <TransitionGroup name="beans" tag="div" class="bean-grid">
+            <Suspense v-for="(bean, i) in groupedBeans.frozen" :key="bean.id">
+              <BeanCard
+                :bean="bean"
+                :style="{ transitionDelay: `${Number(i) * 60}ms` }"
+                @clicked="routeToBeanInfo"
+              />
+              <template #fallback>
+                <BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+              </template>
+            </Suspense>
+          </TransitionGroup>
+        </div>
+      </Transition>
+
+      <Transition
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+      >
+        <div class="bean-section" v-if="groupedBeans.finished.length">
+          <h6 class="section-title">Finished</h6>
+          <TransitionGroup name="beans" tag="div" class="bean-grid">
+            <Suspense v-for="(bean, i) in groupedBeans.finished" :key="bean.id">
+              <BeanCard
+                :bean="bean"
+                :style="{ transitionDelay: `${Number(i) * 60}ms` }"
+                @clicked="routeToBeanInfo"
+              />
+              <template #fallback>
+                <BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+              </template>
+            </Suspense>
+          </TransitionGroup>
+        </div>
+      </Transition>
+    </template>
+
+    <!-- filtered beans (flat, no title) -->
+    <template v-else>
+      <TransitionGroup name="beans" tag="div" class="bean-grid full-width">
+        <Suspense v-for="(bean, i) in groupedBeans[activeFilter]" :key="bean.id">
+          <BeanCard
+            :bean="bean"
+            :style="{ transitionDelay: `${Number(i) * 60}ms` }"
+            @clicked="routeToBeanInfo"
+          />
+          <template #fallback>
+            <BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+          </template>
+        </Suspense>
+      </TransitionGroup>
+    </template>
+  </template>
+</div>
+
+<div class="no-beans" v-if="isReady">
+  <span class="empty-label full-screen" v-if="!heroBean">No beans added yet. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to get started!</span>
+  <span class="empty-label" v-else-if="!beans.length">No more beans. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to add more!</span>
+</div>
 </template>
 
 <style scoped>
