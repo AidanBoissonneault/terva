@@ -1,0 +1,1 @@
+import{z as a}from"./index-D-_CL9Ve.js";const s=async()=>{try{const{data:r}=await a.get("/api/gear");return{success:!0,payload:r}}catch(r){return{success:!1,error:r instanceof Error?r.message:"Unknown error"}}};export{s as g};
