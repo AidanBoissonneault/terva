@@ -78,42 +78,6 @@ function newFilter(type: BeanState | null) {
 	activeFilter.value = type
 }
 
-// for animating section height smoothly (0 → auto)
-function onBeforeEnter(el: Element) {
-	const element = el as HTMLElement
-	element.style.height = '0'
-	element.style.opacity = '0'
-}
-
-function onEnter(el: Element) {
-	const element = el as HTMLElement
-	const height = element.scrollHeight
-
-	element.style.transition = 'height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.2s ease'
-	element.style.height = height + 'px'
-	element.style.opacity = '1'
-}
-
-function onAfterEnter(el: Element) {
-	const element = el as HTMLElement
-	element.style.height = 'auto'
-}
-
-function onBeforeLeave(el: Element) {
-	const element = el as HTMLElement
-	element.style.height = element.scrollHeight + 'px'
-}
-
-function onLeave(el: Element) {
-	const element = el as HTMLElement
-
-	void element.offsetHeight
-
-	element.style.transition = 'height 0.2s ease, opacity 0.15s ease'
-	element.style.height = '0'
-	element.style.opacity = '0'
-}
-
 // ran when the component is mounted to DOM
 onMounted(async () => {
 	// start loading screen
@@ -245,13 +209,6 @@ watch(
 		<template v-if="isReady && beans">
 			<!-- all beans (grouped) -->
 			<template v-if="!activeFilter">
-				<Transition
-					@before-enter="onBeforeEnter"
-					@enter="onEnter"
-					@after-enter="onAfterEnter"
-					@before-leave="onBeforeLeave"
-					@leave="onLeave"
-				>
 					<div class="bean-section" v-if="groupedBeans.fresh.length">
 						<h6 class="section-title">Fresh</h6>
 						<TransitionGroup name="beans" tag="div" class="bean-grid">
@@ -267,15 +224,7 @@ watch(
 							</Suspense>
 						</TransitionGroup>
 					</div>
-				</Transition>
 
-				<Transition
-					@before-enter="onBeforeEnter"
-					@enter="onEnter"
-					@after-enter="onAfterEnter"
-					@before-leave="onBeforeLeave"
-					@leave="onLeave"
-				>
 					<div class="bean-section" v-if="groupedBeans.frozen.length">
 						<h6 class="section-title">Frozen</h6>
 						<TransitionGroup name="beans" tag="div" class="bean-grid">
@@ -291,15 +240,7 @@ watch(
 							</Suspense>
 						</TransitionGroup>
 					</div>
-				</Transition>
 
-				<Transition
-					@before-enter="onBeforeEnter"
-					@enter="onEnter"
-					@after-enter="onAfterEnter"
-					@before-leave="onBeforeLeave"
-					@leave="onLeave"
-				>
 					<div class="bean-section" v-if="groupedBeans.finished.length">
 						<h6 class="section-title">Finished</h6>
 						<TransitionGroup name="beans" tag="div" class="bean-grid">
@@ -315,11 +256,10 @@ watch(
 							</Suspense>
 						</TransitionGroup>
 					</div>
-				</Transition>
 			</template>
 
 			<!-- filtered beans (flat, no title) -->
-			<template v-else>
+			<template v-else-if="beans.length">
 				<TransitionGroup name="beans" tag="div" class="bean-grid full-width">
 					<Suspense v-for="(bean, i) in groupedBeans[activeFilter]" :key="bean.id">
 						<BeanCard
