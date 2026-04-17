@@ -126,9 +126,4 @@ defineProps<{
 	height: 32px;
 	border-radius: var(--pico-border-radius);
 }
-
-/* ── hero variant is slightly taller via the extra buttons ── */
-.bean-card-skeleton.hero {
-	/* no extra styles needed — the button row handles the height */
-}
 </style>

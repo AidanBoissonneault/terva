@@ -41,6 +41,7 @@ router.get('/', requireAuth, async (req, res) => {
 			FROM brews b2
 			JOIN recipes r2 ON r2.id = b2.recipe_id
 			WHERE b2.user = b.user
+			AND b2.bean_id = bn.id
 			AND b2.closeness = 'success'
 			AND r2.brew_method = r.brew_method
 		)
