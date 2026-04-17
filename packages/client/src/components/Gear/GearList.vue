@@ -57,7 +57,7 @@ function toggleExpand(id: number) {
 		<!-- Section header -->
 		<div class="section-header apart">
 			<h4 class="section-title">{{ prettyCategory }}</h4>
-			<button class="glass" @click="emits('createNewGear', type)">+ Add</button>
+			<button class="glass small" @click="emits('createNewGear', type)">+ Add</button>
 		</div>
 
 		<!-- Empty state -->

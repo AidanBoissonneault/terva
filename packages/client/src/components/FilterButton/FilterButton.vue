@@ -16,7 +16,7 @@ const isActiveFilter = computed(() => props.type === props.activeFilter)
 <template>
 	<button
 		@click="emit('filter', type)"
-		class="glass"
+		class="glass small"
 		:class="{ contrast: isActiveFilter, underline: isActiveFilter }"
 	>
 		<slot />
@@ -24,12 +24,6 @@ const isActiveFilter = computed(() => props.type === props.activeFilter)
 </template>
 
 <style scoped>
-button {
-	margin: 0 0 0 4px;
-	padding: 0 4px;
-	border-radius: 4px;
-}
-
 .underline {
 	text-decoration: underline;
 }

@@ -57,6 +57,12 @@ button.glass {
 		padding: 4px;
 	}
 
+	&.small {
+		margin: 0 0 0 4px;
+		padding: 0 4px;
+		border-radius: 4px;
+	}
+
 	&.secondary {
 		--color: var(--pico-secondary-background);
 	}

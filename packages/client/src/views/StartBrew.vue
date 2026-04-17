@@ -143,6 +143,7 @@ function finishLater() {
 				<button class="glass secondary" @click="skipRecipe">Skip</button>
 				<button class="glass" @click="goBrewWith">Brew with</button>
 			</div>
+			<button class="glass secondary" @click="overlayStep = 'none'" style="width: 100%;">Cancel</button>
 		</div>
 	</FullscreenOverlay>
 

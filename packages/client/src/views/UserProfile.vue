@@ -105,6 +105,10 @@ async function handleDeleteAccount() {
 
 	showDeleteConfirm.value = false
 }
+
+function openBugReport() {
+  window.open('https://docs.google.com/forms/d/e/1FAIpQLSd0uz4nGo7I1Sqkdk3qoS6d6NMo1UJcHALxOaReXSMTEm99Ow/viewform?usp=dialog', '_blank', 'noopener,noreferrer')
+}
 </script>
 
 <template>
@@ -213,6 +217,20 @@ async function handleDeleteAccount() {
 				</div>
 			</article>
 
+			<small class="section-label">Policies</small>
+
+			<article class="account-card">
+				<RouterLink to="terms">Terms and Conditions</RouterLink>
+				<hr />
+				<RouterLink to="privacy">Privacy Policy</RouterLink>
+				<hr />
+				<RouterLink to="cookies">Cookies Policy</RouterLink>
+			</article>
+
+			<small class="section-label">Feedback</small>
+			<article class="account-card">
+				<a @click.prevent="openBugReport">Report a bug</a>
+			</article>
 		</template>
 
 		<FullscreenOverlay :is-visible="showDeleteConfirm" @outside-clicked="cancelDelete">

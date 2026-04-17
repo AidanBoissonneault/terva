@@ -12,7 +12,7 @@ const tabs = <TabButton[]>[
 	{ icon: 'house', route: 'dashboard' },
 	{ icon: 'screwdriver-wrench', route: 'gear' },
 	{ icon: 'scroll', route: 'recipe' },
-	{ icon: 'bars', route: 'more' },
+	{ icon: 'user', route: 'profile' },
 ]
 
 const tabLength = tabs.length

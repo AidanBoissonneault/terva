@@ -162,7 +162,7 @@ async function confirmDelete() {
 		<span class="delete-title">Delete "{{ deleteTargetName }}"?</span>
 		<p class="delete-warning">This will permanently remove the gear item.</p>
 		<div class="delete-actions">
-			<button class="glass delete-confirm" @click="confirmDelete">Delete</button>
+			<button class="glass danger" @click="confirmDelete">Delete</button>
 			<button class="glass contrast" @click="cancelDelete">Cancel</button>
 		</div>
 	</FullscreenOverlay>
@@ -217,11 +217,5 @@ async function confirmDelete() {
 
 .delete-actions button {
 	flex: 1;
-}
-
-.delete-confirm {
-	background-color: oklch(from var(--red-600) l c h / 0.85);
-	border-color: oklch(from var(--red-400) l c h / 0.5);
-	color: #fff;
 }
 </style>
