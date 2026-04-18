@@ -3,7 +3,7 @@ Login View
 Used when a user is logging into Terva
 
 CREATED ON: 04APR2026
-LAST EDITED: 04APR2026
+LAST EDITED: 17APR2026
 By: Aidan Boissonneault
 -->
 
@@ -63,6 +63,8 @@ async function handleLogin() {
 			</button>
 
 			<footer>
+				<RouterLink to="/forgot-password" class="forgot-link">forgot password?</RouterLink>
+				<span class="separator">·</span>
 				no account? <RouterLink to="/register">register</RouterLink>
 			</footer>
 		</article>
@@ -109,5 +111,9 @@ footer {
 	text-align: center;
 	font-size: 0.875rem;
 	color: var(--pico-muted-color);
+}
+
+.separator {
+	margin: 0 0.4em;
 }
 </style>

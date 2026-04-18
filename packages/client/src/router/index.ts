@@ -10,6 +10,8 @@ const router = createRouter({
 	routes: [
 		{ path: '/login', name: 'login', component: () => import('@/views/LoginView.vue') },
 		{ path: '/register', name: 'register', component: () => import('@/views/RegisterView.vue') },
+		{ path: '/forgot-password', name: 'forgotpassword', component: () => import('@/views/ForgotPassword.vue') },
+		{ path: '/reset-password', name: 'resetpassword', component: () => import('@/views/ResetPassword.vue') },
 
 		{ path: '/', name: 'dashboard', component: UserDashboard, meta: { requiresAuth: true } },
 		{ path: '/bean', name: 'beaninfo', component: () => import('@/views/UserBeanInfo.vue'), meta: { requiresAuth: true }},

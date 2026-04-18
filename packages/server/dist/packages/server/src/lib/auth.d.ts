@@ -11,6 +11,11 @@ export declare const auth: import("better-auth").Auth<{
     emailAndPassword: {
         enabled: true;
         requireEmailVerification: false;
+        sendResetPassword: ({ user, url }: {
+            user: import("better-auth").User;
+            url: string;
+            token: string;
+        }) => Promise<void>;
     };
     trustedOrigins: string[];
     session: {

@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth';
 import connection from '../db/connection.js';
+import { sendPasswordResetEmail } from '../../../email/src/emails/sendPasswordResetEmail.js';
 export const auth = betterAuth({
     database: connection,
     advanced: {
@@ -13,6 +14,9 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: false, //change later
+        sendResetPassword: async ({ user, url }) => {
+            await sendPasswordResetEmail(user.email, url);
+        },
     },
     trustedOrigins: [
         'http://localhost:5173',

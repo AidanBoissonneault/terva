@@ -22,7 +22,7 @@ const initials = computed(() => {
 	if (!profile.value?.name) return '?'
 	return profile.value.name
 		.split(' ')
-		.map(w => w[0])
+		.map((w) => w[0])
 		.join('')
 		.slice(0, 2)
 		.toUpperCase()
@@ -36,15 +36,28 @@ const memberSince = computed(() => {
 	})
 })
 
-const totalBrews = computed(() =>
-	(profile.value?.closeness.success ?? 0) +
-	(profile.value?.closeness.close ?? 0) +
-	(profile.value?.closeness.miss ?? 0)
+const totalBrews = computed(
+	() =>
+		(profile.value?.closeness.success ?? 0) +
+		(profile.value?.closeness.close ?? 0) +
+		(profile.value?.closeness.miss ?? 0),
 )
 
-const successWidth = computed(() => totalBrews.value ? Math.round(((profile.value?.closeness.success ?? 0) / totalBrews.value) * 100) + '%' : '0%')
-const closeWidth = computed(() => totalBrews.value ? Math.round(((profile.value?.closeness.close ?? 0) / totalBrews.value) * 100) + '%' : '0%')
-const missWidth = computed(() => totalBrews.value ? Math.round(((profile.value?.closeness.miss ?? 0) / totalBrews.value) * 100) + '%' : '0%')
+const successWidth = computed(() =>
+	totalBrews.value
+		? Math.round(((profile.value?.closeness.success ?? 0) / totalBrews.value) * 100) + '%'
+		: '0%',
+)
+const closeWidth = computed(() =>
+	totalBrews.value
+		? Math.round(((profile.value?.closeness.close ?? 0) / totalBrews.value) * 100) + '%'
+		: '0%',
+)
+const missWidth = computed(() =>
+	totalBrews.value
+		? Math.round(((profile.value?.closeness.miss ?? 0) / totalBrews.value) * 100) + '%'
+		: '0%',
+)
 
 onMounted(async () => {
 	const loading = useLoadingStore()
@@ -107,7 +120,11 @@ async function handleDeleteAccount() {
 }
 
 function openBugReport() {
-  window.open('https://docs.google.com/forms/d/e/1FAIpQLSd0uz4nGo7I1Sqkdk3qoS6d6NMo1UJcHALxOaReXSMTEm99Ow/viewform?usp=dialog', '_blank', 'noopener,noreferrer')
+	window.open(
+		'https://docs.google.com/forms/d/e/1FAIpQLSd0uz4nGo7I1Sqkdk3qoS6d6NMo1UJcHALxOaReXSMTEm99Ow/viewform?usp=dialog',
+		'_blank',
+		'noopener,noreferrer',
+	)
 }
 </script>
 
@@ -116,7 +133,6 @@ function openBugReport() {
 		<div v-if="error">{{ error }}</div>
 
 		<template v-else-if="profile">
-
 			<div class="hero-card">
 				<div class="avatar-row">
 					<div class="avatar">{{ initials }}</div>
@@ -186,7 +202,9 @@ function openBugReport() {
 			</div>
 
 			<article v-if="profile.totalDoseG > 0" class="fun-stat terva-card">
-				<p><strong>{{ profile.totalDoseG }}g</strong> of coffee ground across all your brews</p>
+				<p>
+					<strong>{{ profile.totalDoseG }}g</strong> of coffee ground across all your brews
+				</p>
 			</article>
 
 			<SectionSeperator />
@@ -236,7 +254,9 @@ function openBugReport() {
 		<FullscreenOverlay :is-visible="showDeleteConfirm" @outside-clicked="cancelDelete">
 			<div class="confirm-content">
 				<p><strong>Delete account?</strong></p>
-				<small>This permanently removes your account and all brew data. This cannot be undone.</small>
+				<small
+					>This permanently removes your account and all brew data. This cannot be undone.</small
+				>
 
 				<p v-if="deleteError" class="error-msg">{{ deleteError }}</p>
 
@@ -264,12 +284,10 @@ function openBugReport() {
 				</div>
 			</div>
 		</FullscreenOverlay>
-
 	</div>
 </template>
 
 <style scoped>
-
 article {
 	padding: 12px;
 }
@@ -285,7 +303,7 @@ article {
 .hero-card {
 	/* to avoid ios clipping */
 	transform: translateZ(0);
-  will-change: transform;
+	will-change: transform;
 
 	grid-column: 1 / 5;
 	border-radius: var(--pico-border-radius);
@@ -297,9 +315,27 @@ article {
 
 	background:
 		linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)) border-box,
-		radial-gradient(ellipse 80% 100% at 15% 40%, var(--brand-700) 0%, var(--brand-700) 30%, transparent 80%) padding-box,
-		radial-gradient(ellipse 75% 110% at 50% 55%, var(--brand-800) 0%, var(--brand-800) 30%, transparent 80%) padding-box,
-		radial-gradient(ellipse 85% 100% at 80% 30%, var(--brand-900) 0%, var(--brand-900) 30%, transparent 80%) padding-box;
+		radial-gradient(
+				ellipse 80% 100% at 15% 40%,
+				var(--brand-700) 0%,
+				var(--brand-700) 30%,
+				transparent 80%
+			)
+			padding-box,
+		radial-gradient(
+				ellipse 75% 110% at 50% 55%,
+				var(--brand-800) 0%,
+				var(--brand-800) 30%,
+				transparent 80%
+			)
+			padding-box,
+		radial-gradient(
+				ellipse 85% 100% at 80% 30%,
+				var(--brand-900) 0%,
+				var(--brand-900) 30%,
+				transparent 80%
+			)
+			padding-box;
 	background-color: var(--brand-900);
 
 	border: 2px inset oklch(from var(--brand-700) l c h / 0.2);
@@ -307,6 +343,11 @@ article {
 		0 4px 6px oklch(from var(--terva-shadow) l c h / 0.6),
 		0 6px 12px oklch(from var(--brand-700) l c h / 0.28),
 		0 12px 24px oklch(from var(--brand-900) l c h / 0.22);
+
+	&hr {
+		border-color: oklch(from var(--terva-highlight) l c h / 0.15);
+		margin: 14px 0;
+	}
 }
 
 .avatar-row {
@@ -337,15 +378,14 @@ article {
 	margin: 0;
 }
 
-.hero-card hr {
-	border-color: oklch(from var(--terva-highlight) l c h / 0.15);
-	margin: 14px 0;
-}
-
 .brew-count-row {
 	display: flex;
 	align-items: baseline;
 	gap: 6px;
+
+	&small {
+		color: oklch(from var(--brand-200) l c h / 0.8);
+	}
 }
 
 .brew-count-num {
@@ -353,10 +393,6 @@ article {
 	font-weight: 500;
 	color: #fff;
 	line-height: 1;
-}
-
-.brew-count-row small {
-	color: oklch(from var(--brand-200) l c h / 0.8);
 }
 
 .section-label {
@@ -425,47 +461,46 @@ article {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 10px;
-}
 
-.stats-grid article {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	margin: 0;
-}
+	&article {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		margin: 0;
 
-.stats-grid article p {
-	font-size: 0.95rem;
-	font-weight: 500;
-	margin: 0;
-	line-height: 1.3;
+		&p {
+			font-size: 0.95rem;
+			font-weight: 500;
+			margin: 0;
+			line-height: 1.3;
+		}
+	}
 }
 
 .fun-stat {
 	grid-column: 1 / 5;
 	margin: 0;
-}
 
-.fun-stat p {
-	margin: 0;
-	font-size: 0.9rem;
+	&p {
+		font-size: 0.9rem;
+	}
 }
 
 .account-card {
 	grid-column: 1 / 5;
+
+	&hr {
+		margin: 4px 0;
+	}
 }
 
 .account-row {
 	padding: 4px 0;
-}
 
-.account-row p {
-	margin: 0;
-	font-size: 0.9rem;
-}
-
-.account-card hr {
-	margin: 4px 0;
+	&p {
+		margin: 0;
+		font-size: 0.9rem;
+	}
 }
 
 .danger-hr {
@@ -485,15 +520,15 @@ a.danger.muted {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-}
 
-.confirm-content strong {
-	color: var(--pico-primary-inverse);
-}
+	&strong {
+		color: var(--pico-primary-inverse);
+	}
 
-.confirm-content label {
-	color: var(--pico-primary-inverse);
-	font-size: 0.875rem;
+	&label {
+		color: var(--pico-primary-inverse);
+		font-size: 0.875rem;
+	}
 }
 
 .confirm-actions {
