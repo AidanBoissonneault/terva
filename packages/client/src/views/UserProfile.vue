@@ -136,7 +136,7 @@ function openBugReport() {
 
 			<small class="section-label">How it's going</small>
 
-			<article class="closeness-card">
+			<article class="closeness-card terva-card">
 				<div class="closeness-row">
 					<small class="cl-label">Success</small>
 					<div class="cl-bar-bg">
@@ -163,29 +163,29 @@ function openBugReport() {
 			<small class="section-label">Favourites</small>
 
 			<div class="stats-grid">
-				<article v-if="profile.favouriteMethod">
+				<article v-if="profile.favouriteMethod" class="terva-card">
 					<small>Brew method</small>
 					<p>{{ profile.favouriteMethod }}</p>
 					<small>{{ profile.favouriteMethodCount }} times</small>
 				</article>
-				<article v-if="profile.favouriteBean">
+				<article v-if="profile.favouriteBean" class="terva-card">
 					<small>Bean</small>
 					<p>{{ profile.favouriteBean }}</p>
 					<small>{{ profile.favouriteBeanRoaster }}</small>
 				</article>
-				<article v-if="profile.favouriteGrinder">
+				<article v-if="profile.favouriteGrinder" class="terva-card">
 					<small>Grinder</small>
 					<p>{{ profile.favouriteGrinder }}</p>
 					<small>{{ profile.favouriteGrinderCount }} uses</small>
 				</article>
-				<article v-if="profile.favouriteBrewer">
+				<article v-if="profile.favouriteBrewer" class="terva-card">
 					<small>Brewer</small>
 					<p>{{ profile.favouriteBrewer }}</p>
 					<small>{{ profile.favouriteBrewerCount }} uses</small>
 				</article>
 			</div>
 
-			<article v-if="profile.totalDoseG > 0" class="fun-stat">
+			<article v-if="profile.totalDoseG > 0" class="fun-stat terva-card">
 				<p><strong>{{ profile.totalDoseG }}g</strong> of coffee ground across all your brews</p>
 			</article>
 
@@ -193,7 +193,7 @@ function openBugReport() {
 
 			<small class="section-label">Account</small>
 
-			<article class="account-card">
+			<article class="account-card terva-card">
 				<div class="account-row">
 					<small>Name</small>
 					<p>{{ profile.name }}</p>
@@ -219,7 +219,7 @@ function openBugReport() {
 
 			<small class="section-label">Policies</small>
 
-			<article class="account-card">
+			<article class="account-card terva-card">
 				<RouterLink to="terms">Terms and Conditions</RouterLink>
 				<hr />
 				<RouterLink to="privacy">Privacy Policy</RouterLink>
@@ -228,7 +228,7 @@ function openBugReport() {
 			</article>
 
 			<small class="section-label">Feedback</small>
-			<article class="account-card">
+			<article class="account-card terva-card">
 				<a @click.prevent="openBugReport">Report a bug</a>
 			</article>
 		</template>
