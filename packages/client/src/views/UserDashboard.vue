@@ -187,7 +187,7 @@ watch(
 		</template>
 
 		<!-- Filter -->
-		<div class="filter-wrapper">
+		<div class="filter-wrapper" v-if="!isReady || beans.length > 0">
 			<h5>
 				<TextMorph :text="morphFilterLabel" />
 			</h5>
