@@ -65,6 +65,7 @@ function toggleExpand(id: number) {
 			<TervaCardSkeleton v-for="i in 2" :key="i" />
 		</template>
 		<template v-else-if="gears?.length === 0">
+			<!-- empty state -->
 			<p class="empty-label">No {{ prettyCategory.toLowerCase() }} added yet.</p>
 		</template>
 		<template v-else>

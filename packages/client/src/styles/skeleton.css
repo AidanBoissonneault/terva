@@ -1,4 +1,4 @@
-/* ── inline skeleton pieces (filter bar + section title) ── */
+/*  inline skeleton pieces (filter bar + section title)  */
 @keyframes shimmer {
 	0%   { background-position: -200% center; }
 	100% { background-position:  200% center; }

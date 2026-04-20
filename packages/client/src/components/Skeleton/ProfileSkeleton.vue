@@ -69,7 +69,7 @@ By: Aidan Boissonneault
 </template>
 
 <style scoped>
-/* ── shimmer ── */
+/*  shimmer  */
 @keyframes shimmer {
 	0%   { background-position: -200% center; }
 	100% { background-position:  200% center; }
@@ -88,7 +88,7 @@ By: Aidan Boissonneault
 	height: 14px;
 }
 
-/* ── hero card ── */
+/*  hero card  */
 /* reuses the exact .hero-card class from UserProfile so it's pixel-matched */
 .hero-card-skeleton {
 	grid-column: span 4;
@@ -123,7 +123,7 @@ By: Aidan Boissonneault
 	margin-top: 2px;
 }
 
-/* ── section label ── */
+/*  section label  */
 .skel-section-label {
 	grid-column: span 4;
 	width: 80px;
@@ -140,7 +140,7 @@ By: Aidan Boissonneault
 	animation: shimmer 1.6s ease-in-out infinite;
 }
 
-/* ── closeness card ── */
+/*  closeness card  */
 /* reuses .closeness-card and .terva-card from UserProfile */
 .closeness-row {
 	display: flex;
@@ -157,7 +157,7 @@ By: Aidan Boissonneault
 .skel-cl-bar   { flex: 1; height: 10px; border-radius: 999px; }
 .skel-cl-count { width: 20px; flex-shrink: 0; }
 
-/* ── stats grid ── */
+/*  stats grid  */
 /* mirrors .stats-grid from UserProfile */
 .stats-grid {
 	grid-column: span 4;
@@ -177,7 +177,7 @@ By: Aidan Boissonneault
 .skel-tile-value { width: 75%; height: 18px; }
 .skel-tile-sub   { width: 45%; height: 11px; }
 
-/* ── fun stat card ── */
+/*  fun stat card  */
 .fun-stat-skel {
 	grid-column: span 4;
 	display: flex;
@@ -188,7 +188,7 @@ By: Aidan Boissonneault
 .skel-fun-line-a { width: 80%; }
 .skel-fun-line-b { width: 55%; }
 
-/* ── account card ── */
+/*  account card  */
 .account-row-skel {
 	display: flex;
 	flex-direction: column;

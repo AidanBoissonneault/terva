@@ -54,7 +54,7 @@ defineProps<{
 	justify-content: center;
 }
 
-/* ── shimmer base ── */
+/*  shimmer base  */
 @keyframes shimmer {
 	0%   { background-position: -200% center; }
 	100% { background-position:  200% center; }
@@ -73,7 +73,7 @@ defineProps<{
 	height: 14px;
 }
 
-/* ── layout ── */
+/*  layout  */
 .skel-header {
 	display: flex;
 	align-items: center;

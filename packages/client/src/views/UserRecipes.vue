@@ -7,9 +7,12 @@ import { editRecipe } from '@/api/editRecipe'
 import RecipeCard from '@/components/Recipe/RecipeCard.vue'
 import RecipeForm from '@/components/Recipe/RecipeForm.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
+import TervaCardSkeleton from '@/components/Skeleton/TervaCardSkeleton.vue'
 import { useLoadingStore } from '@/stores/loading'
 import type { Recipe } from '@terva/shared'
 import type { AddRecipeForm } from '@/api/addRecipe'
+
+const loading = useLoadingStore()
 
 const router = useRouter()
 
@@ -45,7 +48,6 @@ const filteredRecipes = computed(() => {
 })
 
 onMounted(async () => {
-	const loading = useLoadingStore()
 	loading.start()
 	try {
 		const result = await getRecipes()
@@ -142,10 +144,18 @@ async function handleEditSubmit() {
 		<p v-if="error" class="error">{{ error }}</p>
 
 		<!-- Empty state -->
-		<div v-if="!error && filteredRecipes.length === 0" class="empty-state">
-			<p v-if="search">No recipes match "{{ search }}".</p>
+		 <template v-if="loading.isRouteLoading">
+			<!-- still loading -->
+			<TervaCardSkeleton v-for="i in 3" :key="i" :height="92" :lines="3"/>
+		</template>
+		<template v-if="!error && filteredRecipes.length === 0">
+			<!-- empty state -->
+			<div  class="empty-state">
+				<p v-if="search">No recipes match "{{ search }}".</p>
 			<p v-else>No recipes yet. Add your first one!</p>
-		</div>
+			</div>
+		</template>
+		<template v-else>
 
 		<!-- Recipe cards -->
 		<RecipeCard
@@ -155,6 +165,7 @@ async function handleEditSubmit() {
 			@delete-requested="requestDelete"
 			@edit-requested="requestEdit"
 		/>
+		</template>
 	</div>
 
 	<!-- Delete confirmation overlay -->

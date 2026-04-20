@@ -52,7 +52,7 @@ defineProps<{
 </template>
 
 <style scoped>
-/* ── card shell ── */
+/*  card shell  */
 .bean-card-skeleton {
 	grid-column: 1 / 5;
 	border-radius: var(--pico-border-radius);
@@ -66,13 +66,13 @@ defineProps<{
 		0 1px 0 oklch(1 0 0 / 0.06) inset;
 }
 
-/* ── shimmer keyframe ── */
+/*  shimmer keyframe  */
 @keyframes shimmer {
 	0%   { background-position: -200% center; }
 	100% { background-position:  200% center; }
 }
 
-/* ── shared skeleton piece ── */
+/*  shared skeleton piece  */
 .skel {
 	border-radius: 4px;
 	background: linear-gradient(
@@ -86,7 +86,7 @@ defineProps<{
 	height: 14px;
 }
 
-/* ── layout helpers ── */
+/*  layout helpers  */
 .skeleton-row {
 	display: flex;
 	align-items: center;
@@ -99,7 +99,7 @@ defineProps<{
 .mt-xs { margin-top: 6px; }
 .mt-sm { margin-top: 12px; }
 
-/* ── individual piece sizes ── */
+/*  individual piece sizes  */
 .skel-name    { width: 55%; height: 20px; }
 .skel-badge   { width: 52px; height: 20px; border-radius: 999px; }
 .skel-roast   { width: 25%; }
@@ -115,7 +115,7 @@ defineProps<{
 .skel-line-mid   { width: 60%; }
 .skel-line-short { width: 40%; }
 
-/* ── hero quick-access buttons ── */
+/*  hero quick-access buttons  */
 .skel-btn-row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;

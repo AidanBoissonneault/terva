@@ -153,14 +153,14 @@ watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value 
 	<div class="dashboard">
 		<div v-if="error">{{ error }}</div>
 
-		<!-- ── Loading skeletons (shown while isReady is false) ── -->
+		<!--  Loading skeletons (shown while isReady is false)  -->
 		<template v-if="!isReady">
 			<!-- Hero skeleton -->
 			<BeanCardSkeleton :hero="true" />
 			<SectionSeperator />
 		</template>
 
-		<!-- ── Hero bean ── -->
+		<!--  Hero bean  -->
 		<template v-else-if="heroBean">
 			<Suspense>
 				<HeroBeanCard
