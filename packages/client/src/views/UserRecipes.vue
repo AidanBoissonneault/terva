@@ -148,7 +148,7 @@ async function handleEditSubmit() {
 			<!-- still loading -->
 			<TervaCardSkeleton v-for="i in 3" :key="i" :height="92" :lines="3"/>
 		</template>
-		<template v-if="!error && filteredRecipes.length === 0">
+		<template v-else-if="!error && filteredRecipes.length === 0">
 			<!-- empty state -->
 			<div  class="empty-state">
 				<p v-if="search">No recipes match "{{ search }}".</p>

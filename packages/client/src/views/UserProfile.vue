@@ -7,7 +7,10 @@ import { useLoadingStore } from '@/stores/loading'
 import { invalidateSessionCache } from '@/router'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
+import ProfileSkeleton from '@/components/Skeleton/ProfileSkeleton.vue'
 import type { UserProfile } from '@terva/shared'
+
+const loading = useLoadingStore()
 
 const router = useRouter()
 
@@ -60,7 +63,6 @@ const missWidth = computed(() =>
 )
 
 onMounted(async () => {
-	const loading = useLoadingStore()
 	loading.start()
 	try {
 		const res = await getProfile()
@@ -129,6 +131,12 @@ function openBugReport() {
 </script>
 
 <template>
+<template v-if="loading.isRouteLoading">
+	<div class="dashboard">
+		<ProfileSkeleton />
+	</div>
+</template>
+<template v-else>
 	<div class="dashboard">
 		<div v-if="error">{{ error }}</div>
 
@@ -286,6 +294,7 @@ function openBugReport() {
 		</FullscreenOverlay>
 	</div>
 </template>
+</template>
 
 <style scoped>
 article {
@@ -344,7 +353,7 @@ article {
 		0 6px 12px oklch(from var(--brand-700) l c h / 0.28),
 		0 12px 24px oklch(from var(--brand-900) l c h / 0.22);
 
-	&hr {
+	& hr {
 		border-color: oklch(from var(--terva-highlight) l c h / 0.15);
 		margin: 14px 0;
 	}
@@ -383,7 +392,7 @@ article {
 	align-items: baseline;
 	gap: 6px;
 
-	&small {
+	& small {
 		color: oklch(from var(--brand-200) l c h / 0.8);
 	}
 }
@@ -462,13 +471,13 @@ article {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 10px;
 
-	&article {
+	& article {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
 		margin: 0;
 
-		&p {
+		& p {
 			font-size: 0.95rem;
 			font-weight: 500;
 			margin: 0;
@@ -481,7 +490,7 @@ article {
 	grid-column: 1 / 5;
 	margin: 0;
 
-	&p {
+	& p {
 		font-size: 0.9rem;
 	}
 }
@@ -489,7 +498,7 @@ article {
 .account-card {
 	grid-column: 1 / 5;
 
-	&hr {
+	& hr {
 		margin: 4px 0;
 	}
 }
@@ -497,7 +506,7 @@ article {
 .account-row {
 	padding: 4px 0;
 
-	&p {
+	& p {
 		margin: 0;
 		font-size: 0.9rem;
 	}
@@ -521,11 +530,11 @@ a.danger.muted {
 	flex-direction: column;
 	gap: 8px;
 
-	&strong {
+	& strong {
 		color: var(--pico-primary-inverse);
 	}
 
-	&label {
+	& label {
 		color: var(--pico-primary-inverse);
 		font-size: 0.875rem;
 	}
@@ -546,5 +555,9 @@ a.danger.muted {
 	border-radius: var(--pico-border-radius);
 	font-size: 0.875rem;
 	margin: 0;
+}
+
+.stats-grid article {
+	grid-column: auto;
 }
 </style>

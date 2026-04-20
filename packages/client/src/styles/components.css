@@ -116,4 +116,8 @@ button.glass {
 	&.expanded {
 		border-color: oklch(from var(--pico-primary) l c h / 0.35);
 	}
+
+	&.small {
+		grid-column: span 2;
+	}
 }
