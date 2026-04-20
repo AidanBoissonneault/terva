@@ -5,19 +5,28 @@ const props = defineProps<{
 	icon: string
 	route: string
 	activePage: string
+	trueRoute: string
 }>()
 
 const emit = defineEmits<{
 	navigate: [route: string]
 }>()
 
+// Drives anchor positioning + icon scale — follows finger during drag
 const isActivePage = computed(() => props.route === props.activePage)
+
+// Drives glow only — always the real committed route
+const isTruePage = computed(() => props.route === props.trueRoute)
+
 const iconType = 'fas'
 </script>
 
 <template>
-	<button @click="emit('navigate', route)" :class="{ active_tab: isActivePage }"
-		:aria-current="isActivePage ? 'page' : undefined">
+	<button
+		@click="emit('navigate', route)"
+		:class="{ active_tab: isActivePage, true_tab: isTruePage }"
+		:aria-current="isTruePage ? 'page' : undefined"
+	>
 		<FontAwesomeIcon :icon="[iconType, icon]" class="tab-icon" />
 	</button>
 </template>
@@ -56,10 +65,6 @@ button:focus-visible {
 	outline: none;
 }
 
-button:hover {
-	color: oklch(from var(--brand-400) l c h / 0.85);
-}
-
 button:active {
 	transform: scale(0.92);
 }
@@ -72,7 +77,8 @@ button:active {
 .tab-icon {
 	width: 22px;
 	height: 22px;
-	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	transition:
+		transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .active_tab .tab-icon {
