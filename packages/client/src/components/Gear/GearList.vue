@@ -11,11 +11,13 @@ By: Aidan Boissonneault
 <script lang="ts" setup>
 import type { Gear, GearCategory } from '@terva/shared'
 import { computed, ref } from 'vue'
+import TervaCardSkeleton from '@/components/Skeleton/TervaCardSkeleton.vue'
 
 const props = defineProps<{
 	type: GearCategory
 	gears: Gear[] | null
 	search: string
+	loading: boolean
 }>()
 
 const emits = defineEmits<{
@@ -27,9 +29,7 @@ const emits = defineEmits<{
 const expandedId = ref<number | null>(null)
 
 const prettyCategory = computed(() =>
-	props.type
-		.replace(/_/g, ' ')
-		.replace(/\b\w/g, c => c.toUpperCase())
+	props.type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
 )
 
 const categoryMatches = computed(() => {
@@ -44,7 +44,7 @@ function isMatchingInput(name: string) {
 
 const showCategory = computed(() => {
 	if (!props.search) return true
-	return props.gears?.some(g => isMatchingInput(g.name)) ?? false
+	return props.gears?.some((g) => isMatchingInput(g.name)) ?? false
 })
 
 function toggleExpand(id: number) {
@@ -60,45 +60,55 @@ function toggleExpand(id: number) {
 			<button class="glass small" @click="emits('createNewGear', type)">+ Add</button>
 		</div>
 
-		<!-- Empty state -->
-		<p v-if="!gears || gears.length === 0" class="empty-label">No {{ prettyCategory.toLowerCase() }} added yet.</p>
-
-		<!-- Gear cards -->
-		<template v-for="gear in gears" :key="gear.id">
-			<article
-				v-if="isMatchingInput(gear.name)"
-				class="terva-card gear-card"
-				:class="{ expanded: expandedId === gear.id }"
-			>
-				<div class="card-header apart" @click="toggleExpand(gear.id)">
-					<strong class="gear-name">{{ gear.name }}</strong>
-					<div class="card-actions" @click.stop>
-						<button
-							class="glass secondary icon-btn"
-							@click="emits('editGear', gear)"
-							aria-label="Edit gear"
-						>✎</button>
-						<button
-							class="glass secondary icon-btn delete-btn"
-							@click="emits('removeGear', gear.id, gear.name)"
-							aria-label="Delete gear"
-						>✕</button>
-						<button
-							class="glass icon-btn"
-							@click="toggleExpand(gear.id)"
-							aria-label="Toggle notes"
-						>
-							<span class="chevron" :class="{ open: expandedId === gear.id }">›</span>
-						</button>
+		<template v-if="loading">
+			<!-- still loading -->
+			<TervaCardSkeleton v-for="i in 2" :key="i" />
+		</template>
+		<template v-else-if="gears?.length === 0">
+			<p class="empty-label">No {{ prettyCategory.toLowerCase() }} added yet.</p>
+		</template>
+		<template v-else>
+			<!-- Gear cards -->
+			<template v-for="gear in gears" :key="gear.id">
+				<article
+					v-if="isMatchingInput(gear.name)"
+					class="terva-card gear-card"
+					:class="{ expanded: expandedId === gear.id }"
+				>
+					<div class="card-header apart" @click="toggleExpand(gear.id)">
+						<strong class="gear-name">{{ gear.name }}</strong>
+						<div class="card-actions" @click.stop>
+							<button
+								class="glass secondary icon-btn"
+								@click="emits('editGear', gear)"
+								aria-label="Edit gear"
+							>
+								✎
+							</button>
+							<button
+								class="glass secondary icon-btn delete-btn"
+								@click="emits('removeGear', gear.id, gear.name)"
+								aria-label="Delete gear"
+							>
+								✕
+							</button>
+							<button
+								class="glass icon-btn"
+								@click="toggleExpand(gear.id)"
+								aria-label="Toggle notes"
+							>
+								<span class="chevron" :class="{ open: expandedId === gear.id }">›</span>
+							</button>
+						</div>
 					</div>
-				</div>
 
-				<Transition name="expand">
-					<div v-if="expandedId === gear.id" class="gear-notes">
-						<p>{{ gear.notes || 'No notes.' }}</p>
-					</div>
-				</Transition>
-			</article>
+					<Transition name="expand">
+						<div v-if="expandedId === gear.id" class="gear-notes">
+							<p>{{ gear.notes || 'No notes.' }}</p>
+						</div>
+					</Transition>
+				</article>
+			</template>
 		</template>
 	</div>
 </template>
@@ -208,7 +218,9 @@ function toggleExpand(id: number) {
 
 .expand-enter-active,
 .expand-leave-active {
-	transition: opacity 0.2s ease, transform 0.2s ease;
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease;
 }
 
 .expand-enter-from,

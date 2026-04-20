@@ -143,20 +143,10 @@ function quickAccessBrew(brew: Brew) {
 
 const morphFilterLabel = ref('All beans')
 
-watch(
-	filterLabel,
-	(val) => {
-		if (!val) return
-		morphFilterLabel.value = ''
-		requestAnimationFrame(() => {
-			morphFilterLabel.value = val
-		})
-	},
-	{
-		immediate: true,
-		flush: 'post',
-	},
-)
+watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value = val)), {
+	immediate: true,
+	flush: 'post',
+})
 </script>
 
 <template>
@@ -209,53 +199,53 @@ watch(
 		<template v-if="isReady && beans">
 			<!-- all beans (grouped) -->
 			<template v-if="!activeFilter">
-					<div class="bean-section" v-if="groupedBeans.fresh.length">
-						<h6 class="section-title">Fresh</h6>
-						<TransitionGroup name="beans" tag="div" class="bean-grid">
-							<Suspense v-for="(bean, i) in groupedBeans.fresh" :key="bean.id">
-								<BeanCard
-									:bean="bean"
-									:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-									@clicked="routeToBeanInfo"
-								/>
-								<template #fallback>
-									<BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
-								</template>
-							</Suspense>
-						</TransitionGroup>
-					</div>
+				<div class="bean-section" v-if="groupedBeans.fresh.length">
+					<h6 class="section-title">Fresh</h6>
+					<TransitionGroup name="beans" tag="div" class="bean-grid">
+						<Suspense v-for="(bean, i) in groupedBeans.fresh" :key="bean.id">
+							<BeanCard
+								:bean="bean"
+								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+								@clicked="routeToBeanInfo"
+							/>
+							<template #fallback>
+								<BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+							</template>
+						</Suspense>
+					</TransitionGroup>
+				</div>
 
-					<div class="bean-section" v-if="groupedBeans.frozen.length">
-						<h6 class="section-title">Frozen</h6>
-						<TransitionGroup name="beans" tag="div" class="bean-grid">
-							<Suspense v-for="(bean, i) in groupedBeans.frozen" :key="bean.id">
-								<BeanCard
-									:bean="bean"
-									:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-									@clicked="routeToBeanInfo"
-								/>
-								<template #fallback>
-									<BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
-								</template>
-							</Suspense>
-						</TransitionGroup>
-					</div>
+				<div class="bean-section" v-if="groupedBeans.frozen.length">
+					<h6 class="section-title">Frozen</h6>
+					<TransitionGroup name="beans" tag="div" class="bean-grid">
+						<Suspense v-for="(bean, i) in groupedBeans.frozen" :key="bean.id">
+							<BeanCard
+								:bean="bean"
+								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+								@clicked="routeToBeanInfo"
+							/>
+							<template #fallback>
+								<BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+							</template>
+						</Suspense>
+					</TransitionGroup>
+				</div>
 
-					<div class="bean-section" v-if="groupedBeans.finished.length">
-						<h6 class="section-title">Finished</h6>
-						<TransitionGroup name="beans" tag="div" class="bean-grid">
-							<Suspense v-for="(bean, i) in groupedBeans.finished" :key="bean.id">
-								<BeanCard
-									:bean="bean"
-									:style="{ transitionDelay: `${Number(i) * 60}ms` }"
-									@clicked="routeToBeanInfo"
-								/>
-								<template #fallback>
-									<BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
-								</template>
-							</Suspense>
-						</TransitionGroup>
-					</div>
+				<div class="bean-section" v-if="groupedBeans.finished.length">
+					<h6 class="section-title">Finished</h6>
+					<TransitionGroup name="beans" tag="div" class="bean-grid">
+						<Suspense v-for="(bean, i) in groupedBeans.finished" :key="bean.id">
+							<BeanCard
+								:bean="bean"
+								:style="{ transitionDelay: `${Number(i) * 60}ms` }"
+								@clicked="routeToBeanInfo"
+							/>
+							<template #fallback>
+								<BeanCardSkeleton :style="{ transitionDelay: `${Number(i) * 60}ms` }" />
+							</template>
+						</Suspense>
+					</TransitionGroup>
+				</div>
 			</template>
 
 			<!-- filtered beans (flat, no title) -->

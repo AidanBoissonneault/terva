@@ -10,6 +10,8 @@ import { useLoadingStore } from '@/stores/loading'
 import type { Gear, GearCategory } from '@terva/shared'
 import { computed, onMounted, ref } from 'vue'
 
+const loading = useLoadingStore()
+
 const gears = ref<Gear[]>([])
 const uniqueGearTypes = <GearCategory[]>['grinder', 'kettle', 'scale', 'brewer', 'espresso_machine']
 
@@ -37,7 +39,6 @@ function getRelevantGear(gearType: GearCategory) {
 }
 
 onMounted(async () => {
-	const loading = useLoadingStore()
 	loading.start()
 	try {
 		const data = await getGear()
@@ -125,6 +126,7 @@ async function confirmDelete() {
 			:type="gearType"
 			:gears="getRelevantGear(gearType)"
 			:search="search"
+			:loading="loading.isRouteLoading"
 			@create-new-gear="openAddOverlay"
 			@remove-gear="requestDelete"
 			@edit-gear="openEditOverlay"
