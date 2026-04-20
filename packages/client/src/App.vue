@@ -2,14 +2,13 @@
 import AppBar from './components/AppBar/AppBar.vue'
 import TabBar from './components/TabBar/TabBar.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, provide, ref } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 import type { Bean } from '@terva/shared'
 import { useCurrentBeanStore } from './stores/currentShowcasedBean'
 import { useAppStore } from './stores/app'
 import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
 import { removeBean } from './api/removeBean'
 import { storeToRefs } from 'pinia'
-import { useOptimisticRouterStore } from './stores/optimisticRouter'
 
 const route = useRoute()
 const router = useRouter()
@@ -17,19 +16,22 @@ const router = useRouter()
 const appStore = useAppStore()
 const { refreshKey } = storeToRefs(appStore)
 
-const optimisticRouter = useOptimisticRouterStore()
-const { previousRoute, currentRoute } = storeToRefs(optimisticRouter)
-
 // Tab order — must match TabBar.vue
 const TAB_ROUTES = ['dashboard', 'gear', 'recipe', 'profile']
 
-const transitionName = computed(() => {
-	const from = previousRoute.value
-	const to = currentRoute.value
-	const fromIdx = TAB_ROUTES.indexOf(from)
-	const toIdx = TAB_ROUTES.indexOf(to)
+// Track direction from real route changes only — not drag/optimistic state
+const previousRoute = ref('')
+const currentRoute = ref(route.name as string)
 
-	// Both must be tab routes for a slide transition
+watch(() => route.name, (to, from) => {
+	previousRoute.value = from as string ?? ''
+	currentRoute.value = to as string ?? ''
+})
+
+const transitionName = computed(() => {
+	const fromIdx = TAB_ROUTES.indexOf(previousRoute.value)
+	const toIdx = TAB_ROUTES.indexOf(currentRoute.value)
+
 	if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return 'steam'
 
 	return toIdx > fromIdx ? 'tab-slide-left' : 'tab-slide-right'
@@ -180,7 +182,6 @@ async function deleteSelectedBean() {
 	will-change: transform, opacity;
 }
 
-/* Navigating right (higher tab index): new page slides in from right */
 .tab-slide-left-enter-from {
 	transform: translateX(28px);
 	opacity: 0;
@@ -201,7 +202,6 @@ async function deleteSelectedBean() {
 	opacity: 0;
 }
 
-/* Navigating left (lower tab index): new page slides in from left */
 .tab-slide-right-enter-from {
 	transform: translateX(-28px);
 	opacity: 0;
