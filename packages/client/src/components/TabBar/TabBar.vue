@@ -5,6 +5,7 @@ import TabIcon from './TabIcon.vue'
 import { useOptimisticRouterStore } from '@/stores/optimisticRouter'
 import { storeToRefs } from 'pinia'
 import { watch, ref, computed, useTemplateRef } from 'vue'
+import { routeImporters } from '@/router'
 
 const optimisticRouter = useOptimisticRouterStore()
 
@@ -23,14 +24,9 @@ const router = useRouter()
 const prefetched = new Set<string>()
 
 function prefetch(routeName: string) {
-	if (prefetched.has(routeName) || routeName === route.name) return
-	prefetched.add(routeName)
-	const resolved = router.resolve({ name: routeName })
-	const link = document.createElement('link')
-	link.rel = 'prefetch'
-	link.as = 'script'
-	link.href = resolved.href
-	document.head.appendChild(link)
+  if (prefetched.has(routeName) || routeName === route.name) return
+  prefetched.add(routeName)
+  routeImporters[routeName]?.() // triggers dynamic import
 }
 
 // Pill drag

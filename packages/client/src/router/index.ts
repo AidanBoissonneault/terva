@@ -2,6 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useLoadingStore } from '@/stores/loading'
 import { authClient } from '@/lib/auth-client'
 import UserDashboard from '@/views/UserDashboard.vue'
+import type { Component } from 'vue'
+
+// early imports for faster loading between main screens
+export const routeImporters: Record<string, () => Promise<Component>> = {
+  gear:      () => import('@/views/UserGear.vue'),
+  recipe:    () => import('@/views/UserRecipes.vue'),
+  profile:   () => import('@/views/UserProfile.vue'),
+}
 
 // uses inline loading on main route to load main route quicker
 // uses lazy routing with alternate paths to speed up initial load.
