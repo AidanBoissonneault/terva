@@ -91,15 +91,15 @@ async function confirmDelete() {
 function requestEdit(recipe: Recipe) {
 	editError.value = null
 	editForm.value = {
-		id:           recipe.id,
-		name:         recipe.name,
-		brewMethod:   recipe.brewMethod,
+		id: recipe.id,
+		name: recipe.name,
+		brewMethod: recipe.brewMethod,
 		defaultDoseG: recipe.defaultDoseG ?? 0,
 		steps: recipe.steps.map((s) => ({
-			type:     s.type,
-			action:   s.action ?? '',
+			type: s.type,
+			action: s.action ?? '',
 			duration: s.duration ?? null,
-			waterG:   s.waterG ?? null,
+			waterG: s.waterG ?? null,
 		})),
 	}
 	showEditOverlay.value = true
@@ -113,17 +113,17 @@ async function handleEditSubmit() {
 		const idx = recipes.value.findIndex((r) => r.id === editForm.value.id)
 		if (idx !== -1) {
 			recipes.value[idx] = {
-				id:           editForm.value.id,
-				name:         editForm.value.name,
-				brewMethod:   editForm.value.brewMethod,
+				id: editForm.value.id,
+				name: editForm.value.name,
+				brewMethod: editForm.value.brewMethod,
 				defaultDoseG: editForm.value.defaultDoseG,
 				steps: editForm.value.steps.map((s, i) => ({
-					id:        i,
+					id: i,
 					stepOrder: i + 1,
-					type:      s.type,
-					action:    s.action ?? undefined,
-					duration:  s.duration ?? undefined,
-					waterG:    s.waterG ?? undefined,
+					type: s.type,
+					action: s.action ?? undefined,
+					duration: s.duration ?? undefined,
+					waterG: s.waterG ?? undefined,
 				})),
 			}
 		}
@@ -146,27 +146,26 @@ async function handleEditSubmit() {
 		<p v-if="error" class="error">{{ error }}</p>
 
 		<!-- Empty state -->
-		 <template v-if="!loaded">
+		<template v-if="!loaded">
 			<!-- still loading -->
-			<TervaCardSkeleton v-for="i in 3" :key="i" :height="92" :lines="3"/>
+			<TervaCardSkeleton v-for="i in 3" :key="i" :height="92" :lines="3" />
 		</template>
 		<template v-else-if="!error && filteredRecipes.length === 0">
 			<!-- empty state -->
-			<div  class="empty-state">
+			<div class="empty-state">
 				<p v-if="search">No recipes match "{{ search }}".</p>
-			<p v-else>No recipes yet. Add your first one!</p>
+				<p v-else>No recipes yet. Add your first one!</p>
 			</div>
 		</template>
 		<template v-else>
-
-		<!-- Recipe cards -->
-		<RecipeCard
-			v-for="recipe in filteredRecipes"
-			:key="recipe.id"
-			:recipe="recipe"
-			@delete-requested="requestDelete"
-			@edit-requested="requestEdit"
-		/>
+			<!-- Recipe cards -->
+			<RecipeCard
+				v-for="recipe in filteredRecipes"
+				:key="recipe.id"
+				:recipe="recipe"
+				@delete-requested="requestDelete"
+				@edit-requested="requestEdit"
+			/>
 		</template>
 	</div>
 
@@ -175,7 +174,7 @@ async function handleEditSubmit() {
 		<span>Delete "{{ deleteTargetName }}"?</span>
 		<p class="delete-warning">This will permanently remove the recipe and all its steps.</p>
 		<div class="delete-actions">
-			<button class="glass" @click="confirmDelete">Delete</button>
+			<button class="glass danger" @click="confirmDelete">Delete</button>
 			<button class="glass contrast" @click="cancelDelete">Cancel</button>
 		</div>
 	</FullscreenOverlay>
@@ -206,24 +205,49 @@ async function handleEditSubmit() {
 	align-items: center;
 }
 
-.top-bar input { flex: 1; margin: 0; }
-.top-bar button { flex-shrink: 0; white-space: nowrap; }
-
-.error { grid-column: span 4; color: var(--red-500); font-size: 0.85rem; }
-
-.empty-state { grid-column: span 4; text-align: center; opacity: 0.5; padding: 32px 0; }
-
-span { font-weight: 600; font-size: 1rem; }
-
-.delete-warning { font-size: 0.85rem; opacity: 0.6; margin: 6px 0 16px; }
-
-.delete-actions { display: flex; gap: 10px; }
-.delete-actions button { flex: 1; }
-.delete-actions button:first-child {
-	background-color: oklch(from var(--red-600) l c h / 0.85);
-	border-color: oklch(from var(--red-400) l c h / 0.5);
-	color: #fff;
+.top-bar input {
+	flex: 1;
+	margin: 0;
+}
+.top-bar button {
+	flex-shrink: 0;
+	white-space: nowrap;
 }
 
-.edit-overlay-inner { margin: 0; width: 100%; }
+.error {
+	grid-column: span 4;
+	color: var(--red-500);
+	font-size: 0.85rem;
+}
+
+.empty-state {
+	grid-column: span 4;
+	text-align: center;
+	opacity: 0.5;
+	padding: 32px 0;
+}
+
+span {
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+.delete-warning {
+	font-size: 0.85rem;
+	opacity: 0.6;
+	margin: 6px 0 16px;
+}
+
+.delete-actions {
+	display: flex;
+	gap: 10px;
+}
+.delete-actions button {
+	flex: 1;
+}
+
+.edit-overlay-inner {
+	margin: 0;
+	width: 100%;
+}
 </style>

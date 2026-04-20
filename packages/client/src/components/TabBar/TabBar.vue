@@ -19,7 +19,7 @@ const tabLength = tabs.length
 const route = useRoute()
 const router = useRouter()
 
-// ── Prefetch ──────────────────────────────────────────────────
+// Prefetch
 const prefetched = new Set<string>()
 
 function prefetch(routeName: string) {
@@ -33,7 +33,7 @@ function prefetch(routeName: string) {
 	document.head.appendChild(link)
 }
 
-// ── Pill drag ─────────────────────────────────────────────────
+// Pill drag
 const footerRef = useTemplateRef<HTMLElement>('footer')
 const pillRef = useTemplateRef<HTMLElement>('pill')
 
@@ -140,7 +140,7 @@ function onPointerUp(e: PointerEvent) {
 	dragIndex.value = null
 }
 
-// ── Navigation ────────────────────────────────────────────────
+// Navigation
 function navigate(routeName: string) {
 	if (route.name === routeName) return
 	optimisticRouter.setRoute(routeName)

@@ -23,10 +23,13 @@ const TAB_ROUTES = ['dashboard', 'gear', 'recipe', 'profile']
 const previousRoute = ref('')
 const currentRoute = ref(route.name as string)
 
-watch(() => route.name, (to, from) => {
-	previousRoute.value = from as string ?? ''
-	currentRoute.value = to as string ?? ''
-})
+watch(
+	() => route.name,
+	(to, from) => {
+		previousRoute.value = (from as string) ?? ''
+		currentRoute.value = (to as string) ?? ''
+	},
+)
 
 const transitionName = computed(() => {
 	const fromIdx = TAB_ROUTES.indexOf(previousRoute.value)
@@ -60,8 +63,7 @@ async function deleteSelectedBean() {
 	isWarnDeleteBean.value = false
 	await removeBean(deletedBean.value?.id ?? -1)
 
-	if (route.name === 'dashboard')
-		appStore.refreshView()
+	if (route.name === 'dashboard') appStore.refreshView()
 
 	router.push({ name: 'dashboard' })
 }
@@ -75,7 +77,7 @@ async function deleteSelectedBean() {
 
 		<Transition :name="transitionName" mode="out-in">
 			<main class="content" :class="{ shift_down: isActiveAppBarPage }" :key="route.fullPath">
-				<router-view :key="refreshKey"/>
+				<router-view :key="refreshKey" />
 			</main>
 		</Transition>
 
@@ -84,16 +86,24 @@ async function deleteSelectedBean() {
 		</Transition>
 	</div>
 
-	<FullscreenOverlay :is-visible="isWarnDeleteBean" @outside-clicked="isWarnDeleteBean = false; deletedBean = undefined">
-				<div class="confirm-content">
-				<p><strong>Delete {{ deletedBean?.name }}?</strong></p>
-				<small>This permanently removes your bean and all brew data. This cannot be undone.</small>
-				<div class="confirm-actions">
-					<button class="glass danger" @click="deleteSelectedBean">Delete</button>
-					<button class="glass" @click="isWarnDeleteBean = false">Cancel</button>
-				</div>
+	<FullscreenOverlay
+		:is-visible="isWarnDeleteBean"
+		@outside-clicked="
+			isWarnDeleteBean = false,
+			deletedBean = undefined
+		"
+	>
+		<div class="confirm-content">
+			<p>
+				<strong>Delete {{ deletedBean?.name }}?</strong>
+			</p>
+			<small>This permanently removes your bean and all brew data. This cannot be undone.</small>
+			<div class="confirm-actions">
+				<button class="glass danger" @click="deleteSelectedBean">Delete</button>
+				<button class="glass" @click="isWarnDeleteBean = false">Cancel</button>
 			</div>
-			</FullscreenOverlay>
+		</div>
+	</FullscreenOverlay>
 </template>
 
 <style scoped>
@@ -101,6 +111,8 @@ async function deleteSelectedBean() {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
+
+	overflow-x: hidden;
 }
 
 .route-loading {
@@ -130,7 +142,8 @@ async function deleteSelectedBean() {
 	top: 92px;
 }
 
-.confirm-content, strong {
+.confirm-content,
+strong {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
@@ -178,7 +191,9 @@ async function deleteSelectedBean() {
 .tab-slide-left-leave-active,
 .tab-slide-right-enter-active,
 .tab-slide-right-leave-active {
-	transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+	transition:
+		transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+		opacity 0.2s ease;
 	will-change: transform, opacity;
 }
 
@@ -227,7 +242,9 @@ async function deleteSelectedBean() {
 .slide-out-bottom-leave-active,
 .slide-out-top-enter-active,
 .slide-out-top-leave-active {
-	transition: transform 0.3s ease, opacity 0.25s ease;
+	transition:
+		transform 0.3s ease,
+		opacity 0.25s ease;
 	will-change: transform, opacity;
 }
 
