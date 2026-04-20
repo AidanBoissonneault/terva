@@ -11,6 +11,7 @@ import ProfileSkeleton from '@/components/Skeleton/ProfileSkeleton.vue'
 import type { UserProfile } from '@terva/shared'
 
 const loading = useLoadingStore()
+const loaded = ref(false)
 
 const router = useRouter()
 
@@ -73,6 +74,7 @@ onMounted(async () => {
 		else error.value = 'An unknown error occurred'
 	} finally {
 		loading.stop()
+		loaded.value = true
 	}
 })
 
@@ -131,7 +133,7 @@ function openBugReport() {
 </script>
 
 <template>
-<template v-if="loading.isRouteLoading">
+<template v-if="!loaded">
 	<div class="dashboard">
 		<ProfileSkeleton />
 	</div>

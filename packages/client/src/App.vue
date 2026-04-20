@@ -9,22 +9,36 @@ import { useAppStore } from './stores/app'
 import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
 import { removeBean } from './api/removeBean'
 import { storeToRefs } from 'pinia'
+import { useOptimisticRouterStore } from './stores/optimisticRouter'
 
 const route = useRoute()
 const router = useRouter()
 
-// used to access refresh from anywhere
 const appStore = useAppStore()
-
-// used to manually refresh the router view
 const { refreshKey } = storeToRefs(appStore)
+
+const optimisticRouter = useOptimisticRouterStore()
+const { previousRoute, currentRoute } = storeToRefs(optimisticRouter)
+
+// Tab order — must match TabBar.vue
+const TAB_ROUTES = ['dashboard', 'gear', 'recipe', 'profile']
+
+const transitionName = computed(() => {
+	const from = previousRoute.value
+	const to = currentRoute.value
+	const fromIdx = TAB_ROUTES.indexOf(from)
+	const toIdx = TAB_ROUTES.indexOf(to)
+
+	// Both must be tab routes for a slide transition
+	if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return 'steam'
+
+	return toIdx > fromIdx ? 'tab-slide-left' : 'tab-slide-right'
+})
 
 const ignoredAppBarPages = ['startbrew', 'brewwith', 'endbrew']
 const ignoreNavBarPages = ['login', 'register', 'cookies', 'terms', 'privacy', 'brewwith']
 const isActiveAppBarPage = computed(() => !ignoredAppBarPages.includes(route.name as string))
 const isActiveNavBarPage = computed(() => !ignoreNavBarPages.includes(route.name as string))
-
-// routes when bean card's edit button is pressed to the Bean Edit screen.
 
 provide('beanEditClicked', (bean: Bean) => {
 	const currentBean = useCurrentBeanStore()
@@ -32,10 +46,7 @@ provide('beanEditClicked', (bean: Bean) => {
 	router.push({ name: 'editbean' })
 })
 
-// stores if the Delete Bean warning is being shown.
 const isWarnDeleteBean = ref<boolean>(false)
-
-// stores the bean the user is attempting to delete
 const deletedBean = ref<Bean>()
 
 provide('beanDeleteClicked', (bean: Bean) => {
@@ -60,7 +71,7 @@ async function deleteSelectedBean() {
 			<AppBar v-if="isActiveAppBarPage" />
 		</Transition>
 
-		<Transition name="steam" mode="out-in">
+		<Transition :name="transitionName" mode="out-in">
 			<main class="content" :class="{ shift_down: isActiveAppBarPage }" :key="route.fullPath">
 				<router-view :key="refreshKey"/>
 			</main>
@@ -130,6 +141,7 @@ async function deleteSelectedBean() {
 	margin-top: 8px;
 }
 
+/* ── Default transition (steam) ─────────────────────────────── */
 .steam-enter-active,
 .steam-leave-active {
 	transition: all 0.3s ease-out;
@@ -159,6 +171,58 @@ async function deleteSelectedBean() {
 	filter: blur(2px);
 }
 
+/* ── Tab bar slide transitions ──────────────────────────────── */
+.tab-slide-left-enter-active,
+.tab-slide-left-leave-active,
+.tab-slide-right-enter-active,
+.tab-slide-right-leave-active {
+	transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+	will-change: transform, opacity;
+}
+
+/* Navigating right (higher tab index): new page slides in from right */
+.tab-slide-left-enter-from {
+	transform: translateX(28px);
+	opacity: 0;
+}
+
+.tab-slide-left-enter-to {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.tab-slide-left-leave-from {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.tab-slide-left-leave-to {
+	transform: translateX(-28px);
+	opacity: 0;
+}
+
+/* Navigating left (lower tab index): new page slides in from left */
+.tab-slide-right-enter-from {
+	transform: translateX(-28px);
+	opacity: 0;
+}
+
+.tab-slide-right-enter-to {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.tab-slide-right-leave-from {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.tab-slide-right-leave-to {
+	transform: translateX(28px);
+	opacity: 0;
+}
+
+/* ── AppBar / TabBar mount/unmount ──────────────────────────── */
 .slide-out-bottom-enter-active,
 .slide-out-bottom-leave-active,
 .slide-out-top-enter-active,

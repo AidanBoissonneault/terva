@@ -13,6 +13,7 @@ import type { Recipe } from '@terva/shared'
 import type { AddRecipeForm } from '@/api/addRecipe'
 
 const loading = useLoadingStore()
+const loaded = ref(false)
 
 const router = useRouter()
 
@@ -58,6 +59,7 @@ onMounted(async () => {
 		else error.value = 'An unknown error occurred'
 	} finally {
 		loading.stop()
+		loaded.value = true
 	}
 })
 
@@ -144,7 +146,7 @@ async function handleEditSubmit() {
 		<p v-if="error" class="error">{{ error }}</p>
 
 		<!-- Empty state -->
-		 <template v-if="loading.isRouteLoading">
+		 <template v-if="!loaded">
 			<!-- still loading -->
 			<TervaCardSkeleton v-for="i in 3" :key="i" :height="92" :lines="3"/>
 		</template>
