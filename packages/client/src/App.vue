@@ -110,9 +110,9 @@ async function deleteSelectedBean() {
 .app-layout {
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
+	min-height: 100vh;
 
-	overflow-x: hidden;
+	overflow-x: clip;
 }
 
 .route-loading {
