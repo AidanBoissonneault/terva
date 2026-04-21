@@ -179,7 +179,7 @@ watch(() => route.name, (name) => {
 <style scoped>
 footer {
 	position: fixed;
-	bottom: calc(env(safe-area-inset-bottom) + 20px);
+	bottom: 20px;
 	left: var(--bar-margin);
 	width: calc(100% - (2 * var(--bar-margin)));
 

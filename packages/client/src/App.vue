@@ -150,7 +150,7 @@ async function deleteSelectedBean() {
 	position: relative;
 	overflow-y: visible;
 	top: 24px;
-	padding-bottom: calc(env(safe-area-inset-bottom) + 108px);
+	padding-bottom: 108px;
 
 	z-index: 1;
 
