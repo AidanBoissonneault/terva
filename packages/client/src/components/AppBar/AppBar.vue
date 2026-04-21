@@ -51,7 +51,7 @@ header {
 	backdrop-filter: blur(8px) saturate(1.4);
 	-webkit-backdrop-filter: blur(8px) saturate(1.4);
 
-	margin-top: 16px;
+	margin-top: calc(env(safe-area-inset-top) + 16px);
 	margin-left: var(--bar-margin);
 	margin-right: var(--bar-margin);
 	margin-bottom: 12px;
