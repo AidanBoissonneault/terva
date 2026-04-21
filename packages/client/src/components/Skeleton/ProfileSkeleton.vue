@@ -1,5 +1,15 @@
+<!--
+ProfileSkeleton
+Full-page skeleton for the UserProfile screen.
+Mirrors: hero-card, closeness-card, stats-grid (2 tiles),
+         fun-stat card, and account-card.
+
+CREATED ON: 17APR2026
+By: Aidan Boissonneault
+-->
+
 <script setup lang="ts">
-import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
+// no props — this mirrors the full profile layout
 </script>
 
 <template>
@@ -13,15 +23,10 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 			</div>
 		</div>
 		<hr />
-		<div class="brew-count-row">
-			<div class="skel skel-brew-num" />
-			<div class="skel skel-brew-label" />
-		</div>
+		<div class="skel skel-brew-count" />
 	</div>
 
-	<SectionSeperator />
-
-	<!-- Section label: How it's going -->
+	<!-- Section label -->
 	<div class="skel skel-section-label" />
 
 	<!-- Closeness card -->
@@ -33,12 +38,12 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 		</div>
 	</article>
 
-	<!-- Section label: Favourites -->
+	<!-- Section label -->
 	<div class="skel skel-section-label" />
 
-	<!-- Stats grid (4 tiles max) -->
+	<!-- Stats grid (2 tiles) -->
 	<div class="stats-grid">
-		<article class="terva-card stats-tile-skel" v-for="i in 4" :key="i">
+		<article class="terva-card stats-tile-skel" v-for="i in 2" :key="i">
 			<div class="skel skel-tile-label" />
 			<div class="skel skel-tile-value" />
 			<div class="skel skel-tile-sub" />
@@ -51,66 +56,20 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 		<div class="skel skel-fun-line-b" />
 	</article>
 
-	<SectionSeperator />
-
-	<!-- Section label: Account -->
+	<!-- Section label -->
 	<div class="skel skel-section-label" />
 
-	<!-- Account card: Name, Email, Change password, Sign out, Delete -->
+	<!-- Account card -->
 	<article class="account-card terva-card">
-		<div class="account-row-skel account-row-labeled">
-			<div class="skel skel-row-sub" style="width: 28%" />
-			<div class="skel skel-row-val" style="width: 52%" />
-		</div>
-		<hr />
-		<div class="account-row-skel account-row-labeled">
-			<div class="skel skel-row-sub" style="width: 22%" />
-			<div class="skel skel-row-val" style="width: 64%" />
-		</div>
-		<hr />
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 48%" />
-		</div>
-		<hr />
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 30%" />
-		</div>
-		<hr class="danger-hr" />
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 36%" />
-		</div>
-	</article>
-
-	<!-- Section label: Policies -->
-	<div class="skel skel-section-label" />
-
-	<!-- Policies card -->
-	<article class="account-card terva-card">
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 52%" />
-		</div>
-		<hr />
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 38%" />
-		</div>
-		<hr />
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 42%" />
-		</div>
-	</article>
-
-	<!-- Section label: Feedback -->
-	<div class="skel skel-section-label" />
-
-	<!-- Feedback card -->
-	<article class="account-card terva-card">
-		<div class="account-row-skel">
-			<div class="skel skel-row-link" style="width: 34%" />
+		<div v-for="i in 4" :key="i" class="account-row-skel">
+			<div class="skel skel-account-line" :style="{ width: (55 - i * 4) + '%' }" />
+			<hr v-if="i < 4" />
 		</div>
 	</article>
 </template>
 
 <style scoped>
+/*  shimmer  */
 @keyframes shimmer {
 	0%   { background-position: -200% center; }
 	100% { background-position:  200% center; }
@@ -129,7 +88,8 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 	height: 14px;
 }
 
-/* hero card */
+/*  hero card  */
+/* reuses the exact .hero-card class from UserProfile so it's pixel-matched */
 .hero-card-skeleton {
 	grid-column: span 4;
 }
@@ -141,8 +101,8 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 }
 
 .skel-avatar {
-	width: 52px;
-	height: 52px;
+	width: 48px;
+	height: 48px;
 	border-radius: 50%;
 	flex-shrink: 0;
 }
@@ -157,17 +117,13 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 .skel-name  { width: 50%; height: 18px; }
 .skel-since { width: 35%; height: 12px; }
 
-.brew-count-row {
-	display: flex;
-	align-items: flex-end;
-	gap: 6px;
+.skel-brew-count {
+	width: 30%;
+	height: 22px;
 	margin-top: 2px;
 }
 
-.skel-brew-num   { width: 44px; height: 28px; }
-.skel-brew-label { width: 72px; height: 11px; margin-bottom: 2px; }
-
-/* section label */
+/*  section label  */
 .skel-section-label {
 	grid-column: span 4;
 	width: 80px;
@@ -184,7 +140,8 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 	animation: shimmer 1.6s ease-in-out infinite;
 }
 
-/* closeness card */
+/*  closeness card  */
+/* reuses .closeness-card and .terva-card from UserProfile */
 .closeness-row {
 	display: flex;
 	align-items: center;
@@ -196,11 +153,12 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 	margin-top: 6px;
 }
 
-.skel-cl-label { width: 52px; height: 14px; flex-shrink: 0; }
-.skel-cl-bar   { flex: 1; height: 7px; border-radius: 999px; }
-.skel-cl-count { width: 24px; flex-shrink: 0; }
+.skel-cl-label { width: 48px; flex-shrink: 0; }
+.skel-cl-bar   { flex: 1; height: 10px; border-radius: 999px; }
+.skel-cl-count { width: 20px; flex-shrink: 0; }
 
-/* stats grid */
+/*  stats grid  */
+/* mirrors .stats-grid from UserProfile */
 .stats-grid {
 	grid-column: span 4;
 	display: grid;
@@ -212,13 +170,14 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	padding: 14px 16px;
 }
 
 .skel-tile-label { width: 55%; height: 11px; }
 .skel-tile-value { width: 75%; height: 18px; }
 .skel-tile-sub   { width: 45%; height: 11px; }
 
-/* fun stat card */
+/*  fun stat card  */
 .fun-stat-skel {
 	grid-column: span 4;
 	display: flex;
@@ -229,28 +188,19 @@ import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 .skel-fun-line-a { width: 80%; }
 .skel-fun-line-b { width: 55%; }
 
-/* account cards */
+/*  account card  */
 .account-row-skel {
-	padding: 4px 0;
-}
-
-.account-row-labeled {
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	gap: 0;
 }
 
 .account-row-skel hr {
-	margin: 4px 0;
+	margin: 10px 0;
 	border-color: oklch(from var(--terva-app-bar-border) l c h / 0.12);
 }
 
-.skel-row-sub  { height: 11px; }
-.skel-row-val  { height: 14px; }
-.skel-row-link { height: 14px; }
-
-.danger-hr {
-	border-color: oklch(from var(--red-900) l c h / 0.3);
-	margin: 8px 0 4px !important;
+.skel-account-line {
+	height: 15px;
 }
 </style>
