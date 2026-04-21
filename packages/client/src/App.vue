@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppBar from './components/AppBar/AppBar.vue'
 import TabBar from './components/TabBar/TabBar.vue'
+import BootAnimation from './components/Utils/BootAnimation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, provide, ref, watch } from 'vue'
 import type { Bean } from '@terva/shared'
@@ -12,6 +13,23 @@ import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const router = useRouter()
+
+const BOOT_ROUTES = ['dashboard', 'login']
+const showBoot = ref(import.meta.env.DEV ? !sessionStorage.getItem('__boot_shown') : true)
+
+// Kill boot if router resolves to a non-boot route (route.name is undefined at init)
+if (showBoot.value) {
+	const stopRouteWatch = watch(
+		() => route.name,
+		(name) => {
+			if (name !== undefined && name !== null) {
+				if (!BOOT_ROUTES.includes(name as string)) showBoot.value = false
+				stopRouteWatch()
+			}
+		},
+		{ immediate: true },
+	)
+}
 
 const appStore = useAppStore()
 const { refreshKey } = storeToRefs(appStore)
@@ -72,7 +90,7 @@ async function deleteSelectedBean() {
 <template>
 	<div class="app-layout">
 		<Transition name="slide-out-top" mode="out-in">
-			<AppBar v-if="isActiveAppBarPage" />
+			<AppBar v-if="isActiveAppBarPage && !showBoot" />
 		</Transition>
 
 		<Transition :name="transitionName" mode="out-in">
@@ -82,7 +100,7 @@ async function deleteSelectedBean() {
 		</Transition>
 
 		<Transition name="slide-out-bottom" mode="out-in">
-			<TabBar v-if="isActiveNavBarPage" />
+			<TabBar v-if="isActiveNavBarPage && !showBoot" />
 		</Transition>
 	</div>
 
@@ -104,6 +122,8 @@ async function deleteSelectedBean() {
 			</div>
 		</div>
 	</FullscreenOverlay>
+
+	<BootAnimation v-if="showBoot" @done="showBoot = false" />
 </template>
 
 <style scoped>

@@ -1,15 +1,5 @@
-<!--
-ProfileSkeleton
-Full-page skeleton for the UserProfile screen.
-Mirrors: hero-card, closeness-card, stats-grid (2 tiles),
-         fun-stat card, and account-card.
-
-CREATED ON: 17APR2026
-By: Aidan Boissonneault
--->
-
 <script setup lang="ts">
-// no props — this mirrors the full profile layout
+import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 </script>
 
 <template>
@@ -23,10 +13,15 @@ By: Aidan Boissonneault
 			</div>
 		</div>
 		<hr />
-		<div class="skel skel-brew-count" />
+		<div class="brew-count-row">
+			<div class="skel skel-brew-num" />
+			<div class="skel skel-brew-label" />
+		</div>
 	</div>
 
-	<!-- Section label -->
+	<SectionSeperator />
+
+	<!-- Section label: How it's going -->
 	<div class="skel skel-section-label" />
 
 	<!-- Closeness card -->
@@ -38,12 +33,12 @@ By: Aidan Boissonneault
 		</div>
 	</article>
 
-	<!-- Section label -->
+	<!-- Section label: Favourites -->
 	<div class="skel skel-section-label" />
 
-	<!-- Stats grid (2 tiles) -->
+	<!-- Stats grid (4 tiles max) -->
 	<div class="stats-grid">
-		<article class="terva-card stats-tile-skel" v-for="i in 2" :key="i">
+		<article class="terva-card stats-tile-skel" v-for="i in 4" :key="i">
 			<div class="skel skel-tile-label" />
 			<div class="skel skel-tile-value" />
 			<div class="skel skel-tile-sub" />
@@ -56,20 +51,66 @@ By: Aidan Boissonneault
 		<div class="skel skel-fun-line-b" />
 	</article>
 
-	<!-- Section label -->
+	<SectionSeperator />
+
+	<!-- Section label: Account -->
 	<div class="skel skel-section-label" />
 
-	<!-- Account card -->
+	<!-- Account card: Name, Email, Change password, Sign out, Delete -->
 	<article class="account-card terva-card">
-		<div v-for="i in 4" :key="i" class="account-row-skel">
-			<div class="skel skel-account-line" :style="{ width: (55 - i * 4) + '%' }" />
-			<hr v-if="i < 4" />
+		<div class="account-row-skel account-row-labeled">
+			<div class="skel skel-row-sub" style="width: 28%" />
+			<div class="skel skel-row-val" style="width: 52%" />
+		</div>
+		<hr />
+		<div class="account-row-skel account-row-labeled">
+			<div class="skel skel-row-sub" style="width: 22%" />
+			<div class="skel skel-row-val" style="width: 64%" />
+		</div>
+		<hr />
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 48%" />
+		</div>
+		<hr />
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 30%" />
+		</div>
+		<hr class="danger-hr" />
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 36%" />
+		</div>
+	</article>
+
+	<!-- Section label: Policies -->
+	<div class="skel skel-section-label" />
+
+	<!-- Policies card -->
+	<article class="account-card terva-card">
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 52%" />
+		</div>
+		<hr />
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 38%" />
+		</div>
+		<hr />
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 42%" />
+		</div>
+	</article>
+
+	<!-- Section label: Feedback -->
+	<div class="skel skel-section-label" />
+
+	<!-- Feedback card -->
+	<article class="account-card terva-card">
+		<div class="account-row-skel">
+			<div class="skel skel-row-link" style="width: 34%" />
 		</div>
 	</article>
 </template>
 
 <style scoped>
-/*  shimmer  */
 @keyframes shimmer {
 	0%   { background-position: -200% center; }
 	100% { background-position:  200% center; }
@@ -88,8 +129,7 @@ By: Aidan Boissonneault
 	height: 14px;
 }
 
-/*  hero card  */
-/* reuses the exact .hero-card class from UserProfile so it's pixel-matched */
+/* hero card */
 .hero-card-skeleton {
 	grid-column: span 4;
 }
@@ -101,8 +141,8 @@ By: Aidan Boissonneault
 }
 
 .skel-avatar {
-	width: 48px;
-	height: 48px;
+	width: 52px;
+	height: 52px;
 	border-radius: 50%;
 	flex-shrink: 0;
 }
@@ -117,13 +157,17 @@ By: Aidan Boissonneault
 .skel-name  { width: 50%; height: 18px; }
 .skel-since { width: 35%; height: 12px; }
 
-.skel-brew-count {
-	width: 30%;
-	height: 22px;
+.brew-count-row {
+	display: flex;
+	align-items: flex-end;
+	gap: 6px;
 	margin-top: 2px;
 }
 
-/*  section label  */
+.skel-brew-num   { width: 44px; height: 28px; }
+.skel-brew-label { width: 72px; height: 11px; margin-bottom: 2px; }
+
+/* section label */
 .skel-section-label {
 	grid-column: span 4;
 	width: 80px;
@@ -140,8 +184,7 @@ By: Aidan Boissonneault
 	animation: shimmer 1.6s ease-in-out infinite;
 }
 
-/*  closeness card  */
-/* reuses .closeness-card and .terva-card from UserProfile */
+/* closeness card */
 .closeness-row {
 	display: flex;
 	align-items: center;
@@ -153,12 +196,11 @@ By: Aidan Boissonneault
 	margin-top: 6px;
 }
 
-.skel-cl-label { width: 48px; flex-shrink: 0; }
-.skel-cl-bar   { flex: 1; height: 10px; border-radius: 999px; }
-.skel-cl-count { width: 20px; flex-shrink: 0; }
+.skel-cl-label { width: 52px; height: 14px; flex-shrink: 0; }
+.skel-cl-bar   { flex: 1; height: 7px; border-radius: 999px; }
+.skel-cl-count { width: 24px; flex-shrink: 0; }
 
-/*  stats grid  */
-/* mirrors .stats-grid from UserProfile */
+/* stats grid */
 .stats-grid {
 	grid-column: span 4;
 	display: grid;
@@ -170,14 +212,13 @@ By: Aidan Boissonneault
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
-	padding: 14px 16px;
 }
 
 .skel-tile-label { width: 55%; height: 11px; }
 .skel-tile-value { width: 75%; height: 18px; }
 .skel-tile-sub   { width: 45%; height: 11px; }
 
-/*  fun stat card  */
+/* fun stat card */
 .fun-stat-skel {
 	grid-column: span 4;
 	display: flex;
@@ -188,19 +229,28 @@ By: Aidan Boissonneault
 .skel-fun-line-a { width: 80%; }
 .skel-fun-line-b { width: 55%; }
 
-/*  account card  */
+/* account cards */
 .account-row-skel {
+	padding: 4px 0;
+}
+
+.account-row-labeled {
 	display: flex;
 	flex-direction: column;
-	gap: 0;
+	gap: 5px;
 }
 
 .account-row-skel hr {
-	margin: 10px 0;
+	margin: 4px 0;
 	border-color: oklch(from var(--terva-app-bar-border) l c h / 0.12);
 }
 
-.skel-account-line {
-	height: 15px;
+.skel-row-sub  { height: 11px; }
+.skel-row-val  { height: 14px; }
+.skel-row-link { height: 14px; }
+
+.danger-hr {
+	border-color: oklch(from var(--red-900) l c h / 0.3);
+	margin: 8px 0 4px !important;
 }
 </style>
