@@ -95,3 +95,13 @@ CREATE TABLE brews (
   FOREIGN KEY (brewer_id) REFERENCES gear(id),
   FOREIGN KEY (grinder_id) REFERENCES gear(id)
 );
+
+CREATE TABLE push_subscriptions (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  user_id    VARCHAR(50) NOT NULL,
+  endpoint   TEXT NOT NULL,
+  p256dh     TEXT NOT NULL,
+  auth       TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_endpoint (endpoint(500))
+);
