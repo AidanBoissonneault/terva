@@ -5,13 +5,14 @@ import BrewCard from '@/components/BeanInfo/BrewCard.vue'
 import BrewCardSkeleton from '@/components/BeanInfo/BrewCardSkeleton.vue'
 import { useRouter } from 'vue-router'
 import { type Brew, type Bean, type Gear, type Recipe } from '@terva/shared'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { TextMorph } from 'torph/vue'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import { getBrews } from '@/api/getBrews'
 import { getBrewStartData } from '@/api/getStartBrewData'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
-import FilterButton from '@/components/FilterButton/FilterButton.vue'
+import FilterBar from '@/components/Utils/FilterBar.vue'
 
 const router = useRouter()
 
@@ -34,21 +35,34 @@ function navigateToEditBean() {
 
 const activeFilter = ref<string | null>(null)
 
-const filterButtons: { name: string, type: string | null }[] =[
-	{ name: "Success", type: "success" },
-	{ name: "Close", type: "close" },
-	{ name: "Miss", type: "miss" },
-	{ name: "All", type: null },
+const filterButtons: { name: string; type: string | null }[] = [
+	{ name: 'Success', type: 'success' },
+	{ name: 'Close', type: 'close' },
+	{ name: 'Miss', type: 'miss' },
+	{ name: 'Unfinished', type: 'unfinished' },
+	{ name: 'All', type: null },
 ]
 
-// calculates and maintains the filtered beans for when
-// the filter buttons are pressed.
+const filterLabel = computed(
+	() => (filterButtons.find((b) => b.type === activeFilter.value)?.name ?? 'All') + ' Brews',
+)
+
+const morphFilterLabel = ref('')
+
+watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value = val)), {
+	immediate: true,
+	flush: 'post',
+})
+
 const filteredBrews = computed(() => {
 	if (!brews.value) return []
-
 	if (!activeFilter.value) return brews.value
 
-  return brews.value.filter((brew: Brew) => brew.closeness === activeFilter.value)
+	if (activeFilter.value === 'unfinished') {
+		return brews.value.filter((brew: Brew) => brew.status === 'in_progress' || brew.status === 'unfinished')
+	}
+
+	return brews.value.filter((brew: Brew) => brew.status === 'finished' && brew.closeness === activeFilter.value)
 })
 
 // sets the current filter to a new filter.
@@ -69,8 +83,7 @@ onMounted(async () => {
 	const resBrews = await getBrews(currentBean.value.id)
 	console.log(resBrews)
 
-	if (resBrews.success)
-		brews.value = resBrews.payload
+	if (resBrews.success) brews.value = resBrews.payload
 
 	const resBrewStartData = await getBrewStartData()
 	console.log(resBrewStartData)
@@ -86,27 +99,34 @@ onMounted(async () => {
 
 <template>
 	<div class="dashboard">
-		<template v-if="!isReady">
-			<BeanCardSkeleton style="grid-column: 1 / 5" />
-			<SectionSeperator />
-			<BrewCardSkeleton v-for="i in 3" :key="i" />
-		</template>
-		<template v-else>
-		<BeanCard v-if="currentBean" :bean="currentBean" @clicked="navigateToEditBean"/>
+		<BeanCardSkeleton v-if="!isReady" style="grid-column: 1 / 5" />
+		<BeanCard v-else-if="currentBean" :bean="currentBean" @clicked="navigateToEditBean" />
+
 		<SectionSeperator />
 
 		<button @click="skip" class="glass skip big-text">Start Fresh</button>
 
-		<template v-if="brews.length > 0">
-			<SectionSeperator />
-			<div class="filter-wrapper">
-				<FilterButton v-for="filter in filterButtons" @filter="newFilter" :key="filter.name"
-					:type="filter.type" :active-filter="activeFilter">
-					{{ filter.name }}
-				</FilterButton>
-			</div>
-			<BrewCard v-for="brew in filteredBrews" :key="brew.id ?? brew.recipeId" :brew="brew" :gear="gears" :recipes="recipes" />
+		<SectionSeperator />
+
+		<FilterBar :filters="filterButtons" :active-filter="activeFilter" @filter="newFilter">
+			<template #label>
+				<h5>
+					<TextMorph :text="morphFilterLabel" />
+				</h5>
+			</template>
+		</FilterBar>
+
+		<template v-if="!isReady">
+			<BrewCardSkeleton v-for="i in 3" :key="i" />
 		</template>
+		<template v-else>
+			<BrewCard
+				v-for="brew in filteredBrews"
+				:key="brew.id ?? brew.recipeId"
+				:brew="brew"
+				:gear="gears"
+				:recipes="recipes"
+			/>
 		</template>
 	</div>
 </template>
@@ -124,11 +144,16 @@ button.skip {
 	grid-column: span 4;
 }
 
-.filter-wrapper {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-
+:deep(.filter-wrapper) {
 	grid-column: span 4;
+}
+
+:deep(h5) {
+	margin: 0;
+	margin-left: 4px;
+	padding: 0;
+	line-height: 1;
+
+	color: var(--brand-200);
 }
 </style>

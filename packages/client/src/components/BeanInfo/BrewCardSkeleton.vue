@@ -1,8 +1,9 @@
 <template>
 	<div class="brew-card-skeleton">
-		<!-- recipe name -->
-		<div class="skeleton-row">
+		<!-- recipe name + date -->
+		<div class="skeleton-row apart">
 			<div class="skel skel-title" />
+			<div class="skel skel-date" />
 		</div>
 
 		<!-- brewer / grinder -->
@@ -67,6 +68,7 @@
 .mt-xs { margin-top: 6px; }
 
 .skel-title      { width: 45%; height: 22px; }
+.skel-date       { width: 20%; height: 10px; align-self: flex-end; }
 .skel-gear       { width: 28%; height: 12px; }
 
 .skel-separator {

@@ -79,6 +79,7 @@ export interface Brew {
 	body?: number
 	notes?: string
 	status: "in_progress" | "finished" | "unfinished"
+	brewedAt?: string
 }
 
 /**

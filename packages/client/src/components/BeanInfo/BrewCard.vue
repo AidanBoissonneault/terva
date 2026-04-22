@@ -79,6 +79,18 @@ const timeDisplay = computed(() => {
 	return m > 0 ? `${m}:${String(sec).padStart(2, '0')}` : `${sec}s`
 })
 
+const brewDate = computed(() => {
+	if (!props.brew.brewedAt) return null
+	const d = new Date(props.brew.brewedAt)
+	return d.toLocaleString(undefined, {
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+		hour: 'numeric',
+		minute: '2-digit',
+	})
+})
+
 // transfer brew to start brew screen on click
 function navigateToStartBrew() {
 	const currentBrew = useBrewTransferStore()
@@ -94,6 +106,7 @@ function navigateToStartBrew() {
 	<div class="brew-card" @click="navigateToStartBrew">
 		<div class="apart header-row">
 			<h2>{{ recipeName }}</h2>
+			<small v-if="brewDate" class="brew-date">{{ brewDate }}</small>
 		</div>
 
 		<div class="apart gear-row">
@@ -183,6 +196,14 @@ h2 {
 .header-row,
 .gear-row {
 	align-items: flex-start;
+}
+
+.brew-date {
+	opacity: 0.6;
+	font-size: 0.7rem;
+	white-space: nowrap;
+	margin-left: 8px;
+	margin-top: 4px;
 }
 
 .gear-row {

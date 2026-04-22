@@ -1,1 +1,0 @@
-import{a}from"./index-9Jl4JrIG.js";const t=async()=>{try{const[{data:r},{data:e}]=await Promise.all([a.get("/api/gear"),a.get("/api/recipe")]);return{success:!0,payload:{gears:r,recipes:e}}}catch(r){return{success:!1,error:r instanceof Error?r.message:"Unknown error"}}};export{t as g};

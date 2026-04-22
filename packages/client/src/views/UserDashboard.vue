@@ -12,7 +12,7 @@ import { getBeans } from '@/api/getBeans'
 import { getInProgressBrews, type InProgressBrew } from '@/api/getInProgressBrews'
 import { editBrew } from '@/api/editBrew'
 import BeanCardSkeleton from '@/components/BeanCard/BeanCardSkeleton.vue'
-import FilterButton from '@/components/FilterButton/FilterButton.vue'
+import FilterBar from '@/components/Utils/FilterBar.vue'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import { useLoadingStore } from '@/stores/loading'
@@ -56,8 +56,6 @@ const filterButtons = reactive<{ name: string; type: BeanState | null }[]>([
 	{ name: 'Finished', type: 'finished' },
 	{ name: 'All', type: null },
 ])
-const visibleFilters = computed(() => filterButtons.filter((b) => b.type !== activeFilter.value))
-
 // label shown in the h5 - driven by a separate ref so we can
 // animate it independently of the computed value
 const filterLabel = computed(
@@ -164,11 +162,18 @@ onMounted(async () => {
 	}
 })
 
-// routes when bean card is pressed to the Bean Brew screen.
-function routeToBeanInfo(bean: Bean) {
+// routes when bean card is pressed.
+// skips beaninfo if the bean has no brews yet — goes straight to startbrew.
+async function routeToBeanInfo(bean: Bean) {
 	const currentBean = useCurrentBeanStore()
 	currentBean.set(bean)
-	router.push({ name: 'beaninfo' })
+
+	const recentBrews = await getRecentBrews(bean.id)
+	if (recentBrews.success && recentBrews.payload.length === 0) {
+		router.push({ name: 'startbrew' })
+	} else {
+		router.push({ name: 'beaninfo' })
+	}
 }
 
 // saves the selected brew to state
@@ -227,23 +232,19 @@ watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value 
 		</template>
 
 		<!-- Filter -->
-		<div class="filter-wrapper" v-if="!isReady || beans.length > 0">
-			<h5>
-				<TextMorph :text="morphFilterLabel" />
-			</h5>
-
-			<TransitionGroup name="filter" tag="div" class="filter-buttons">
-				<FilterButton
-					v-for="filter in visibleFilters"
-					:key="filter.name"
-					@filter="newFilter"
-					:type="filter.type"
-					:active-filter="activeFilter"
-				>
-					{{ filter.name }}
-				</FilterButton>
-			</TransitionGroup>
-		</div>
+		<FilterBar
+			v-if="!isReady || beans.length > 0"
+			:filters="filterButtons"
+			:active-filter="activeFilter"
+			@filter="newFilter"
+			style="grid-column: 1 / 5"
+		>
+			<template #label>
+				<h5>
+					<TextMorph :text="morphFilterLabel" />
+				</h5>
+			</template>
+		</FilterBar>
 
 		<!-- bean cards -->
 		<template v-if="isReady && beans">
@@ -362,20 +363,6 @@ watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value 
 	overflow: visible;
 }
 
-.filter-wrapper {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-
-	grid-column: 1 / 5;
-}
-
-.filter-buttons {
-	display: flex;
-	justify-content: center;
-	align-content: center;
-}
-
 h5 {
 	margin: 0;
 	margin-left: 4px;
@@ -383,39 +370,6 @@ h5 {
 	line-height: 1;
 
 	color: var(--brand-200);
-}
-
-.filter-label {
-	display: inline-block;
-	opacity: 0;
-	transform: translateY(4px);
-	transition:
-		opacity 0.15s ease,
-		transform 0.15s ease;
-}
-
-/* entering */
-.filter-enter-from,
-.filter-leave-to {
-	opacity: 0;
-	transform: translateY(-6px);
-}
-.filter-enter-to,
-.filter-leave-from {
-	opacity: 1;
-	transform: translateY(0);
-}
-.filter-enter-active {
-	transition: all 0.5s ease;
-}
-.filter-leave-active {
-	transition: all 0.25s ease;
-	position: absolute;
-}
-
-/* moving */
-.filter-move {
-	transition: transform 0.25s ease;
 }
 
 .bean-section {
