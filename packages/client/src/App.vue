@@ -2,13 +2,14 @@
 import AppBar from './components/AppBar/AppBar.vue'
 import TabBar from './components/TabBar/TabBar.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, provide, ref, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import type { Bean } from '@terva/shared'
 import { useCurrentBeanStore } from './stores/currentShowcasedBean'
 import { useAppStore } from './stores/app'
 import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
 import { removeBean } from './api/removeBean'
 import { storeToRefs } from 'pinia'
+import { usePushNotifications } from './composables/usePushNotifications'
 
 const route = useRoute()
 const router = useRouter()
@@ -51,6 +52,24 @@ provide('beanEditClicked', (bean: Bean) => {
 	router.push({ name: 'editbean' })
 })
 
+const { subscribe, checkSubscribed, subscribed } = usePushNotifications()
+
+const showNotifBanner = ref(false)
+
+onMounted(async () => {
+	const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+	if (!isStandalone || !('Notification' in window)) return
+	await checkSubscribed()
+	if (!subscribed.value && Notification.permission === 'default') {
+		showNotifBanner.value = true
+	}
+})
+
+async function enableNotifications() {
+	showNotifBanner.value = false
+	await subscribe()
+}
+
 const isWarnDeleteBean = ref<boolean>(false)
 const deletedBean = ref<Bean>()
 
@@ -85,6 +104,16 @@ async function deleteSelectedBean() {
 			<TabBar v-if="isActiveNavBarPage" />
 		</Transition>
 	</div>
+
+	<Transition name="slide-out-bottom">
+		<div v-if="showNotifBanner" class="notif-banner">
+			<span>Get reminded if you leave a brew going</span>
+			<div class="notif-banner-actions">
+				<button class="glass" @click="enableNotifications">Enable</button>
+				<button class="glass" @click="showNotifBanner = false">Dismiss</button>
+			</div>
+		</div>
+	</Transition>
 
 	<FullscreenOverlay
 		:is-visible="isWarnDeleteBean"
@@ -131,7 +160,7 @@ async function deleteSelectedBean() {
 	position: relative;
 	overflow-y: visible;
 	top: 24px;
-	padding-bottom: 108px;
+	padding-bottom: 200px;
 
 	z-index: 1;
 
@@ -141,6 +170,34 @@ async function deleteSelectedBean() {
 
 .content.shift_down {
 	top: 92px;
+}
+
+.notif-banner {
+	position: fixed;
+	bottom: 80px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: calc(100% - 32px);
+	max-width: 400px;
+	background: var(--pico-card-background-color);
+	border: 1px solid var(--pico-muted-border-color);
+	border-radius: 12px;
+	padding: 12px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	z-index: 100;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.notif-banner span {
+	font-size: 0.9rem;
+}
+
+.notif-banner-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
 }
 
 .confirm-content,

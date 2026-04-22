@@ -88,7 +88,7 @@ CREATE TABLE brews (
   yield_g       FLOAT,
   time_seconds  INT,
   notes         TEXT,
-  status        ENUM('in_progress', 'finished') NOT NULL,
+  status        ENUM('in_progress', 'finished', 'unfinished') NOT NULL,
   brewed_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (bean_id)   REFERENCES beans(id),
   FOREIGN KEY (recipe_id) REFERENCES recipes(id),

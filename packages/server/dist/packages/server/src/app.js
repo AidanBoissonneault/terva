@@ -26,6 +26,7 @@ import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js';
 import connection from './db/connection.js';
 import seedDemo from './seedDemo/seedDemo.js';
 import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js';
+import pushRouter from './push/pushRouter.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
@@ -114,5 +115,6 @@ app.use('/api/brew', addBrew, editBrew, getInProgressBrews, getBrews);
 app.use('/api/getrecentbrews', getRecentBrews);
 app.use('/api/seeddemo', seedDemo);
 app.use('/api/recipe', addRecipe, editRecipe, getRecipes, removeRecipe);
+app.use('/api/push', pushRouter);
 export default app;
 //# sourceMappingURL=app.js.map
