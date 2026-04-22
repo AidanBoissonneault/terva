@@ -5,7 +5,7 @@ export async function sendBrewReminders() {
         const [staleBrews] = await connection.query(`SELECT b.id, b.user
        FROM brews b
        WHERE b.status = 'in_progress'
-         AND b.brewed_at < NOW() - INTERVAL 1 HOUR
+         AND b.brewed_at < NOW() - INTERVAL 1 MINUTE
          AND b.reminder_sent = FALSE`);
         for (const brew of staleBrews) {
             const [subs] = await connection.query(`SELECT endpoint, p256dh, auth FROM push_subscriptions WHERE user_id = ?`, [brew.user]);

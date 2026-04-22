@@ -18,7 +18,7 @@ export async function sendBrewReminders() {
 			`SELECT b.id, b.user
        FROM brews b
        WHERE b.status = 'in_progress'
-         AND b.brewed_at < NOW() - INTERVAL 1 HOUR
+         AND b.brewed_at < NOW() - INTERVAL 1 MINUTE
          AND b.reminder_sent = FALSE`,
 		)
 
