@@ -20,6 +20,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 
 import { type Bean, type BeanState, type Brew } from '@terva/shared'
 import { useRouter } from 'vue-router'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
+import { useErrorStore } from '@/stores/error'
 import { getRecentBrews } from '@/api/getRecentBrews'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import { TextMorph } from 'torph/vue'
@@ -31,10 +32,9 @@ const BeanCard = defineAsyncComponent(() => import('@/components/BeanCard/BeanCa
 // for routing when a bean card is pressed
 const router = useRouter()
 
-// for all beans (except hero bean), hero bean, and if there was an error
+// for all beans (except hero bean), hero bean
 const beans = ref()
 const heroBean = ref()
-const error = ref<string | null>(null)
 
 // unfinished brew resume popup
 const resumeBrew = ref<InProgressBrew | null>(null)
@@ -154,8 +154,13 @@ onMounted(async () => {
 		// log data (for testing)
 		console.log(data)
 	} catch (err) {
-		if (err instanceof Error) error.value = err.message
-		else error.value = 'An unknown error occurred'
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load your beans. Please try again.',
+			'dashboard',
+		)
+		router.push({ name: 'error' })
+		return
 	} finally {
 		loading.stop()
 		isReady.value = true
@@ -206,8 +211,6 @@ watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value 
 
 <template>
 	<div class="dashboard">
-		<div v-if="error">{{ error }}</div>
-
 		<!--  Loading skeletons (shown while isReady is false)  -->
 		<template v-if="!isReady">
 			<!-- Hero skeleton -->

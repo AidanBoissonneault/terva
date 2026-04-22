@@ -13,6 +13,7 @@ import { getBrews } from '@/api/getBrews'
 import { getBrewStartData } from '@/api/getStartBrewData'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import FilterBar from '@/components/Utils/FilterBar.vue'
+import { useErrorStore } from '@/stores/error'
 
 const router = useRouter()
 
@@ -77,20 +78,25 @@ function newFilter(type: string | null) {
 
 onMounted(async () => {
 	const beanStore = useCurrentBeanStore()
-
 	currentBean.value = beanStore.get()
 
-	const resBrews = await getBrews(currentBean.value.id)
-	console.log(resBrews)
+	try {
+		const resBrews = await getBrews(currentBean.value.id)
+		if (!resBrews.success) throw new Error(resBrews.error)
+		brews.value = resBrews.payload
 
-	if (resBrews.success) brews.value = resBrews.payload
-
-	const resBrewStartData = await getBrewStartData()
-	console.log(resBrewStartData)
-
-	if (resBrewStartData.success) {
+		const resBrewStartData = await getBrewStartData()
+		if (!resBrewStartData.success) throw new Error(resBrewStartData.error)
 		gears.value = resBrewStartData.payload.gears
 		recipes.value = resBrewStartData.payload.recipes
+	} catch (err) {
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load brew history for this bean.',
+			'dashboard',
+		)
+		router.push({ name: 'error' })
+		return
 	}
 
 	isReady.value = true

@@ -17,6 +17,7 @@ import { type Bean, type Brew } from '@terva/shared'
 import { editBrew } from '@/api/editBrew';
 import { getBeans } from '@/api/getBeans';
 import { useRouter } from 'vue-router';
+import { useErrorStore } from '@/stores/error';
 
 const currentBrew = ref<Brew>()
 const endingBrew = ref<Brew>()
@@ -28,9 +29,22 @@ onMounted(async () => {
 	const currentBrewTransfer = useBrewTransferStore()
 	currentBrew.value = currentBrewTransfer.get()
 
-	const beansResult = await getBeans()
+	if (!currentBrew.value) {
+		const errorStore = useErrorStore()
+		errorStore.set('Brew session data was lost. Please start a new brew.', 'dashboard')
+		router.push({ name: 'error' })
+		return
+	}
 
-	if (beansResult.success && currentBrew.value?.beanId) {
+	const beansResult = await getBeans()
+	if (!beansResult.success) {
+		const errorStore = useErrorStore()
+		errorStore.set('Failed to load bean data for this brew.', 'dashboard')
+		router.push({ name: 'error' })
+		return
+	}
+
+	if (currentBrew.value?.beanId) {
 		currentBean.value = beansResult.payload.find((b: Bean) => b.id === currentBrew.value!.beanId)
 	}
 })
@@ -58,11 +72,6 @@ function formSubmitted() {
 			<EndBrewHeader v-if="currentBean" :bean="currentBean" />
 			<EndBrewDataForm :import-form="currentBrew" v-model="endingBrew" @form-submitted="formSubmitted"/>
 		</template>
-
-		<!--Error-->
-		<div v-else>
-			Brew transfer failed
-		</div>
 	</div>
 </template>
 

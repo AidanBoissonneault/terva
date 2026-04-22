@@ -9,6 +9,7 @@ import RecipeForm from '@/components/Recipe/RecipeForm.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import TervaCardSkeleton from '@/components/Skeleton/TervaCardSkeleton.vue'
 import { useLoadingStore } from '@/stores/loading'
+import { useErrorStore } from '@/stores/error'
 import type { Recipe } from '@terva/shared'
 import type { AddRecipeForm } from '@/api/addRecipe'
 
@@ -55,8 +56,12 @@ onMounted(async () => {
 		if (!result.success) throw new Error(result.error)
 		recipes.value = result.payload
 	} catch (err) {
-		if (err instanceof Error) error.value = err.message
-		else error.value = 'An unknown error occurred'
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load your recipes.',
+			'recipe',
+		)
+		router.push({ name: 'error' })
 	} finally {
 		loading.stop()
 		loaded.value = true

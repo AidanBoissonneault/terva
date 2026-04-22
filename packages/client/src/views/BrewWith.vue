@@ -19,13 +19,13 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import { TextMorph } from 'torph/vue'
+import { useErrorStore } from '@/stores/error'
 
 const router = useRouter()
 const loading = useLoadingStore()
 
 // Data
 const recipe = ref<Recipe | null>(null)
-const error = ref<string | null>(null)
 
 // Step state
 const currentStepIndex = ref(0)
@@ -214,7 +214,14 @@ onMounted(async () => {
 		if (!found) throw new Error('Recipe not found')
 		recipe.value = found
 	} catch (err) {
-		error.value = err instanceof Error ? err.message : 'An unknown error occurred'
+		loading.stop()
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load recipe for this brew.',
+			'dashboard',
+		)
+		router.push({ name: 'error' })
+		return
 	} finally {
 		loading.stop()
 	}
@@ -282,13 +289,7 @@ function finishLater() {
 
 		<!--  Main content  -->
 		<main class="brew-main">
-			<!-- Error -->
-			<div v-if="error" class="center-col">
-				<p>{{ error }}</p>
-				<button class="glass" @click="router.push({ name: 'dashboard' })">Go home</button>
-			</div>
-
-			<template v-else-if="recipe">
+			<template v-if="recipe">
 				<!-- Step card -->
 				<div class="step-card terva-card" :class="{ complete: isComplete }">
 					<template v-if="!isComplete">

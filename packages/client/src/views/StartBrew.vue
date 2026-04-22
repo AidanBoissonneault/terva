@@ -20,19 +20,23 @@ import BrewDataForm from '@/components/StartBrew/BrewDataForm.vue'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import { useRouter } from 'vue-router'
 import { addBrew } from '@/api/addBrew'
+import { addGear } from '@/api/addGear'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
+import GearForm from '@/components/Gear/GearForm.vue'
+import { useErrorStore } from '@/stores/error'
 
 const router = useRouter()
 
 const currentBean = ref<Bean>()
-const error = ref<string | null>(null)
 const data = ref()
 const newBrew = ref<Brew>()
 const isReady = ref(false)
 
-// Overlay state - 'none' | 'recipe' | 'skip'
-type OverlayStep = 'none' | 'recipe' | 'skip'
+// Overlay state
+type OverlayStep = 'none' | 'recipe' | 'skip' | 'add-brewer'
 const overlayStep = ref<OverlayStep>('none')
+
+const newBrewer = ref<Gear>({ id: 0, name: '', type: 'brewer' })
 
 const grinders = computed(() => {
 	if (!data.value?.gears) return []
@@ -60,8 +64,13 @@ onMounted(async () => {
 		console.log(dataPayload)
 		data.value = dataPayload.payload
 	} catch (err) {
-		if (err instanceof Error) error.value = err.message
-		else error.value = 'An unknown error occurred'
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load brew options. Please try again.',
+			'dashboard',
+		)
+		router.push({ name: 'error' })
+		return
 	} finally {
 		const currentBrewStore = useBrewTransferStore()
 		const stored = currentBrewStore.get()
@@ -71,8 +80,22 @@ onMounted(async () => {
 		}
 		loading.stop()
 		isReady.value = true
+		if (brewers.value.length === 0) {
+			overlayStep.value = 'add-brewer'
+		}
 	}
 })
+
+async function handleAddBrewer() {
+	if (!newBrewer.value?.name?.trim()) return
+	const result = await addGear(newBrewer.value)
+	if (result.success) {
+		newBrewer.value.id = result.payload.id
+		data.value.gears.push({ ...newBrewer.value })
+		if (newBrew.value) newBrew.value.brewerId = newBrewer.value.id
+		overlayStep.value = 'none'
+	}
+}
 
 async function formSubmitted() {
 	if (!newBrew.value) return
@@ -134,6 +157,25 @@ function finishLater() {
 			/>
 		</template>
 	</div>
+
+	<!-- Add brewer prompt -->
+	<FullscreenOverlay
+		:is-visible="overlayStep === 'add-brewer'"
+		@outside-clicked="router.push({ name: 'dashboard' })"
+	>
+		<div class="confirm-content">
+			<p><strong>No brewer added yet</strong></p>
+			<small>Add a brewer to start brewing.</small>
+		</div>
+		<div class="overlay-form dashboard">
+			<GearForm
+				:gear-list="['brewer', 'espresso_machine']"
+				selected-type="brewer"
+				v-model="newBrewer"
+				@form-submitted="handleAddBrewer"
+			/>
+		</div>
+	</FullscreenOverlay>
 
 	<!-- Step 1: Brew with recipe? -->
 	<FullscreenOverlay

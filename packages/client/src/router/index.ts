@@ -39,6 +39,7 @@ const router = createRouter({
 		{ path: '/privacy', name: 'privacy', component: () => import('@/views/PrivacyPolicy.vue') },
 		{ path: '/terms', name: 'terms', component: () => import('@/views/TermsAndCondtions.vue') },
 
+		{ path: '/error', name: 'error', component: () => import('@/views/ErrorView.vue') },
 
 		{ path: '/:pathMatch(.*)*', redirect: '/' },
 	],

@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
 import { getProfile, deleteAccount } from '@/api/getProfile'
 import { useLoadingStore } from '@/stores/loading'
+import { useErrorStore } from '@/stores/error'
 import { invalidateSessionCache } from '@/router'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
@@ -16,7 +17,6 @@ const loaded = ref(false)
 const router = useRouter()
 
 const profile = ref<UserProfile | null>(null)
-const error = ref<string | null>(null)
 const showDeleteConfirm = ref(false)
 const deletePassword = ref('')
 const deleteError = ref('')
@@ -70,8 +70,12 @@ onMounted(async () => {
 		if (!res.success) throw new Error(res.error)
 		profile.value = res.payload
 	} catch (err) {
-		if (err instanceof Error) error.value = err.message
-		else error.value = 'An unknown error occurred'
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load your profile.',
+			'profile',
+		)
+		router.push({ name: 'error' })
 	} finally {
 		loading.stop()
 		loaded.value = true
@@ -140,9 +144,7 @@ function openBugReport() {
 </template>
 <template v-else>
 	<div class="dashboard">
-		<div v-if="error">{{ error }}</div>
-
-		<template v-else-if="profile">
+		<template v-if="profile">
 			<div class="hero-card">
 				<div class="avatar-row">
 					<div class="avatar">{{ initials }}</div>

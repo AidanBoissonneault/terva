@@ -7,10 +7,13 @@ import GearForm from '@/components/Gear/GearForm.vue'
 import GearList from '@/components/Gear/GearList.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import { useLoadingStore } from '@/stores/loading'
+import { useErrorStore } from '@/stores/error'
+import { useRouter } from 'vue-router'
 import type { Gear, GearCategory } from '@terva/shared'
 import { computed, onMounted, ref } from 'vue'
 
 const loading = useLoadingStore()
+const router = useRouter()
 const loaded = ref(false)
 
 const gears = ref<Gear[]>([])
@@ -18,7 +21,6 @@ const uniqueGearTypes = <GearCategory[]>['grinder', 'kettle', 'scale', 'brewer',
 
 const searchBar = ref<string>('')
 const search = computed(() => searchBar.value.trim().toLowerCase())
-const error = ref<string | null>(null)
 
 // Add overlay
 const showAddOverlay = ref(false)
@@ -46,8 +48,14 @@ onMounted(async () => {
 		if (!data.success) throw new Error(data.error)
 		gears.value = data.payload
 	} catch (err) {
-		if (err instanceof Error) error.value = err.message
-		else error.value = 'An unknown error occurred'
+		loading.stop()
+		const errorStore = useErrorStore()
+		errorStore.set(
+			err instanceof Error ? err.message : 'Failed to load your gear.',
+			'gear',
+		)
+		router.push({ name: 'error' })
+		return
 	} finally {
 		loading.stop()
 		loaded.value = true
@@ -118,8 +126,6 @@ async function confirmDelete() {
 		<div class="search-row">
 			<input type="search" v-model="searchBar" placeholder="Search gear…" />
 		</div>
-
-		<p v-if="error" class="error">{{ error }}</p>
 
 		<!-- Gear sections -->
 		<GearList
