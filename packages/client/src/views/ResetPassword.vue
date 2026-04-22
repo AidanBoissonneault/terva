@@ -11,6 +11,7 @@ By: Aidan Boissonneault
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
+import { useToastStore } from '@/stores/toast'
 
 const router = useRouter()
 const route = useRoute()
@@ -55,9 +56,12 @@ async function handleReset() {
 	loading.value = false
 
 	if (authError) {
-		error.value = authError.message ?? 'Reset failed. The link may have expired.'
+		const msg = authError.message ?? 'Reset failed. The link may have expired.'
+		error.value = msg
+		useToastStore().show(msg, 'error')
 	} else {
 		success.value = true
+		useToastStore().show('Password reset. Signing you in.', 'success')
 		setTimeout(() => router.push('/login'), 2000)
 	}
 }

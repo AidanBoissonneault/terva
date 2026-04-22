@@ -4,22 +4,22 @@ import BeanForm from '@/components/BeanForm/BeanForm.vue';
 import type { AddBeanForm } from '@terva/shared';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToastStore } from '@/stores/toast';
 
-// receives bean
 const bean = ref<AddBeanForm>()
-
 const router = useRouter()
 
-// ran when the form to add a bean is submitted
-function getFormSubmit() {
-	if(!bean.value)
+async function getFormSubmit() {
+	if (!bean.value) return
+
+	const result = await addBean(bean.value)
+
+	if (!result.success) {
+		useToastStore().show(result.error ?? 'Failed to add bean.', 'error')
 		return
+	}
 
-	console.log(bean.value)
-
-	addBean(bean.value)
-
-	router.push({ name: "dashboard" })
+	router.push({ name: 'dashboard' })
 }
 </script>
 

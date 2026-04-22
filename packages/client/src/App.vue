@@ -10,6 +10,10 @@ import FullscreenOverlay from './components/Utils/Overlay/FullscreenOverlay.vue'
 import { removeBean } from './api/removeBean'
 import { storeToRefs } from 'pinia'
 import { usePushNotifications } from './composables/usePushNotifications'
+import ToastBanner from './components/Utils/ToastBanner.vue'
+import { useToastStore } from './stores/toast'
+
+const toast = useToastStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -104,6 +108,10 @@ async function deleteSelectedBean() {
 			<TabBar v-if="isActiveNavBarPage" />
 		</Transition>
 	</div>
+
+	<Transition name="slide-out-top">
+		<ToastBanner v-if="toast.visible" />
+	</Transition>
 
 	<Transition name="slide-out-bottom">
 		<div v-if="showNotifBanner" class="notif-banner">

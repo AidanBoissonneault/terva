@@ -11,6 +11,7 @@ By: Aidan Boissonneault
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authClient } from "@/lib/auth-client";
+import { useToastStore } from "@/stores/toast";
 import BottomSheet from "@/components/Utils/BottomSheet.vue";
 import TermsAndCondtions from "./TermsAndCondtions.vue";
 import PrivacyPolicy from "./PrivacyPolicy.vue";
@@ -38,8 +39,10 @@ async function handleRegister() {
 	loading.value = false
 
 	if (authError) {
-		error.value = authError.message ?? "Registration failed."
-		return;
+		const msg = authError.message ?? 'Registration failed. Please try again.'
+		error.value = msg
+		useToastStore().show(msg, 'error')
+		return
 	}
 
 	router.push("/login")

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useToastStore } from './toast'
 
 export const useErrorStore = defineStore('error', {
   state: () => ({
@@ -10,6 +11,7 @@ export const useErrorStore = defineStore('error', {
     set(message: string, backRoute = 'dashboard') {
       this.message = message
       this.backRoute = backRoute
+      useToastStore().show(message, 'error')
     },
 
     clear() {

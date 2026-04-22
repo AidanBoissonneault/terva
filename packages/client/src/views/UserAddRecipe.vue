@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import RecipeForm from '@/components/Recipe/RecipeForm.vue'
 import { addRecipe, type AddRecipeForm } from '@/api/addRecipe'
+import { useToastStore } from '@/stores/toast'
 
 const router = useRouter()
 
@@ -22,6 +23,7 @@ async function handleSubmit() {
 		router.push({ name: 'dashboard' })
 	} else {
 		error.value = result.error
+		useToastStore().show(result.error ?? 'Failed to save recipe.', 'error')
 	}
 }
 </script>

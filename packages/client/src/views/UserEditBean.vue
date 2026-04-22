@@ -13,6 +13,7 @@ import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
 import type { AddBeanForm } from '@terva/shared'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToastStore } from '@/stores/toast'
 
 const router = useRouter()
 
@@ -37,6 +38,7 @@ async function handleFormSubmit() {
 
 	if (!result.success) {
 		error.value = result.error
+		useToastStore().show(result.error ?? 'Failed to save bean changes.', 'error')
 		return
 	}
 

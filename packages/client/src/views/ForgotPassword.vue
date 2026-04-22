@@ -10,6 +10,7 @@ By: Aidan Boissonneault
 <script setup lang="ts">
 import { ref } from 'vue'
 import { authClient } from '@/lib/auth-client'
+import { useToastStore } from '@/stores/toast'
 
 const email = ref('')
 const error = ref('')
@@ -28,7 +29,9 @@ async function handleSubmit() {
 	loading.value = false
 
 	if (authError) {
-		error.value = authError.message ?? 'Something went wrong. Please try again.'
+		const msg = authError.message ?? 'Could not send reset email. Please try again.'
+		error.value = msg
+		useToastStore().show(msg, 'error')
 	} else {
 		sent.value = true
 	}

@@ -11,6 +11,7 @@ By: Aidan Boissonneault
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authClient } from "@/lib/auth-client";
+import { useToastStore } from "@/stores/toast";
 
 const router = useRouter();
 const email = ref("");
@@ -30,7 +31,9 @@ async function handleLogin() {
 	loading.value = false;
 
 	if (authError) {
-		error.value = authError.message ?? "Login failed.";
+		const msg = authError.message ?? 'Sign in failed. Check your email and password.'
+		error.value = msg
+		useToastStore().show(msg, 'error')
 	} else {
 		router.push("/");
 	}

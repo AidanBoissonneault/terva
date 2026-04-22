@@ -17,7 +17,21 @@ import { type Bean, type Brew } from '@terva/shared'
 import { editBrew } from '@/api/editBrew';
 import { getBeans } from '@/api/getBeans';
 import { useRouter } from 'vue-router';
-import { useErrorStore } from '@/stores/error';
+import { useErrorStore } from '@/stores/error'
+import { useToastStore } from '@/stores/toast'
+
+const SUCCESS_MESSAGES = [
+	'Brew on the books.',
+	'Nice pour. Saved.',
+	'Another one for the journal.',
+	'Brewed and filed.',
+	'Logged. Time to sip.',
+	'Brew recorded. Well done.',
+]
+
+function randomSuccess() {
+	return SUCCESS_MESSAGES[Math.floor(Math.random() * SUCCESS_MESSAGES.length)]!
+};
 
 const currentBrew = ref<Brew>()
 const endingBrew = ref<Brew>()
@@ -62,6 +76,7 @@ function formSubmitted() {
 	const brewTransfer = useBrewTransferStore()
 	brewTransfer.clear()
 
+	useToastStore().show(randomSuccess(), 'success')
 	router.push({ name: 'dashboard' })
 }
 </script>

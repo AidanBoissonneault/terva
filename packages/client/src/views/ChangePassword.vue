@@ -10,6 +10,7 @@ By: Aidan Boissonneault
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
+import { useToastStore } from '@/stores/toast'
 
 const router = useRouter()
 
@@ -44,9 +45,12 @@ async function handleChangePassword() {
 	loading.value = false
 
 	if (authError) {
-		error.value = authError.message ?? 'Failed to change password.'
+		const msg = authError.message ?? 'Failed to change password. Check your current password.'
+		error.value = msg
+		useToastStore().show(msg, 'error')
 	} else {
 		success.value = true
+		useToastStore().show('Password updated.', 'success')
 		setTimeout(() => router.push({ name: 'profile' }), 1500)
 	}
 }
