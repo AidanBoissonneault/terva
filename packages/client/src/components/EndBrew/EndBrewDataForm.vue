@@ -11,7 +11,6 @@ By: Aidan Boissonneault
 <script setup lang="ts">
 import type { Brew } from '@terva/shared';
 import { watch, ref, onMounted } from 'vue';
-import SectionSeperator from '../Utils/SectionSeperator.vue';
 
 const modelValue = defineModel<Brew>({
 	default: {
@@ -73,8 +72,6 @@ onMounted(() => {
 			</div>
 		</label>
 
-		<SectionSeperator />
-
 		<label class="large">
 			<div class="space-between">
 				<small>Bitter</small>
@@ -92,12 +89,12 @@ onMounted(() => {
 			</div>
 			<input type="range" v-model="form.body">
 		</label>
-		<SectionSeperator />
 
-		<small>Notes</small>
-		<textarea cols="30" rows="5" placeholder="Tell us about your brew." maxlength="500" v-model="form.notes"></textarea>
+		<label class="large notes-label">
+			<small>Notes</small>
+			<textarea rows="4" placeholder="Tell us about your brew." maxlength="500" v-model="form.notes"></textarea>
+		</label>
 
-		<SectionSeperator />
 		<button type="submit" class="big-text glass">End Brew</button>
 	</form>
 </template>
@@ -113,8 +110,8 @@ form {
 }
 
 form > * {
-	margin-top: 16px;
-	margin-bottom: 16px;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 label {
@@ -129,6 +126,17 @@ label.centered {
 
 label.large {
 	grid-column: span 4;
+}
+
+.notes-label {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.notes-label textarea {
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .space-between {

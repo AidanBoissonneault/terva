@@ -10,20 +10,29 @@ By: Aidan Boissonneault
 
 <script lang="ts" setup>
 import EndBrewDataForm from '@/components/EndBrew/EndBrewDataForm.vue';
+import EndBrewHeader from '@/components/EndBrew/EndBrewHeader.vue';
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
 import { onMounted, ref } from 'vue';
-import { type Brew } from '@terva/shared'
+import { type Bean, type Brew } from '@terva/shared'
 import { editBrew } from '@/api/editBrew';
+import { getBeans } from '@/api/getBeans';
 import { useRouter } from 'vue-router';
 
 const currentBrew = ref<Brew>()
 const endingBrew = ref<Brew>()
+const currentBean = ref<Bean>()
 
 const router = useRouter()
 
-onMounted(() => {
+onMounted(async () => {
 	const currentBrewTransfer = useBrewTransferStore()
 	currentBrew.value = currentBrewTransfer.get()
+
+	const beansResult = await getBeans()
+
+	if (beansResult.success && currentBrew.value?.beanId) {
+		currentBean.value = beansResult.payload.find((b: Bean) => b.id === currentBrew.value!.beanId)
+	}
 })
 
 function formSubmitted() {
@@ -45,9 +54,10 @@ function formSubmitted() {
 
 <template>
 	<div class="dashboard">
-		<div v-if="currentBrew">
+		<template v-if="currentBrew">
+			<EndBrewHeader v-if="currentBean" :bean="currentBean" />
 			<EndBrewDataForm :import-form="currentBrew" v-model="endingBrew" @form-submitted="formSubmitted"/>
-		</div>
+		</template>
 
 		<!--Error-->
 		<div v-else>
@@ -64,7 +74,7 @@ div {
 
 .dashboard {
 	display: grid;
-	gap: 16px;
+	gap: 12px;
 	grid-template-columns: repeat(4, 1fr);
 	margin-left: 24px;
 	margin-right: 24px;

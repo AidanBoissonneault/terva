@@ -112,7 +112,8 @@ async function deleteSelectedBean() {
 	flex-direction: column;
 	min-height: 100vh;
 
-	overflow-x: clip;
+	overflow-x: hidden;
+	overflow-y: clip;
 }
 
 .route-loading {

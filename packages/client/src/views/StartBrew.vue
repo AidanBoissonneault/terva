@@ -28,6 +28,7 @@ const currentBean = ref<Bean>()
 const error = ref<string | null>(null)
 const data = ref()
 const newBrew = ref<Brew>()
+const isReady = ref(false)
 
 // Overlay state - 'none' | 'recipe' | 'skip'
 type OverlayStep = 'none' | 'recipe' | 'skip'
@@ -69,6 +70,7 @@ onMounted(async () => {
 			currentBrewStore.clear()
 		}
 		loading.stop()
+		isReady.value = true
 	}
 })
 
@@ -118,17 +120,19 @@ function finishLater() {
 
 <template>
 	<div class="dashboard">
-		<div v-if="currentBean" class="bean_card">
-			<BeanCard :bean="currentBean" />
-		</div>
-		<SectionSeperator />
-		<BrewDataForm
-			:recipes="recipes"
-			:grinders="grinders"
-			:brewers="brewers"
-			v-model="newBrew"
-			@form-submitted="formSubmitted"
-		/>
+		<template v-if="isReady">
+			<div v-if="currentBean" class="bean_card">
+				<BeanCard :bean="currentBean" />
+			</div>
+			<SectionSeperator />
+			<BrewDataForm
+				:recipes="recipes"
+				:grinders="grinders"
+				:brewers="brewers"
+				v-model="newBrew"
+				@form-submitted="formSubmitted"
+			/>
+		</template>
 	</div>
 
 	<!-- Step 1: Brew with recipe? -->

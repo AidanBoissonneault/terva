@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import BeanCard from '@/components/BeanCard/BeanCard.vue'
+import BeanCardSkeleton from '@/components/BeanCard/BeanCardSkeleton.vue'
 import BrewCard from '@/components/BeanInfo/BrewCard.vue'
+import BrewCardSkeleton from '@/components/BeanInfo/BrewCardSkeleton.vue'
 import { useRouter } from 'vue-router'
 import { type Brew, type Bean, type Gear, type Recipe } from '@terva/shared'
 import { computed, onMounted, ref } from 'vue'
@@ -17,6 +19,7 @@ const currentBean = ref<Bean>()
 const brews = ref<Brew[]>([])
 const gears = ref<Gear[]>([])
 const recipes = ref<Recipe[]>([])
+const isReady = ref(false)
 
 // clear the brew transfer (in case) and go to start brew
 function skip() {
@@ -76,11 +79,19 @@ onMounted(async () => {
 		gears.value = resBrewStartData.payload.gears
 		recipes.value = resBrewStartData.payload.recipes
 	}
+
+	isReady.value = true
 })
 </script>
 
 <template>
 	<div class="dashboard">
+		<template v-if="!isReady">
+			<BeanCardSkeleton style="grid-column: 1 / 5" />
+			<SectionSeperator />
+			<BrewCardSkeleton v-for="i in 3" :key="i" />
+		</template>
+		<template v-else>
 		<BeanCard v-if="currentBean" :bean="currentBean" @clicked="navigateToEditBean"/>
 		<SectionSeperator />
 
@@ -95,6 +106,7 @@ onMounted(async () => {
 				</FilterButton>
 			</div>
 			<BrewCard v-for="brew in filteredBrews" :key="brew.id ?? brew.recipeId" :brew="brew" :gear="gears" :recipes="recipes" />
+		</template>
 		</template>
 	</div>
 </template>

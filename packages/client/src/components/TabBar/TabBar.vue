@@ -37,7 +37,7 @@ const dragIndex = ref<number | null>(null)
 const isDragging = ref(false)
 
 // True committed route — drives glow
-const trueRoute = computed(() => route.name as string)
+const trueRoute = computed(() => (route.name as string) ?? '')
 
 function getTabIndex(routeName: string) {
 	return tabs.findIndex(t => t.route === routeName)
