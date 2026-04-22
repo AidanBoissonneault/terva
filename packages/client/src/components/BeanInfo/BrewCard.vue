@@ -2,8 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import type { Brew, Gear, Recipe } from '@terva/shared'
 import BeanCardSeperator from '@/components/BeanCard/BeanCardSeperator.vue'
-import { useBrewTransferStore } from '@/stores/currentBrewTransfer';
-import { useRouter } from 'vue-router';
+import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
@@ -18,29 +18,33 @@ const lightness = ref(0.7)
 
 onMounted(() => {
 	lightness.value = Number(
-		getComputedStyle(document.documentElement)
-			.getPropertyValue('--lightness')
-			.trim(),
+		getComputedStyle(document.documentElement).getPropertyValue('--lightness').trim(),
 	)
 })
 
 const hue = computed(() => {
-	if (props.brew.status === 'in_progress')
-		return 350;
+	if (props.brew.status === 'in_progress') return 350
+	if (props.brew.status === 'unfinished') return 15
 	switch (props.brew.closeness) {
-		case 'success': return 135
-		case 'close': return 55
-		default: return 25
+		case 'success':
+			return 135
+		case 'close':
+			return 55
+		default:
+			return 25
 	}
 })
 
 const chroma = computed(() => {
-	if (props.brew.status === 'in_progress')
-		return 0.05
+	if (props.brew.status === 'in_progress') return 0.05
+	if (props.brew.status === 'unfinished') return 0.08
 	switch (props.brew.closeness) {
-		case 'success': return 0.18
-		case 'close': return 0.16
-		default: return 0.12
+		case 'success':
+			return 0.18
+		case 'close':
+			return 0.16
+		default:
+			return 0.12
 	}
 })
 
@@ -50,11 +54,15 @@ const secColor = computed(() => `oklch(${lightness.value + 0.04} ${chroma.value}
 const accColor = computed(() => `oklch(${lightness.value + 0.08} ${chroma.value} ${hue.value})`)
 
 // Gear lookups
-const brewerName = computed(() => props.gear.find(g => g.id === props.brew.brewerId)?.name ?? '-')
-const grinderName = computed(() => props.gear.find(g => g.id === props.brew.grinderId)?.name ?? '-')
+const brewerName = computed(() => props.gear.find((g) => g.id === props.brew.brewerId)?.name ?? '-')
+const grinderName = computed(
+	() => props.gear.find((g) => g.id === props.brew.grinderId)?.name ?? '-',
+)
 
 // Recipe lookup
-const recipeName = computed(() => props.recipes.find(r => r.id === props.brew.recipeId)?.name ?? '-')
+const recipeName = computed(
+	() => props.recipes.find((r) => r.id === props.brew.recipeId)?.name ?? '-',
+)
 
 // Ratio
 const ratio = computed(() => {
@@ -77,10 +85,8 @@ function navigateToStartBrew() {
 
 	currentBrew.set(props.brew)
 
-	if(props.brew.status === 'finished')
-		router.push({ name: 'startbrew' })
-	else
-		router.push({ name: 'endbrew' })
+	if (props.brew.status === 'finished') router.push({ name: 'startbrew' })
+	else router.push({ name: 'endbrew' })
 }
 </script>
 
@@ -121,7 +127,6 @@ function navigateToStartBrew() {
 		</div>
 
 		<p v-if="brew.notes" class="notes">{{ brew.notes }}</p>
-
 	</div>
 </template>
 
@@ -139,17 +144,27 @@ function navigateToStartBrew() {
 		inset 0 -1px 0 oklch(0 0 0 / 0.15),
 		0 0 0 1px oklch(from v-bind(priColor) l c h / 0.2),
 		0 4px 6px oklch(from var(--terva-shadow) l c h / 0.6),
-		0 2px 4px oklch(from v-bind(priColor) l c h / 0.20),
+		0 2px 4px oklch(from v-bind(priColor) l c h / 0.2),
 		0 6px 12px oklch(from v-bind(secColor) l c h / 0.05),
-		0 12px 24px oklch(from v-bind(accColor) l c h / 0.10);
+		0 12px 24px oklch(from v-bind(accColor) l c h / 0.1);
 
 	padding: 12px;
 	overflow: hidden;
 
 	background:
-		linear-gradient(rgba(255,255,255,0.12), rgba(255,255,255,0.04)) border-box,
-		radial-gradient(ellipse 70% 120% at 15% 40%, oklch(from v-bind(secColor) l c h / 0.55) 0%, transparent 100%) padding-box,
-		radial-gradient(ellipse 70% 120% at 85% 30%, oklch(from v-bind(accColor) l c h / 0.45) 0%, transparent 100%) padding-box,
+		linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)) border-box,
+		radial-gradient(
+				ellipse 70% 120% at 15% 40%,
+				oklch(from v-bind(secColor) l c h / 0.55) 0%,
+				transparent 100%
+			)
+			padding-box,
+		radial-gradient(
+				ellipse 70% 120% at 85% 30%,
+				oklch(from v-bind(accColor) l c h / 0.45) 0%,
+				transparent 100%
+			)
+			padding-box,
 		v-bind(priColor) padding-box;
 
 	background-color: v-bind(priColor);

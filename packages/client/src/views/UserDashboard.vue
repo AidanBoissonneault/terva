@@ -9,9 +9,12 @@ By: Aidan Boisonneault
 
 <script setup lang="ts">
 import { getBeans } from '@/api/getBeans'
+import { getInProgressBrews, type InProgressBrew } from '@/api/getInProgressBrews'
+import { editBrew } from '@/api/editBrew'
 import BeanCardSkeleton from '@/components/BeanCard/BeanCardSkeleton.vue'
 import FilterButton from '@/components/FilterButton/FilterButton.vue'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
+import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue'
 import { type Bean, type BeanState, type Brew } from '@terva/shared'
@@ -32,6 +35,10 @@ const router = useRouter()
 const beans = ref()
 const heroBean = ref()
 const error = ref<string | null>(null)
+
+// unfinished brew resume popup
+const resumeBrew = ref<InProgressBrew | null>(null)
+const showResumePopup = ref(false)
 
 const isReady = ref(false)
 
@@ -111,6 +118,41 @@ onMounted(async () => {
 			console.log(recentBrews)
 		}
 
+		// check for in-progress brews (once per session)
+		if (!sessionStorage.getItem('inProgressBrewChecked')) {
+			sessionStorage.setItem('inProgressBrewChecked', '1')
+			const inProgressResult = await getInProgressBrews()
+			if (inProgressResult.success && inProgressResult.payload.length > 0) {
+				// group by beanId — results already ordered by brewed_at DESC per bean
+				const byBean = new Map<number, InProgressBrew[]>()
+				for (const brew of inProgressResult.payload) {
+					const key = brew.beanId ?? -1
+					if (!byBean.has(key)) byBean.set(key, [])
+					byBean.get(key)!.push(brew)
+				}
+
+				// mark older duplicates within same bean as 'unfinished'
+				const mostRecentPerBean: InProgressBrew[] = []
+				for (const [, brews] of byBean) {
+					const [newest, ...stale] = brews
+					if (!newest) continue
+					mostRecentPerBean.push(newest)
+					for (const old of stale) {
+						old.closeness = 'close'
+						editBrew(old.id, { ...old, status: 'unfinished' })
+					}
+				}
+
+				// show popup for the single most recent in-progress brew overall
+				mostRecentPerBean.sort((a, b) => b.id - a.id)
+				const candidate = mostRecentPerBean[0]
+				if (candidate) {
+					resumeBrew.value = candidate
+					showResumePopup.value = true
+				}
+			}
+		}
+
 		// log data (for testing)
 		console.log(data)
 	} catch (err) {
@@ -139,6 +181,14 @@ function quickAccessBrew(brew: Brew) {
 	currentBean.set(heroBean.value)
 
 	router.push({ name: 'startbrew' })
+}
+
+function goToEndBrew() {
+	if (!resumeBrew.value) return
+	const brewTransfer = useBrewTransferStore()
+	brewTransfer.set(resumeBrew.value)
+	showResumePopup.value = false
+	router.push({ name: 'endbrew' })
 }
 
 const morphFilterLabel = ref('All beans')
@@ -284,6 +334,21 @@ watch(filterLabel, (val) => requestAnimationFrame(() => (morphFilterLabel.value 
 			>No more beans. Hit the <RouterLink to="/bean/add">+ button</RouterLink> to add more!</span
 		>
 	</div>
+
+	<!-- Resume unfinished brew popup -->
+	<FullscreenOverlay :is-visible="showResumePopup" @outside-clicked="showResumePopup = false">
+		<div class="resume-content" v-if="resumeBrew">
+			<p><strong>Unfinished brew</strong></p>
+			<small>
+				{{ resumeBrew.beanName }}
+				<template v-if="resumeBrew.beanRoaster"> · {{ resumeBrew.beanRoaster }}</template>
+			</small>
+			<div class="resume-actions">
+				<button class="glass secondary" @click="showResumePopup = false">Dismiss</button>
+				<button class="glass" @click="goToEndBrew">Resume</button>
+			</div>
+		</div>
+	</FullscreenOverlay>
 </template>
 
 <style scoped>
@@ -412,6 +477,20 @@ h5 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.resume-content,
+.resume-content strong {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.resume-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	margin-top: 8px;
 }
 
 .empty-label {
