@@ -63,20 +63,23 @@ onMounted(async () => {
 	}
 })
 
-function formSubmitted() {
+async function formSubmitted() {
 	if (!endingBrew.value)
 		return
 
 	endingBrew.value.status = 'finished'
 
-	console.log(endingBrew.value)
-	editBrew(endingBrew.value.id, endingBrew.value)
+	const result = await editBrew(endingBrew.value.id, endingBrew.value)
 
 	// clear cached brew
 	const brewTransfer = useBrewTransferStore()
 	brewTransfer.clear()
 
-	useToastStore().show(randomSuccess(), 'success')
+	if (result.success) {
+		useToastStore().show(randomSuccess(), 'success')
+	} else {
+		useToastStore().show(result.error ?? 'Brew may not have saved. Check your connection.', 'error')
+	}
 	router.push({ name: 'dashboard' })
 }
 </script>

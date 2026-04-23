@@ -24,6 +24,10 @@ import { addGear } from '@/api/addGear'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import GearForm from '@/components/Gear/GearForm.vue'
 import { useErrorStore } from '@/stores/error'
+import { useFinishLaterToast } from '@/composables/useFinishLaterToast'
+import { useToastStore } from '@/stores/toast'
+
+const { showFinishLaterToast } = useFinishLaterToast()
 
 const router = useRouter()
 
@@ -94,6 +98,8 @@ async function handleAddBrewer() {
 		data.value.gears.push({ ...newBrewer.value })
 		if (newBrew.value) newBrew.value.brewerId = newBrewer.value.id
 		overlayStep.value = 'none'
+	} else {
+		useToastStore().show(result.error ?? 'Failed to add brewer.', 'error')
 	}
 }
 
@@ -105,7 +111,11 @@ async function formSubmitted() {
 	newBrew.value.closeness = 'close'
 
 	const result = await addBrew(newBrew.value)
-	if (result.success) newBrew.value.id = result.payload.id
+	if (!result.success) {
+		useToastStore().show(result.error ?? 'Failed to start brew. Try again.', 'error')
+		return
+	}
+	newBrew.value.id = result.payload.id
 
 	// Persist brew in transfer store so BrewWith / EndBrew can read it
 	const transferBrew = useBrewTransferStore()
@@ -137,6 +147,7 @@ function finishNow() {
 
 function finishLater() {
 	overlayStep.value = 'none'
+	showFinishLaterToast()
 	router.push({ name: 'dashboard' })
 }
 </script>

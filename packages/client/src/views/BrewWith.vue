@@ -20,6 +20,9 @@ import { useRouter } from 'vue-router'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import { TextMorph } from 'torph/vue'
 import { useErrorStore } from '@/stores/error'
+import { useFinishLaterToast } from '@/composables/useFinishLaterToast'
+
+const { showFinishLaterToast } = useFinishLaterToast()
 
 const router = useRouter()
 const loading = useLoadingStore()
@@ -250,6 +253,7 @@ function finishNow() {
 }
 function finishLater() {
 	showFinishOverlay.value = false
+	showFinishLaterToast()
 	router.push({ name: 'dashboard' })
 }
 </script>

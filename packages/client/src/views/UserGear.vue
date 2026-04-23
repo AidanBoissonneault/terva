@@ -8,6 +8,7 @@ import GearList from '@/components/Gear/GearList.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { useErrorStore } from '@/stores/error'
+import { useToastStore } from '@/stores/toast'
 import { useRouter } from 'vue-router'
 import type { Gear, GearCategory } from '@terva/shared'
 import { computed, onMounted, ref } from 'vue'
@@ -75,6 +76,8 @@ async function handleAddSubmit() {
 		newGear.value.id = result.payload.id
 		gears.value.push({ ...newGear.value })
 		showAddOverlay.value = false
+	} else {
+		useToastStore().show(result.error ?? 'Failed to add gear.', 'error')
 	}
 }
 
@@ -94,6 +97,7 @@ async function handleEditSubmit() {
 		showEditOverlay.value = false
 	} else {
 		editError.value = result.error
+		useToastStore().show(result.error ?? 'Failed to save gear.', 'error')
 	}
 }
 
@@ -116,6 +120,8 @@ async function confirmDelete() {
 	const result = await removeGear(id)
 	if (result.success) {
 		gears.value = gears.value.filter((g) => g.id !== id)
+	} else {
+		useToastStore().show(result.error ?? 'Failed to delete gear.', 'error')
 	}
 }
 </script>

@@ -10,6 +10,7 @@ import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
 import TervaCardSkeleton from '@/components/Skeleton/TervaCardSkeleton.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { useErrorStore } from '@/stores/error'
+import { useToastStore } from '@/stores/toast'
 import type { Recipe } from '@terva/shared'
 import type { AddRecipeForm } from '@/api/addRecipe'
 
@@ -89,6 +90,7 @@ async function confirmDelete() {
 		recipes.value = recipes.value.filter((r) => r.id !== id)
 	} else {
 		error.value = result.error
+		useToastStore().show(result.error ?? 'Failed to delete recipe.', 'error')
 	}
 }
 
@@ -135,6 +137,7 @@ async function handleEditSubmit() {
 		showEditOverlay.value = false
 	} else {
 		editError.value = result.error
+		useToastStore().show(result.error ?? 'Failed to save recipe.', 'error')
 	}
 }
 </script>

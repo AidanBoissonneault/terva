@@ -1,1 +1,0 @@
-import{a4 as r}from"./index-CCfXyI5d.js";const a=r("chromaCalculator",{state:()=>({FRESH_CHROMA:.22,FROZEN_CHROMA:.15,FINISHED_CHROMA:.05}),actions:{getChroma(t){switch(t){case"fresh":return this.FRESH_CHROMA;case"frozen":return this.FROZEN_CHROMA;default:return this.FINISHED_CHROMA}}}});export{a as u};

@@ -5,6 +5,7 @@ import { authClient } from '@/lib/auth-client'
 import { getProfile, deleteAccount } from '@/api/getProfile'
 import { useLoadingStore } from '@/stores/loading'
 import { useErrorStore } from '@/stores/error'
+import { useToastStore } from '@/stores/toast'
 import { invalidateSessionCache } from '@/router'
 import SectionSeperator from '@/components/Utils/SectionSeperator.vue'
 import FullscreenOverlay from '@/components/Utils/Overlay/FullscreenOverlay.vue'
@@ -122,6 +123,8 @@ async function handleDeleteAccount() {
 		invalidateSessionCache()
 		await authClient.signOut()
 		router.push({ name: 'login' })
+	} else {
+		useToastStore().show(res.error ?? 'Failed to delete account.', 'error')
 	}
 
 	showDeleteConfirm.value = false

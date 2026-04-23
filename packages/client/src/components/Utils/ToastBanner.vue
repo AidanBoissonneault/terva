@@ -65,11 +65,9 @@ const current = computed(() => config[resolvedType.value])
 <style scoped>
 .toast-banner {
   position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 32px);
-  max-width: 480px;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 9999;
 
   display: flex;
@@ -78,7 +76,8 @@ const current = computed(() => config[resolvedType.value])
 
   background-color: var(--toast-bg);
   border: 2px solid var(--toast-border);
-  border-radius: 20px;
+  border-top: none;
+  border-radius: 0 0 24px 24px;
   padding: 12px 16px;
 
   color: var(--toast-text);
@@ -88,6 +87,13 @@ const current = computed(() => config[resolvedType.value])
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.12),
     0 1px 4px rgba(0, 0, 0, 0.08);
+
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
 }
 
 .toast-icon {

@@ -21,6 +21,7 @@ import { type Bean, type BeanState, type Brew } from '@terva/shared'
 import { useRouter } from 'vue-router'
 import { useCurrentBeanStore } from '@/stores/currentShowcasedBean'
 import { useErrorStore } from '@/stores/error'
+import { useToastStore } from '@/stores/toast'
 import { getRecentBrews } from '@/api/getRecentBrews'
 import { useBrewTransferStore } from '@/stores/currentBrewTransfer'
 import { TextMorph } from 'torph/vue'
@@ -173,10 +174,16 @@ async function routeToBeanInfo(bean: Bean) {
 	const currentBean = useCurrentBeanStore()
 	currentBean.set(bean)
 
-	const recentBrews = await getRecentBrews(bean.id)
-	if (recentBrews.success && recentBrews.payload.length === 0) {
-		router.push({ name: 'startbrew' })
-	} else {
+	try {
+		const recentBrews = await getRecentBrews(bean.id)
+		if (!recentBrews.success) throw new Error(recentBrews.error)
+		if (recentBrews.payload.length === 0) {
+			router.push({ name: 'startbrew' })
+		} else {
+			router.push({ name: 'beaninfo' })
+		}
+	} catch {
+		useToastStore().show('Failed to load bean data. Try again.', 'error')
 		router.push({ name: 'beaninfo' })
 	}
 }
