@@ -10,14 +10,15 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   function init(hasOnboarded: boolean, currentStep: number, name: string) {
     checked.value = true
     userName.value = name
+    step.value = Math.max(1, Math.min(5, currentStep))
     if (!hasOnboarded) {
       show.value = true
-      step.value = Math.max(1, Math.min(5, currentStep))
     }
   }
 
   function complete() {
     show.value = false
+    step.value = 5
   }
 
   return { checked, show, step, userName, init, complete }
