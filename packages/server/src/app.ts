@@ -26,6 +26,7 @@ import editBrew from './brews/editBrew.js'
 import addBrew from './brews/addBrew.js'
 import { seedDefaultRecipes } from './lib/seedDefaultRecipes.js'
 import connection from './db/connection.js'
+import onboardingRouter from './onboarding/onboardingRouter.js'
 import seedDemo from './seedDemo/seedDemo.js'
 import { sendWelcomeEmail } from '../../email/src/emails/sendWelcomeEmail.js'
 import pushRouter from './push/pushRouter.js'
@@ -109,6 +110,9 @@ app.post('/api/auth/sign-up/email', express.json(), async (req, res, next) => {
 			await seedDefaultRecipes(connection, result.user.id).catch((err) =>
 				console.error('Seed error:', err),
 			)
+			await connection
+				.query('INSERT INTO user_profile (user_id) VALUES (?)', [result.user.id])
+				.catch((err) => console.error('User profile creation error:', err))
 			await sendWelcomeEmail(result.user.email).catch((err) =>
 				console.error('Welcome email error:', err),
 			)
@@ -145,5 +149,6 @@ app.use('/api/getrecentbrews', getRecentBrews)
 app.use('/api/seeddemo', seedDemo)
 app.use('/api/recipe', addRecipe, editRecipe, getRecipes, removeRecipe)
 app.use('/api/push', pushRouter)
+app.use('/api/onboarding', onboardingRouter)
 
 export default app

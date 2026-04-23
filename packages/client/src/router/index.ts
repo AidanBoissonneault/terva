@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useLoadingStore } from '@/stores/loading'
+import { useOnboardingStore } from '@/stores/onboarding'
+import { getOnboardingStatus } from '@/api/onboarding'
 import { authClient } from '@/lib/auth-client'
 import UserDashboard from '@/views/UserDashboard.vue'
 import type { Component } from 'vue'
@@ -66,6 +68,20 @@ router.beforeEach(async (to) => {
   if (!cachedSession?.data?.user) {
     cachedSession = null
     return { path: '/login' }
+  }
+
+  const onboarding = useOnboardingStore()
+  if (!onboarding.checked) {
+    const status = await getOnboardingStatus()
+    if (status.success) {
+      onboarding.init(
+        status.payload.has_onboarded,
+        status.payload.onboarding_step,
+        cachedSession?.data?.user?.name ?? '',
+      )
+    } else {
+      onboarding.checked = true
+    }
   }
 })
 

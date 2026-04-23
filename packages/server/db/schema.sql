@@ -105,3 +105,10 @@ CREATE TABLE push_subscriptions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY unique_endpoint (endpoint(500))
 );
+
+CREATE TABLE IF NOT EXISTS user_profile (
+  user_id         VARCHAR(50) PRIMARY KEY,
+  has_onboarded   BOOLEAN NOT NULL DEFAULT FALSE,
+  onboarding_step TINYINT NOT NULL DEFAULT 1,
+  created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

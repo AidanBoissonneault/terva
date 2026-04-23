@@ -12,8 +12,11 @@ import { storeToRefs } from 'pinia'
 import { usePushNotifications } from './composables/usePushNotifications'
 import ToastBanner from './components/Utils/ToastBanner.vue'
 import { useToastStore } from './stores/toast'
+import OnboardingFlow from './components/Onboarding/OnboardingFlow.vue'
+import { useOnboardingStore } from './stores/onboarding'
 
 const toast = useToastStore()
+const onboardingStore = useOnboardingStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -33,6 +36,15 @@ watch(
 	(to, from) => {
 		previousRoute.value = (from as string) ?? ''
 		currentRoute.value = (to as string) ?? ''
+		// Re-show onboarding if user returns to dashboard mid-flow
+		if (
+			to === 'dashboard' &&
+			onboardingStore.checked &&
+			!onboardingStore.show &&
+			onboardingStore.step < 5
+		) {
+			onboardingStore.show = true
+		}
 	},
 )
 
@@ -122,6 +134,8 @@ async function deleteSelectedBean() {
 			</div>
 		</div>
 	</Transition>
+
+	<OnboardingFlow v-if="onboardingStore.show" />
 
 	<FullscreenOverlay
 		:is-visible="isWarnDeleteBean"

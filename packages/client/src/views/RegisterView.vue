@@ -9,14 +9,12 @@ By: Aidan Boissonneault
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { authClient } from "@/lib/auth-client";
 import { useToastStore } from "@/stores/toast";
 import BottomSheet from "@/components/Utils/BottomSheet.vue";
 import TermsAndCondtions from "./TermsAndCondtions.vue";
 import PrivacyPolicy from "./PrivacyPolicy.vue";
 
-const router = useRouter()
 const name = ref("")
 const email = ref("")
 const password = ref("")
@@ -45,7 +43,9 @@ async function handleRegister() {
 		return
 	}
 
-	router.push("/login")
+	const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+	await wait(1000)
+	window.location.href = "/"
 }
 </script>
 
