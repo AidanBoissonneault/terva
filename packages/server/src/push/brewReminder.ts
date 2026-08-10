@@ -17,25 +17,25 @@ interface PushSubRow {
 
 // Personalized messages
 const messages = [
-	{ title: "Enjoying the {{bean}}?", body: "How did your {{method}} turn out? Tap to log it." },
-	{ title: "{{method}} check ☕", body: "Give your {{bean}} brew a quick rating." },
-	{ title: "Final thoughts on {{bean}}?", body: "Lock in your {{method}} results before you forget." },
-	{ title: "{{method}} dialed in?", body: "Was that {{bean}} a hit or miss? Record it now." },
-	{ title: "How’d the {{bean}} taste?", body: "Capture your {{method}} notes while they’re fresh." },
-	{ title: "Good cup of {{bean}}?", body: "Tell us how your {{method}} went." },
-	{ title: "Rate that {{method}}", body: "Was your {{bean}} balanced, bitter, or sour?" },
-	{ title: "Solid {{bean}} brew?", body: "Track how your {{method}} turned out." },
-	{ title: "{{method}} review time", body: "Quickly log how your {{bean}} turned out." },
-	{ title: "Done brewing {{bean}}?", body: "Wrap up your {{method}} log in seconds." },
+{ title: "How was {{bean}}?", body: "Add a quick note while the cup is still fresh in your mind." },
+{ title: "Thoughts on {{bean}}?", body: "How did it turn out with your {{method}}?" },
+{ title: "How did your {{method}} turn out?", body: "Rate {{bean}} and save what worked." },
+{ title: "Happy with that {{method}}?", body: "Log how {{bean}} tasted before you forget." },
+{ title: "Worth brewing again?", body: "Save your thoughts on {{bean}} and this {{method}}." },
+{ title: "How was that cup?", body: "Add your notes for {{bean}} brewed with {{method}}." },
+{ title: "{{bean}} tasting good?", body: "Give this {{method}} brew a quick rating." },
+{ title: "Did you nail the {{method}}?", body: "Save how {{bean}} turned out this time." },
+{ title: "One for the recipe book?", body: "Rate your {{method}} brew of the {{bean}}." },
+{ title: "Cup finished?", body: "Log your thoughts on {{bean}} while they’re fresh." },
 ]
 
-// Generic fallback (no brewer)
+// Generic fallback
 const genericMessages = [
-	{ title: "Enjoy the coffee?", body: "How was your brew? Tap to finish it." },
-	{ title: "Quick brew check ☕", body: "Log your brew before you forget." },
-	{ title: "How’d it go?", body: "Capture your brew notes while it’s fresh." },
-	{ title: "Final thoughts?", body: "Finish logging your brew in one tap." },
-	{ title: "Don’t forget ☕", body: "Wrap up your brew log now." },
+{ title: "How was the coffee?", body: "Add a quick rating while it’s still fresh in your mind." },
+{ title: "How did that cup turn out?", body: "Save a few notes for next time." },
+{ title: "Worth brewing again?", body: "Log what worked while you still remember." },
+{ title: "Cup finished? ☕", body: "Wrap up your brew with a quick rating." },
+{ title: "Any final thoughts?", body: "Save your brew notes before you move on." },
 ]
 
 function fillTemplate(str: string, data: { bean?: string; method?: string }) {
