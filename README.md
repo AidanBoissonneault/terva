@@ -1,5 +1,5 @@
 # TERVA
-**15MAR2026–present · Aidan Boissonneault**
+**MAR2026-JUN2026 · Aidan Boissonneault**
 
 Terva is a coffee brew tracking app. Log brews, manage bean and gear data, and use past sessions as a confident starting point for your next cup.
 
